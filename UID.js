@@ -1,7 +1,7 @@
 const { token } = require('./config.json');
 const fs = require('fs');
-const { Client, Collection, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const { Client, Collection, Intents, WebhookClient } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS] });
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./cmds').filter(file => file.endsWith('.js'));
@@ -33,5 +33,19 @@ client.on('interactionCreate', async interaction => {
 
 });
 
+client.on('messageCreate', async msg => {
+	if (msg.author.bot) return;
+
+	if (msg.channelId === '950020050792894464'){
+
+		const webhook = new WebhookClient({url : 'https://discord.com/api/webhooks/952935493153222756/7mtoiRicyc-4LJ5zmvMhedcXDzUFhi9pw_tEncTZ7UEhYB5vabMZmfdqo72GqNp6Se_J'});
+		webhook.send({
+			content: `${msg.content}`,
+			username: `${msg.author.tag}`,
+			avatarURL: `${msg.author.avatarURL}`
+		})
+
+	}
+})
 
 client.login(token);
