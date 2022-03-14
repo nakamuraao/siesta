@@ -36,9 +36,9 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async msg => {
 	if (msg.author.bot) return;
 
-	if (msg.channelId === '949674986841456710'){
+	if (msg.channelId === '950020050792894464'){
 
-		const webhook = new WebhookClient({url : 'https://discord.com/api/webhooks/949662614554820719/KhkavUA4PdSm_jujdknLrAFKZDzMolOQaoDnt5JxgD0RKzA3EaFADv-j5TZg8zBIbm8E'});
+		const webhook = new WebhookClient({url : 'https://discord.com/api/webhooks/952935493153222756/7mtoiRicyc-4LJ5zmvMhedcXDzUFhi9pw_tEncTZ7UEhYB5vabMZmfdqo72GqNp6Se_J'});
 		webhook.send({
 			content: `${msg.content}`,
 			username: `${msg.author.tag}`,
