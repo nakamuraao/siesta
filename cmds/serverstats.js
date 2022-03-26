@@ -19,10 +19,10 @@ module.exports = {
 		        {name: `伺服器擁有者 :`, value:`<@${interaction.guild.ownerId}>`}
         	)
         	.setFooter({text:`伺服器ID : ${interaction.guild.id}`})
-	if (interaction.channel.id === '932619809991049216' || interaction.user.id === oid){
+	if (interaction.channel.id === '877249017950642307' || interaction.user.id === oid || interaction.channel.id === '877249017950642307'){
 		await interaction.reply({ embeds: [serverinfoembed] });
 	}else{
-		interaction.reply({ content:'請到<#932619809991049216>頁面使用', ephemeral: true})
+		interaction.reply({ content:'請到機器人區域使用', ephemeral: true})
 	}
 	
 	},
