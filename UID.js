@@ -83,6 +83,7 @@ client.on('messageCreate', async msg => {
 				.setTitle('可用人設')
 				.setDescription('1.エミリア\n2.めぐみん\n3.ニニム\n4.シエスタ\n5.シエル\n6.イレイナ\n7.Zeta\n8.レーナ')
 			msg.channel.send({embeds:[embed]})
+			await msg.delete()
 		}else if(msg.content.includes('setcharacter') || msg.content.includes('sc')){
 			if(args[1] === '1'){
 				client.user.setUsername('エミリア')
@@ -95,7 +96,7 @@ client.on('messageCreate', async msg => {
 				client.user.setAvatar('https://cdn.discordapp.com/attachments/867034103097196544/964535108369518654/unknown.png')
 			}else if(args[1] === '4'){
 				client.user.setUsername('シエスタ')
-				client.user.setAvatar('https://cdn.discordapp.com/avatars/843890891704893530/74672ea8a10626234e0cd1ad7ce1e5d8.png?size=2048')
+				client.user.setAvatar('https://media.discordapp.net/attachments/867034103097196544/964852363707953162/IMG_20220402_1134062.jpg?width=468&height=468')
 			}else if(args[1] === '5'){
 				client.user.setUsername('シエル')
 				client.user.setAvatar('https://media.discordapp.net/attachments/867034103097196544/962620978075160586/FGo0dVpVEAAWgjS.png')
@@ -104,13 +105,17 @@ client.on('messageCreate', async msg => {
 				client.user.setAvatar('https://media.discordapp.net/attachments/867034103097196544/964535722457575454/unknown.png')
 			}else if(args[1] === '7'){
 				client.user.setUsername('Vestia Zeta')
-				client.user.setAvatar('https://cdn.discordapp.com/avatars/843890891704893530/b41cf376ddb11755064677dccc391826.png?size=2048')
+				client.user.setAvatar('https://media.discordapp.net/attachments/867034103097196544/964850615991803904/zeta.png')
 			}else if(args[1] === '8'){
 				client.user.setUsername('レーナ')
 				client.user.setAvatar('https://media.discordapp.net/attachments/867034103097196544/964536496801591307/unknown.png')
 			}
-			await msg.channel.send('已變更人設為'+client.user.username)
+			await msg.channel.send('已變更人設')
 			msg.delete()
+		}else if(msg.content.includes('bomb')){
+			for(let i=0; i<args[1]; i++){
+				msg.channel.send(args[2])
+			}
 		}
 	}
 
