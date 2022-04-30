@@ -146,6 +146,9 @@ client.on('messageCreate', async msg => {
 			.setDescription(`<@${msg.author.id}>\n` + msg.content)
 			.setFooter({text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}`})
 
+		if(msg.attachments.size > 0){
+			embed1.setImage(msg.attachments)
+		}
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed1]})
 		)
