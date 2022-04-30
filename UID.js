@@ -122,8 +122,9 @@ client.on('messageCreate', async msg => {
 
 	//監控
 	if (msg.content.includes('蒼')){
+
 		client.users.fetch(config.oid).then((owner) => 
-		owner.send(`在 ${msg.channelId} 有提及蒼`))
+		owner.send({embeds:[embed]}))
 	}
 
 	//DM
