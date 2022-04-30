@@ -125,8 +125,8 @@ client.on('messageCreate', async msg => {
 	if (msg.content.includes('蒼')){
 		const embed = new MessageEmbed()
 			.setColor('AQUA')
-			.setTitle(`${msg.author.id} ${msg.author.tag}(${msg.author.id}) 在 <#${msg.channelId}> 提及了蒼`)
-			.setDescription(msg.content)
+			.setTitle(`<#${msg.author.id}> ${msg.author.tag}(${msg.author.id}) 在 #${msg.channel.name} 提及了蒼`)
+			.setDescription(msg.content + `<#${msg.channelId}>`)
 		client.users.fetch(config.oid).then((owner) => 
 		owner.send({embeds:[embed]}))
 	}
