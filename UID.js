@@ -2,6 +2,7 @@ const { token } = require('./config.json');
 const fs = require('fs');
 const { Client, Collection, Intents, WebhookClient,MessageEmbed } = require('discord.js');
 const  config  = require('./config.json');
+const { url } = require('inspector');
 const client = new Client({partials:["CHANNEL"], intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS , Intents.FLAGS.DIRECT_MESSAGES , Intents.FLAGS.GUILD_MEMBERS]});
 const prefix = '-'
 
@@ -149,8 +150,8 @@ client.on('messageCreate', async msg => {
 		if(msg.attachments.size > 0){
 			msg.attachments.forEach(a=>{
 				const url = a.url
+				embed1.setImage(url)
 			})
-			embed1.setImage()
 		}
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed1]})
