@@ -147,7 +147,10 @@ client.on('messageCreate', async msg => {
 			.setFooter({text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}`})
 
 		if(msg.attachments.size > 0){
-			embed1.setImage(msg.attachments)
+			msg.attachments.forEach(a=>{
+				const url = a.url
+			})
+			embed1.setImage()
 		}
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed1]})
