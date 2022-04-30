@@ -1,7 +1,7 @@
 const { token } = require('./config.json');
 const fs = require('fs');
 const { Client, Collection, Intents, WebhookClient,MessageEmbed } = require('discord.js');
-const { config } = require('process');
+const  config  = require('./config.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS] });
 const prefix = '->'
 
@@ -119,6 +119,23 @@ client.on('messageCreate', async msg => {
 		}
 	}
 
+	//監控
+	if (msg.content.includes('蒼')){
+		client.users.fetch(config.oid).then((owner) => 
+		owner.send(`在 ${msg.channelId} 有提及蒼`))
+	}
+
+	//DM
+	if (msg.channel.type === 'DM' && !msg.author.id===(config.oid)){
+		const embed = new MessageEmbed()
+			.setColor('#c5c6c9')
+			.setTitle(`來自 <@${msg.author.id}>${msg.author.tag}(${msg.author.id})的訊息`)
+			.addField(`訊息內容`, msg.content, false)
+			.setFooter(msg.createdAt.toLocaleDateString() + ' ' + msg.createdAt.toLocaleTimeString())
+
+		client.users.fetch(config.oid).then((owner)=>
+		owner.send({embeds:[embed]}))
+	}
 	
 })
 
