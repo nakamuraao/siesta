@@ -2,7 +2,7 @@ const { token } = require('./config.json');
 const fs = require('fs');
 const { Client, Collection, Intents, WebhookClient,MessageEmbed } = require('discord.js');
 const  config  = require('./config.json');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS , Intents.FLAGS.DIRECT_MESSAGES , Intents.FLAGS.GUILD_MEMBERS]});
+const client = new Client({partials:["CHANNEL"], intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS , Intents.FLAGS.DIRECT_MESSAGES , Intents.FLAGS.GUILD_MEMBERS]});
 const prefix = '-'
 
 client.commands = new Collection();
