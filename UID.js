@@ -3,7 +3,7 @@ const fs = require('fs');
 const { Client, Collection, Intents, WebhookClient,MessageEmbed } = require('discord.js');
 const  config  = require('./config.json');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS] });
-const prefix = '->'
+const prefix = '-'
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./cmds').filter(file => file.endsWith('.js'));
@@ -73,6 +73,7 @@ client.on('messageCreate', async msg => {
 		})
 
 	}
+	//新增檢舉區
 
 	//人設指令
 	const args = msg.content.slice(prefix.length).split(' ')
@@ -132,9 +133,13 @@ client.on('messageCreate', async msg => {
 			.setTitle(`來自 <@${msg.author.id}> ${msg.author.tag} (${msg.author.id})的訊息`)
 			.addField(`訊息內容`, msg.content, false)
 			.setFooter({text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}`})
+		if (msg.attachments.hasAny()){
+			embed.setImage(msg.attachments)
+			}
 
 		client.users.fetch(config.oid).then((owner)=>
-		owner.send({embeds:[embed]}))
+		owner.send({embeds:[embed]})
+		)
 	}
 	
 })
