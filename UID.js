@@ -133,6 +133,7 @@ client.on('messageCreate', async msg => {
 	if(msg.content.includes('check')){
 		console.log(`check from ${msg.author.tag} in ${msg.channel.type}`)
 		console.log('check')
+		msg.author.send('check')
 	}
 	//DM
 	if (msg.channel.type === 'DM'){
