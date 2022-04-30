@@ -130,6 +130,10 @@ client.on('messageCreate', async msg => {
 		owner.send({embeds:[embed]}))
 	}
 
+	if(msg.content.includes('check')){
+		console.log(`check from ${msg.author.tag} in ${msg.channel.type}`)
+		console.log('check')
+	}
 	//DM
 	if (msg.channel.type === 'DM'){
 		const embed1 = new MessageEmbed()
@@ -143,10 +147,7 @@ client.on('messageCreate', async msg => {
 		)
 	}
 	
-	if(msg.content.includes('check')){
-		console.log(`check from ${msg.author.tag} in ${msg.channel.type}`)
-		console.log('check')
-	}
+	
 })
 
 client.login(token);
