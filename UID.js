@@ -141,6 +141,7 @@ client.on('messageCreate', async msg => {
 
 	//DM
 	if (msg.channel.type === 'DM'){
+		if(msg.author.id === config.oid)return;
 		const embed1 = new MessageEmbed()
 			.setColor('#c5c6c9')
 			.setTitle(`來自 ${msg.author.tag} (${msg.author.id})的訊息`)
@@ -157,8 +158,6 @@ client.on('messageCreate', async msg => {
 		owner.send({embeds:[embed1]})
 		)
 	}
-	
-	
 })
 
 client.login(token);
