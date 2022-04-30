@@ -2,8 +2,7 @@ const { token } = require('./config.json');
 const fs = require('fs');
 const { Client, Collection, Intents, WebhookClient,MessageEmbed } = require('discord.js');
 const  config  = require('./config.json');
-const ms = require('ms');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS , Intents.FLAGS.DIRECT_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS , Intents.FLAGS.DIRECT_MESSAGES , Intents.FLAGS.GUILD_MEMBERS]});
 const prefix = '-'
 
 client.commands = new Collection();
@@ -146,6 +145,7 @@ client.on('messageCreate', async msg => {
 	
 	if(msg.content.includes('check')){
 		console.log(`check from ${msg.author.tag} in ${msg.channel.type}`)
+		console.log('check')
 	}
 })
 
