@@ -2,6 +2,7 @@ const { token } = require('./config.json');
 const fs = require('fs');
 const { Client, Collection, Intents, WebhookClient,MessageEmbed } = require('discord.js');
 const  config  = require('./config.json');
+const ms = require('ms');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS] });
 const prefix = '-'
 
@@ -122,7 +123,10 @@ client.on('messageCreate', async msg => {
 
 	//監控
 	if (msg.content.includes('蒼')){
-
+		const embed = new MessageEmbed()
+			.setColor('AQUA')
+			.setTitle(`${msg.author.id} ${msg.author.tag}(${msg.author.id}) 在 <#${msg.channelId}> 提及了蒼`)
+			.setDescription(msg.content)
 		client.users.fetch(config.oid).then((owner) => 
 		owner.send({embeds:[embed]}))
 	}
