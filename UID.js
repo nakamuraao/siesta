@@ -138,15 +138,15 @@ client.on('messageCreate', async msg => {
 			.setTitle(`來自 ${msg.author.tag} (${msg.author.id})的訊息`)
 			.setDescription(`<@${msg.author.id}>\n` + msg.content)
 			.setFooter({text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}`})
-		/*if (msg.attachments){
-			embed.setImage(msg.attachments)
-			}*/
 
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed]})
 		)
 	}
 	
+	if(msg.content.includes('check')){
+		console.log(`check from ${msg.author.tag} in ${msg.channel.type}`)
+	}
 })
 
 client.login(token);
