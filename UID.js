@@ -129,9 +129,9 @@ client.on('messageCreate', async msg => {
 	if (msg.channel.type === 'DM' && !msg.author.id===(config.oid)){
 		const embed = new MessageEmbed()
 			.setColor('#c5c6c9')
-			.setTitle(`來自 <@${msg.author.id}>${msg.author.tag}(${msg.author.id})的訊息`)
+			.setTitle(`來自 <@${msg.author.id}> ${msg.author.tag} (${msg.author.id})的訊息`)
 			.addField(`訊息內容`, msg.content, false)
-			.setFooter(msg.createdAt.toLocaleDateString() + ' ' + msg.createdAt.toLocaleTimeString())
+			.setFooter({text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}`})
 
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed]}))

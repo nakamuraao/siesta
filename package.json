@@ -1,6 +1,6 @@
 {
-  "name": "exp2",
-  "version": "1.0.0",
+  "name": "UID",
+  "version": "1.0.2",
   "description": "",
   "main": "UID.js",
   "engines": {
