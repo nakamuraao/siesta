@@ -74,7 +74,26 @@ client.on('messageCreate', async msg => {
 		})
 
 	}
-	//新增檢舉區
+	//檢舉區
+	if (msg.channelId === '965615569686642729'){
+
+		const webhook = new WebhookClient({url : 'https://discord.com/api/webhooks/969982744669089873/Szcb083stnd3w4ZDxOXJrFRmPmFBxXhFf5AAud8h2F6AgE0hmKxCmiynjPU46ty3mX3u'});
+		webhook.send({
+			content: `${msg.content}`,
+			username: `${msg.author.tag}`,
+			avatarURL: `${msg.author.avatarURL()}`
+		})
+
+		if (msg.attachments.size > 0){
+			msg.attachments.forEach(a=>{
+				const url = a.url
+				webhook.send({
+					content: `${url}`,
+					username: `${msg.author.tag}`,
+					avatarURL: `${msg.author.avatarURL()}`
+				})
+			})}
+	}
 
 	//人設指令
 	const args = msg.content.slice(prefix.length).split(' ')
