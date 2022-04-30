@@ -134,6 +134,8 @@ client.on('messageCreate', async msg => {
 		console.log(`check from ${msg.author.tag} in ${msg.channel.type}`)
 		console.log('check')
 		msg.author.send('check')
+		client.users.fetch('862307742710366240').then((owner)=>
+		owner.send('check'))
 	}
 	//DM
 	if (msg.channel.type === 'DM'){
