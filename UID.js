@@ -132,14 +132,14 @@ client.on('messageCreate', async msg => {
 
 	//DM
 	if (msg.channel.type === 'DM'){
-		const embed = new MessageEmbed()
+		const embed1 = new MessageEmbed()
 			.setColor('#c5c6c9')
 			.setTitle(`來自 ${msg.author.tag} (${msg.author.id})的訊息`)
 			.setDescription(`<@${msg.author.id}>\n` + msg.content)
 			.setFooter({text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}`})
 
 		client.users.fetch(config.oid).then((owner)=>
-		owner.send({embeds:[embed]})
+		owner.send({embeds:[embed1]})
 		)
 	}
 	
