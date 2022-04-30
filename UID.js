@@ -126,21 +126,21 @@ client.on('messageCreate', async msg => {
 		const embed = new MessageEmbed()
 			.setColor('AQUA')
 			.setTitle(`${msg.author.tag}(${msg.author.id}) 在 #${msg.channel.name} 提及了蒼`)
-			.setDescription(msg.content + `<#${msg.channelId}> <@${msg.author.id}>`)
+			.setDescription(`<#${msg.channelId}> <@${msg.author.id}>\n`+ msg.content )
 		client.users.fetch(config.oid).then((owner) => 
 		owner.send({embeds:[embed]}))
 	}
 
 	//DM
-	if (msg.channel.type === 'DM' && !msg.author.id===(config.oid)){
+	if (msg.channel.type === 'DM'){
 		const embed = new MessageEmbed()
 			.setColor('#c5c6c9')
-			.setTitle(`來自 <@${msg.author.id}> ${msg.author.tag} (${msg.author.id})的訊息`)
-			.addField(`訊息內容`, msg.content, false)
+			.setTitle(`來自 ${msg.author.tag} (${msg.author.id})的訊息`)
+			.setDescription(`<@${msg.author.id}>\n` + msg.content)
 			.setFooter({text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}`})
-		if (msg.attachments.hasAny()){
+		/*if (msg.attachments){
 			embed.setImage(msg.attachments)
-			}
+			}*/
 
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed]})
