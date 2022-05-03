@@ -2,7 +2,7 @@
   "name": "uid",
   "version": "1.0.0",
   "description": "",
-  "main": "UID.js",
+  "main": "uid.js",
   "dependencies": {
     "combined-stream": "^1.0.8",
     "asynckit": "^0.4.0",
