@@ -1,1 +1,1 @@
-worker: node UID
+worker: node uid
