@@ -93,6 +93,9 @@ import {
   MessageActionRowComponent,
   MessageSelectMenu,
   PartialDMChannel,
+  InteractionResponseFields,
+  GuildBan,
+  GuildBanManager,
 } from '.';
 import type { ApplicationCommandOptionTypes } from './enums';
 import { expectAssignable, expectDeprecated, expectNotAssignable, expectNotType, expectType } from 'tsd';
@@ -678,6 +681,8 @@ client.on('interaction', async interaction => {
 
   void new MessageActionRow();
 
+  void new MessageActionRow({});
+
   const button = new MessageButton();
 
   const actionRow = new MessageActionRow({ components: [button] });
@@ -686,9 +691,6 @@ client.on('interaction', async interaction => {
 
   // @ts-expect-error
   interaction.reply({ content: 'Hi!', components: [[button]] });
-
-  // @ts-expect-error
-  void new MessageActionRow({});
 
   // @ts-expect-error
   await interaction.reply({ content: 'Hi!', components: [button] });
@@ -867,6 +869,8 @@ declare const guildChannelManager: GuildChannelManager;
 {
   type AnyChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChannel | StoreChannel | StageChannel;
 
+  expectType<Promise<TextChannel>>(guildChannelManager.create('name'));
+  expectType<Promise<TextChannel>>(guildChannelManager.create('name', {}));
   expectType<Promise<VoiceChannel>>(guildChannelManager.create('name', { type: 'GUILD_VOICE' }));
   expectType<Promise<CategoryChannel>>(guildChannelManager.create('name', { type: 'GUILD_CATEGORY' }));
   expectType<Promise<TextChannel>>(guildChannelManager.create('name', { type: 'GUILD_TEXT' }));
@@ -888,6 +892,20 @@ declare const guildEmojiManager: GuildEmojiManager;
 expectType<Promise<Collection<Snowflake, GuildEmoji>>>(guildEmojiManager.fetch());
 expectType<Promise<Collection<Snowflake, GuildEmoji>>>(guildEmojiManager.fetch(undefined, {}));
 expectType<Promise<GuildEmoji>>(guildEmojiManager.fetch('0'));
+
+declare const guildBanManager: GuildBanManager;
+{
+  expectType<Promise<GuildBan>>(guildBanManager.fetch('1234567890'));
+  expectType<Promise<GuildBan>>(guildBanManager.fetch({ user: '1234567890' }));
+  expectType<Promise<GuildBan>>(guildBanManager.fetch({ user: '1234567890', cache: true, force: false }));
+  expectType<Promise<Collection<Snowflake, GuildBan>>>(guildBanManager.fetch());
+  expectType<Promise<Collection<Snowflake, GuildBan>>>(guildBanManager.fetch({}));
+  expectType<Promise<Collection<Snowflake, GuildBan>>>(guildBanManager.fetch({ limit: 100, before: '1234567890' }));
+  // @ts-expect-error
+  guildBanManager.fetch({ cache: true, force: false });
+  // @ts-expect-error
+  guildBanManager.fetch({ user: '1234567890', after: '1234567890', cache: true, force: false });
+}
 
 declare const typing: Typing;
 expectType<PartialUser>(typing.user);
@@ -942,7 +960,28 @@ expectDeprecated(sticker.deleted);
 // Test interactions
 declare const interaction: Interaction;
 declare const booleanValue: boolean;
-if (interaction.inGuild()) expectType<Snowflake>(interaction.guildId);
+if (interaction.inGuild()) {
+  expectType<Snowflake>(interaction.guildId);
+} else {
+  expectType<Snowflake | null>(interaction.guildId);
+}
+
+client.on('interactionCreate', interaction => {
+  // This is for testing never type resolution
+  if (!interaction.inGuild()) {
+    return;
+  }
+
+  if (interaction.inRawGuild()) {
+    expectNotType<never>(interaction);
+    return;
+  }
+
+  if (interaction.inCachedGuild()) {
+    expectNotType<never>(interaction);
+    return;
+  }
+});
 
 client.on('interactionCreate', async interaction => {
   if (interaction.inCachedGuild()) {
@@ -1121,6 +1160,16 @@ client.on('interactionCreate', async interaction => {
     expectType<string>(interaction.options.getSubcommandGroup(true));
     expectType<string | null>(interaction.options.getSubcommandGroup(booleanValue));
     expectType<string | null>(interaction.options.getSubcommandGroup(false));
+  }
+
+  if (interaction.isRepliable()) {
+    expectAssignable<InteractionResponseFields>(interaction);
+    interaction.reply('test');
+  }
+
+  if (interaction.isCommand() && interaction.isRepliable()) {
+    expectAssignable<CommandInteraction>(interaction);
+    expectAssignable<InteractionResponseFields>(interaction);
   }
 });
 
