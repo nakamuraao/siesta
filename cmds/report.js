@@ -12,7 +12,7 @@ module.exports = {
                 return
             }
 
-            const admin = Obj.findAdminRole(interaction.guild.id)
+            const admin = await Obj.findAdminRole(interaction.guild.id)
             let minute = new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : new Date().getMinutes();
             let time = `${new Date().getDate()}`+` `+`${new Date().getHours()}`+`-`+`${minute}`;
 
