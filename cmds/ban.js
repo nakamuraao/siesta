@@ -10,14 +10,14 @@ module.exports = {
     
     async execute(interaction){
         if(!isAdmin(interaction)){
-            interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true })
+            await interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true })
             return
         }
 
         const userId = interaction.options.getString('userid')
         interaction.guild.bans.create(userId)
         const embed = new MessageEmbed().setColor('GREY').setTitle('已停權使用者').addField('使用者ID',userId,false)
-        interaction.reply({embeds:[embed]})
+        await interaction.reply({embeds:[embed]})
 
         logTime()
         console.log(`${interaction.user.tag} 將 ${userId} 自 ${interaction.guild.name} 停權\n-----------------------`)

@@ -9,7 +9,7 @@ module.exports = {
     
     async execute(interaction,client){
         if (!isOwner(interaction.user.id)){
-            interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
+            await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
             return
         }
 
@@ -20,7 +20,7 @@ module.exports = {
             server.bans.create(userId).catch((error)=>interaction.channel.send(`無法將使用者自 ${server.name} 停權`))
         }
 
-        interaction.reply({content:'已將成員從所有共同伺服器停權'})
+        await interaction.reply({content:'已將成員從所有共同伺服器停權'})
         
         logTime()
         console.log(`blacklisted ${userId}\n-----------------------`)

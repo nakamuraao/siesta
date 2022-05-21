@@ -14,11 +14,11 @@ module.exports = {
             const times = interaction.options.getInteger('times')
 
             for(let i=0; i<times; i++){
-                interaction.channel.send(message)
+                await interaction.channel.send(message)
             }
-            interaction.reply({content:'執行完畢', ephemeral: true})
+            await interaction.reply({content:'執行完畢', ephemeral: true})
         }else{
-            interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
+            await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
         }
     }
 }

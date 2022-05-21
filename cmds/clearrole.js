@@ -9,7 +9,7 @@ module.exports = {
     
     async execute(interaction){
         if(!isAdmin(interaction)){
-            interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true })
+            await interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true })
             return
         }
 
@@ -22,7 +22,7 @@ module.exports = {
                 })
             }
         });
-        interaction.reply('已執行')	
+        await interaction.reply('已執行')	
         
         logTime()
         console.log(`${interaction.user.tag} 清除了 ${targetrole.name} 中的成員 (${interaction.guild.name})\n-----------------------`)

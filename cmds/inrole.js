@@ -17,6 +17,6 @@ module.exports = {
             }
         });
         const embed = new MessageEmbed().setTitle(`在 ${targetrole.name} 中的成員`).setDescription(string).setColor('BLUE')
-        interaction.reply({embeds:[embed]})
+        await interaction.reply({embeds:[embed]})
     }
 }

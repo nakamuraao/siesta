@@ -9,7 +9,7 @@ module.exports = {
 
     async execute(interaction,client){
         if (!isOwner(interaction.user.id)){
-            interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
+            await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
             return
         }
         const guildId = client.guilds.cache.map(guild => guild.id)
@@ -18,6 +18,6 @@ module.exports = {
         for(i=0;i<guildId.length;i++){
             embed.addField(guildName[i],guildId[i])
         }
-        interaction.reply({embeds:[embed]})
+        await interaction.reply({embeds:[embed]})
     }
 }

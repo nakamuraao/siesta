@@ -26,7 +26,7 @@ module.exports = {
             await Obj.updateServer(guildId,guildName,guildMembers,adminrole)
         }
 
-        interaction.reply('已更新伺服器設定')
+        await interaction.reply('已更新伺服器設定')
         logTime()
         console.log(`${interaction.user.tag} 更新了 ${interaction.guild.name} 的設定\n-----------------------`)
     }

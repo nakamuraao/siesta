@@ -17,6 +17,6 @@ module.exports = {
         });
         
         const embed = new MessageEmbed().setTitle(`伺服器中的機器人`).setDescription(string).setColor('BLUE')
-        interaction.reply({embeds:[embed]})
+        await interaction.reply({embeds:[embed]})
     }
 }

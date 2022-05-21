@@ -12,7 +12,7 @@ module.exports = {
 
     async execute(interaction,client) {
         if(!isOwner(interaction.user.id)){
-            interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
+            await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
             return
         }
         
@@ -32,7 +32,7 @@ module.exports = {
 			    client.user.setAvatar(characters.characters[num].icon)
                 await interaction.reply('已變更人設')
             }catch(error){
-                interaction.reply('數值錯誤')
+                await interaction.reply('數值錯誤')
             }
         }
         

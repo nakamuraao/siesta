@@ -18,6 +18,6 @@ module.exports = {
 		        {name: `UID :`, value: `${user.id}`},
         		{name: `加入DC時間 :`, value: `${user.createdAt.toLocaleDateString()} ${user.createdAt.toLocaleTimeString()}`},
         	)
-		interaction.reply({ embeds: [userinfoembed] });
+		await interaction.reply({ embeds: [userinfoembed] });
 	
 }}

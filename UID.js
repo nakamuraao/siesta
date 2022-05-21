@@ -87,9 +87,9 @@ client.on('messageCreate', async msg => {
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed1]})
 		)
-	}else if (msg.content.includes('抽籤')&&Obj.findChannel(msg.channelId)){
+	}else if (msg.content.includes('抽籤')&& await Obj.findChannel(msg.channelId)){
 		omikuji(msg)
-	}else if(msg.content.includes('機率')&&(Obj.findChannel(msg.channelId)||isOwner(msg.author.id))){
+	}else if(msg.content.includes('機率')&&(await Obj.findChannel(msg.channelId)||isOwner(msg.author.id))){
 		let min = 0
 		let max = 100
 		msg.channel.send(`${randomNumber(min,max)}%`)

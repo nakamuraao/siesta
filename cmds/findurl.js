@@ -9,11 +9,8 @@ module.exports = {
     async execute(interaction) {
         const embed = new MessageEmbed().setColor('BLUE').setTitle('附件連結')
         const attatchment = interaction.options.getAttachment('attatchment')
-
             embed.setDescription(attatchment.url)
-            interaction.reply({embeds:[embed]})
-
-
+            await interaction.reply({embeds:[embed]})
         }
     
 }

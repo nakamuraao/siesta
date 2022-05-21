@@ -1,5 +1,5 @@
 const {SlashCommandBuilder} = require('@discordjs/builders')
-const {isAdmin} = require('../modules/utility')
+const {isAdmin, logTime} = require('../modules/utility')
 const botzone = require('../modules/botzone-db')
 
 module.exports = {
@@ -18,25 +18,27 @@ module.exports = {
         const move = interaction.options.getString('move')
 
         if(move === 'add'){
-            if(!Obj.findChannel(channelId)){
-                Obj.addBotZone(channelId)
-                interaction.reply('已將此頻道設為機器人區域')
+            if(!await Obj.findChannel(channelId)){
+                await Obj.addBotZone(channelId)
+                await interaction.reply('已將此頻道設為機器人區域')
+				logTime()
+				console.log(`${interaction.user.tag} 新增了機器人頻道 ${channelId}`)
             }else{
-                interaction.reply({ content:'此頻道已經是機器人區域', ephemeral: true })
+                await interaction.reply({ content:'此頻道已經是機器人區域', ephemeral: true })
                 return
             }
         }else if(move === 'remove'){
-            if(!Obj.findChannel(channelId)){
-                interaction.reply({ content:'此頻道非機器人區域', ephemeral: true })
+            if(!await Obj.findChannel(channelId)){
+                await interaction.reply({ content:'此頻道非機器人區域', ephemeral: true })
                 return
             }else{
-                Obj.deleteChannel(channelId)
-                interaction.reply('已取消機器人區域')
+                await Obj.deleteChannel(channelId)
+                await interaction.reply('已取消機器人區域')
+				logTime()
+				console.log(`${interaction.user.tag} 取消了機器人頻道 ${channelId}`)
             }
         }else{
-            interaction.reply({ content:'執行此指令時出現問題', ephemeral: true })
+            await interaction.reply({ content:'執行此指令時出現問題', ephemeral: true })
         }
-
-        
-        }
+    }
 }

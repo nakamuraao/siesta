@@ -10,7 +10,7 @@ module.exports = {
     
     async execute(interaction){
         if(!isAdmin(interaction)){
-            interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true })
+            await interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true })
         }
 
         const targetrole = interaction.options.getRole('role')
@@ -25,7 +25,7 @@ module.exports = {
                 }
             }
         });
-        interaction.reply('已踢出身分組中的成員')
+        await interaction.reply('已踢出身分組中的成員')
         
         logTime()
         console.log(`${interaction.user.tag} 踢出了 ${targetrole.name} (${interaction.guild.name})\n-----------------------`)
