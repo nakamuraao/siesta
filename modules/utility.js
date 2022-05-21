@@ -1,7 +1,5 @@
 const config = require('../config.json')
 const {MessageEmbed} = require('discord.js')
-const fs = require('fs');
-const configFile =  JSON.parse(fs.readFileSync("./config.json", "utf8"));
 
 function isAdmin(interaction) {
     if(interaction.memberPermissions.has('ADMINISTRATOR',true)) {

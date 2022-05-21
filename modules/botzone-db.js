@@ -21,12 +21,12 @@ class botzone {
 	}
 
 	async findChannel(channelId){
-		return await this.channel.findOne({ where: { channel_id: channelId } });
+		return await this.channel.findOne({ where: { channel_id: channelId }, raw: true });
 		
 	}
 
 	async deleteChannel(channelId){
-		 await this.channel.destroy({ where: { channel_id: channelId } });
+		await this.channel.destroy({ where: { channel_id: channelId } });
 	}
 }
 

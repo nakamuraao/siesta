@@ -25,7 +25,7 @@ class ServerDB {
 
 	async findServer(guildId) {
 
-		return await this.server.findOne({ where: { server_id: guildId } });
+		return await this.server.findOne({ where: { server_id: guildId },raw:true });
 	}
 	
 	async updateServer(guildId,guildName,guildMembers,adminrole) {

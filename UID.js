@@ -90,7 +90,9 @@ client.on('messageCreate', async msg => {
 	}else if (msg.content.includes('抽籤')&&Obj.findChannel(msg.channelId)){
 		omikuji(msg)
 	}else if(msg.content.includes('機率')&&(Obj.findChannel(msg.channelId)||isOwner(msg.author.id))){
-		msg.channel.send(`${randomNumber(0,100)}%`)
+		let min = 0
+		let max = 100
+		msg.channel.send(`${randomNumber(min,max)}%`)
 	}
 
 
