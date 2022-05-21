@@ -10,14 +10,14 @@ module.exports = {
         const botstatsembed = new MessageEmbed()
             .setColor('#68c3e7')
             .setThumbnail(`${interaction.client.user.avatarURL()}`)
+            .setURL('https://github.com/nakamuraao/UID')
             .addFields(
                 {name: '用戶名 :', value: `${interaction.client.user.tag}`},
-                {name: `CID :`, value: `${interaction.client.user.id}`},
+                {name: `ID :`, value: `${interaction.client.user.id}`},
                 {name: `建立時間 :`, value: `${interaction.client.user.createdAt.toLocaleDateString()} ${interaction.client.user.createdAt.toLocaleTimeString()}`},
+                {name: `擁有者 :`, value: `蒼アオ<@${oid}>`}
             )
-    if (interaction.user.id === oid){
+
 		await interaction.reply({ embeds: [botstatsembed] });
-    }else{
-        return}
-    },
+    }
 };

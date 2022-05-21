@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js')
-const {oid} = require('./../config.json')
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -19,11 +18,9 @@ module.exports = {
 		        {name: `伺服器擁有者 :`, value:`<@${interaction.guild.ownerId}>`}
         	)
         	.setFooter({text:`伺服器ID : ${interaction.guild.id}`})
-	if (interaction.channel.id === '877249017950642307' || interaction.user.id === oid || interaction.channel.id === '877249017950642307'){
+	
 		await interaction.reply({ embeds: [serverinfoembed] });
-	}else{
-		interaction.reply({ content:'請到機器人區域使用', ephemeral: true})
-	}
+	
 	
 	},
 };
