@@ -22,7 +22,7 @@ class botzone {
 
 	async findChannel(channelId){
 		const channel = await this.channel.findOne({ where: { channel_id: channelId }, raw: true });
-		console.log(channel)
+		//console.log(channel)
 		return channel
 	}
 

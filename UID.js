@@ -92,7 +92,8 @@ client.on('messageCreate', async msg => {
 	}else if(msg.content.includes('機率')&&(await Obj.findChannel(msg.channelId)||isOwner(msg.author.id))){
 		let min = 0
 		let max = 100
-		msg.channel.send(`${randomNumber(min,max)}%`)
+		const num = randomNumber(min,max)
+		msg.channel.send(`${num}%`)
 	}
 
 
