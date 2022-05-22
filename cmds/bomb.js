@@ -4,7 +4,7 @@ const {isOwner} = require('../modules/utility')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('bomb')
-        .setDescription('洗版指令(使用者限定)')
+        .setDescription('洗版指令(擁有者限定)')
         .addStringOption(option=>option.setName('message').setDescription('message').setRequired(true))
         .addIntegerOption(option=>option.setName('times').setDescription('times').setRequired(true)),
     
