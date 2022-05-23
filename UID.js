@@ -3,7 +3,7 @@ const fs = require('fs');
 const sql = require('sequelize')
 const { Client, Collection, Intents,MessageEmbed,WebhookClient} = require('discord.js');
 const  config  = require('./config.json');
-const {omikuji, randomNumber,isOwner} = require('./modules/utility');
+const {omikuji, randomNumber,isOwner,dinnerTonight} = require('./modules/utility');
 const  botzoneDB  = require('./modules/botzone-db');
 const client = new Client({partials:["CHANNEL","MESSAGE","USER"], intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS , Intents.FLAGS.DIRECT_MESSAGES,Intents.FLAGS.GUILD_BANS , Intents.FLAGS.GUILD_MEMBERS]});
 
@@ -62,15 +62,7 @@ client.on('messageCreate', async msg => {
 	if (msg.author.bot) return;	
 	const Obj = new botzoneDB.botzone(msg.channel.id);
 	//監控
-	if (msg.content.includes('蒼')){
-        if (msg.author.id === config.oid) return;
-		const embed = new MessageEmbed()
-			.setColor('AQUA')
-			.setTitle(`${msg.author.tag}(${msg.author.id}) 在 #${msg.channel.name} 提及了蒼`)
-			.setDescription(`<#${msg.channelId}> <@${msg.author.id}>\n`+ msg.content )
-		client.users.fetch(config.oid).then((owner) => 
-		owner.send({embeds:[embed]}))
-	}else if (msg.channel.type === 'DM'){
+	if (msg.channel.type === 'DM'){
 		if(msg.author.id === config.oid)return;
 		const embed1 = new MessageEmbed()
 			.setColor('#c5c6c9')
@@ -87,13 +79,24 @@ client.on('messageCreate', async msg => {
 		client.users.fetch(config.oid).then((owner)=>
 		owner.send({embeds:[embed1]})
 		)
-	}else if (msg.content.includes('抽籤')&& await Obj.findChannel(msg.channelId)){
-		omikuji(msg)
 	}else if(msg.content.includes('機率')&&(await Obj.findChannel(msg.channelId)||isOwner(msg.author.id))){
 		let min = 0
 		let max = 100
 		const num = randomNumber(min,max)
 		msg.channel.send(`${num}%`)
+	}else if (msg.content.includes('抽籤')&& await Obj.findChannel(msg.channelId)){
+		omikuji(msg)
+	}else if(msg.content.includes('晚餐吃什麼')&& await Obj.findChannel(msg.channelId)){
+		const din = await dinnerTonight()
+		msg.reply(din)
+	}else if (msg.content.includes('蒼')){
+        if (msg.author.id === config.oid) return;
+		const embed = new MessageEmbed()
+			.setColor('AQUA')
+			.setTitle(`${msg.author.tag}(${msg.author.id}) 在 #${msg.channel.name} 提及了蒼`)
+			.setDescription(`<#${msg.channelId}> <@${msg.author.id}>\n`+ msg.content )
+		client.users.fetch(config.oid).then((owner) => 
+		owner.send({embeds:[embed]}))
 	}
 
 

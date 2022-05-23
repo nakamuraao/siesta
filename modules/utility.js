@@ -1,5 +1,6 @@
 const config = require('../config.json')
 const {MessageEmbed} = require('discord.js')
+const dinner = require('../dinner.json')
 
 function isAdmin(interaction) {
     if(interaction.memberPermissions.has('ADMINISTRATOR',true)) {
@@ -73,8 +74,16 @@ function logTime(){
     console.log(time)
 }
 
+function dinnerTonight(){
+    let min = 0;
+    let max = dinner.length -1; 
+    const i = randomNumber(min,max)
+    return await dinner[i]
+}
+
 module.exports.isAdmin = isAdmin;
 module.exports.isOwner = isOwner;
 module.exports.omikuji = omikuji;
 module.exports.randomNumber = randomNumber;
 module.exports.logTime = logTime;
+module.exports.dinnerTonight = dinnerTonight;
