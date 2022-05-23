@@ -78,7 +78,7 @@ function dinnerTonight(){
     let min = 0;
     let max = dinner.length -1; 
     const i = randomNumber(min,max)
-    return await dinner[i]
+    return  dinner[i]
 }
 
 module.exports.isAdmin = isAdmin;
