@@ -89,6 +89,12 @@ client.on('messageCreate', async msg => {
 	}else if(msg.content.includes('晚餐吃什麼')&& await Obj.findChannel(msg.channelId)){
 		//const din = await dinnerTonight()
 		msg.reply(`今天晚餐吃 ${dinnerTonight()}`)
+	}else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`){
+		if (isOwner(msg.author.id)){
+			msg.reply('沒錯♥')
+		}else{
+			msg.reply('婆你個大頭 醒')
+		}
 	}else if (msg.content.includes('蒼')){
         if (msg.author.id === config.oid) return;
 		const embed = new MessageEmbed()
