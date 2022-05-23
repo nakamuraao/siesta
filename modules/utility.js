@@ -75,10 +75,8 @@ function logTime(){
 }
 
 function dinnerTonight(){
-    let min = 0;
-    let max = dinner.length -1; 
-    const i = randomNumber(min,max)
-    return  dinner[i]
+    const random = Math.floor(Math.random()*(dinner.dinner.length-1))
+    return dinner.dinner[random]
 }
 
 module.exports.isAdmin = isAdmin;

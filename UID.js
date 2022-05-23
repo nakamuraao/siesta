@@ -87,8 +87,8 @@ client.on('messageCreate', async msg => {
 	}else if (msg.content.includes('抽籤')&& await Obj.findChannel(msg.channelId)){
 		omikuji(msg)
 	}else if(msg.content.includes('晚餐吃什麼')&& await Obj.findChannel(msg.channelId)){
-		const din = await dinnerTonight()
-		msg.reply(din)
+		//const din = await dinnerTonight()
+		msg.reply(`今天晚餐吃 ${dinnerTonight()}`)
 	}else if (msg.content.includes('蒼')){
         if (msg.author.id === config.oid) return;
 		const embed = new MessageEmbed()
