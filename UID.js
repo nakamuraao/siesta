@@ -4,7 +4,8 @@ const sql = require('sequelize')
 const { Client, Collection, Intents,MessageEmbed,WebhookClient} = require('discord.js');
 const  config  = require('./config.json');
 const {omikuji, randomNumber,isOwner,dinnerTonight} = require('./modules/utility');
-const  botzoneDB  = require('./modules/botzone-db');
+const  botzoneDB  = require('./modules/dbFunction/botChannel');
+const logging = require('./modules/dbFunction/log')
 const client = new Client({partials:["CHANNEL","MESSAGE","USER"], intents: [Intents.FLAGS.GUILDS , Intents.FLAGS.GUILD_MESSAGES ,Intents.FLAGS.GUILD_WEBHOOKS , Intents.FLAGS.DIRECT_MESSAGES,Intents.FLAGS.GUILD_BANS , Intents.FLAGS.GUILD_MEMBERS]});
 
 client.commands = new Collection();
@@ -20,13 +21,12 @@ const sequelize = new sql('database', 'user', 'password', {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
-	// SQLite only
 	storage: 'database.sqlite',
 });
 
-const servers = require('./modules/servers')(sequelize, sql.DataTypes)
-//const warnings = require('./modules/warnings')(sequelize, sql.DataTypes)
-const botzone = require('./modules/botzone')(sequelize, sql.DataTypes)
+const servers = require('./modules/dbStructure/servers')(sequelize, sql.DataTypes)
+const botzone = require('./modules/dbStructure/botChannel')(sequelize, sql.DataTypes)
+const log = require('./modules/dbStructure/log')(sequelize,sql.DataTypes)
 
 client.once('ready', () => {
 	const now = new Date()
@@ -34,8 +34,9 @@ client.once('ready', () => {
 	console.log(`${time}`)
 
 	servers.sync()
-	//warnings.sync()
+	//新增 : 更新servers人數
 	botzone.sync()
+	log.sync()
 
 	console.log(`以 ${client.user.tag} 登入`);
 });
@@ -56,6 +57,26 @@ client.on('interactionCreate', async interaction => {
 	}
 
 });
+
+client.on('messageDelete', async msg=>{
+	const Obj = new logging.log
+	if(msg.attachments.size>0){
+		if(await Obj.findLogChannel(msg.guildId)){
+			
+			const embed = new MessageEmbed().setColor('GREEN').setTitle(`附件刪除 #${msg.channel.name}`).setDescription(msg.author.tag)
+			if(msg.content){
+				embed.addField('訊息內容',`${msg.content}`,false)
+			}
+			const logChannel = client.channels.cache.get(await Obj.logChannelId(msg.guildId))
+			
+			msg.attachments.forEach(a=>{
+				const url = a.url
+				logChannel.send(url)
+			})
+			await logChannel.send({embeds:[embed]})
+		}else return
+	}
+})
 
 client.on('messageCreate', async msg => {
 

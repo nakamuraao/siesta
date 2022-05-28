@@ -16,7 +16,7 @@ module.exports = {
             for(let i=0; i<times; i++){
                 await interaction.channel.send(message)
             }
-            await interaction.reply({content:'執行完畢', ephemeral: true})
+            await interaction.reply('重複'+'`'+message+'`'+times+'次')
         }else{
             await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
         }

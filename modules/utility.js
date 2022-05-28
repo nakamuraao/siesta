@@ -3,7 +3,7 @@ const {MessageEmbed} = require('discord.js')
 const dinner = require('../dinner.json')
 
 function isAdmin(interaction) {
-    if(interaction.memberPermissions.has('ADMINISTRATOR',true)) {
+    if(interaction.memberPermissions.has('ADMINISTRATOR',true)||interaction.user.id===config.oid) {
         return true;
     }
 

@@ -1,6 +1,6 @@
 //設定DB-server
 const {SlashCommandBuilder} = require('@discordjs/builders')
-const database = require('../modules/database')
+const database = require('../modules/dbFunction/database')
 const {isAdmin, logTime} = require('../modules/utility')
 
 module.exports = {

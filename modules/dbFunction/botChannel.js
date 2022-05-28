@@ -11,7 +11,7 @@ const sequelize = new sql('database', 'user', 'password', {
 class botzone {
 	constructor(channelId){
 		this.channelId = channelId;
-		this.channel = require('./botzone.js')(sequelize, sql.DataTypes);
+		this.channel = require('../dbStructure/botChannel.js')(sequelize, sql.DataTypes);
 	}
 
 	async addBotZone(channelId){

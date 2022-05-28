@@ -10,7 +10,7 @@ const sequelize = new sql('database', 'user', 'password', {
 class ServerDB {
 	constructor(guildId) {
 		this.guildId = guildId;
-		this.server = require('./servers.js')(sequelize, sql.DataTypes);
+		this.server = require('../dbStructure/servers.js')(sequelize, sql.DataTypes);
 	}
 
 	async addServer(guildId,guildName,guildMembers,adminrole) {

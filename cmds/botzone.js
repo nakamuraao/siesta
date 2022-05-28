@@ -1,6 +1,6 @@
 const {SlashCommandBuilder} = require('@discordjs/builders')
 const {isAdmin, logTime} = require('../modules/utility')
-const botzone = require('../modules/botzone-db')
+const botzone = require('../modules/dbFunction/botChannel')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,7 +22,7 @@ module.exports = {
                 await Obj.addBotZone(channelId)
                 await interaction.reply('已將此頻道設為機器人區域')
 				logTime()
-				console.log(`${interaction.user.tag} 新增了機器人頻道 ${channelId}`)
+				console.log(`${interaction.user.tag} 新增了機器人頻道 ${channelId}\n-----------------------`)
             }else{
                 await interaction.reply({ content:'此頻道已經是機器人區域', ephemeral: true })
                 return
@@ -35,7 +35,7 @@ module.exports = {
                 await Obj.deleteChannel(channelId)
                 await interaction.reply('已取消機器人區域')
 				logTime()
-				console.log(`${interaction.user.tag} 取消了機器人頻道 ${channelId}`)
+				console.log(`${interaction.user.tag} 取消了機器人頻道 ${channelId}\n-----------------------`)
             }
         }else{
             await interaction.reply({ content:'執行此指令時出現問題', ephemeral: true })
