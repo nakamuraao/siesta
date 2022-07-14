@@ -91,7 +91,7 @@ module.exports = {
                         embed.setDescription(`${interaction.user.tag} 擲出了 ${roll} ! 獲得1倍獎金 !`)
                         Obj.updateBalance(interaction.user.id, stat.balance + Math.round(bet*1))
                     }else{
-                        embed.setDescription(`${interaction.user.id} 擲出了 ${roll}，銘謝惠顧再接再厲～`)
+                        embed.setDescription(`${interaction.user.tag} 擲出了 ${roll}，銘謝惠顧再接再厲～`)
                         Obj.updateBalance(interaction.user.id, stat.balance - bet)
                     }
 
