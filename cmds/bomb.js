@@ -13,10 +13,11 @@ module.exports = {
             const message = interaction.options.getString('message')
             const times = interaction.options.getInteger('times')
 
+            await interaction.reply({content:'重複'+'`'+message+'`'+times+'次',ephemeral:true})
             for(let i=0; i<times; i++){
                 await interaction.channel.send(message)
             }
-            await interaction.reply('重複'+'`'+message+'`'+times+'次')
+            
         }else{
             await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })
         }

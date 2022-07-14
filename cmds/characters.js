@@ -20,7 +20,7 @@ module.exports = {
             const embed = new MessageEmbed().setTitle('可用人設').setColor('#c8a9d6')
             let string = '';
 
-            for (let i=1;i<characters.list.length;i++){
+            for (let i=1;i<(characters.list.length);i++){
                 string = string.concat(`${i}. ${characters.characters[i].name}\n`)
             }
             embed.setDescription(string)

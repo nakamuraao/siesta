@@ -27,6 +27,7 @@ const sequelize = new sql('database', 'user', 'password', {
 const servers = require('./modules/dbStructure/servers')(sequelize, sql.DataTypes)
 const botzone = require('./modules/dbStructure/botChannel')(sequelize, sql.DataTypes)
 const log = require('./modules/dbStructure/log')(sequelize,sql.DataTypes)
+const currency = require('./modules/dbStructure/currency')(sequelize,sql.DataTypes)
 
 client.once('ready', () => {
 	const now = new Date()
@@ -37,6 +38,7 @@ client.once('ready', () => {
 	//新增 : 更新servers人數
 	botzone.sync()
 	log.sync()
+	currency.sync()
 
 	console.log(`以 ${client.user.tag} 登入`);
 });
@@ -132,7 +134,7 @@ client.on('messageCreate', async msg => {
 
 		const webhook = new WebhookClient({url : config.webhooks.mikeneko.normal});
 		webhook.send({
-			content: `${msg.content}`,
+			content: ` : ${msg.content}`,
 			username: `${msg.author.tag}`,
 			avatarURL: `${msg.author.avatarURL()}`
 		})
@@ -144,7 +146,7 @@ client.on('messageCreate', async msg => {
 
 		const webhook = new WebhookClient({url : config.webhooks.mikeneko.tcMember});
 		webhook.send({
-			content: `${msg.content}`,
+			content: ` : ${msg.content}`,
 			username: `${msg.author.tag}`,
 			avatarURL: `${msg.author.avatarURL()}`
 		})
@@ -156,7 +158,7 @@ client.on('messageCreate', async msg => {
 
 		const webhook = new WebhookClient({url : config.webhooks.mikeneko.ytMember});
 		webhook.send({
-			content: `${msg.content}`,
+			content: ` : ${msg.content}`,
 			username: `${msg.author.tag}`,
 			avatarURL: `${msg.author.avatarURL()}`
 		})
@@ -186,6 +188,17 @@ client.on('messageCreate', async msg => {
 			})}
 	}
 
+	//amemiya
+	if (msg.channelId === config.webhooks.mikeneko.amemiyaChannel){
+
+		const webhook = new WebhookClient({url : config.webhooks.mikeneko.amemiya});
+		webhook.send({
+			content: ` : ${msg.content}`,
+			username: `${msg.author.tag}`,
+			avatarURL: `${msg.author.avatarURL()}`
+		})
+
+	}
 })
 
 client.login(token);

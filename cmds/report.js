@@ -7,7 +7,7 @@ module.exports = {
     async execute(interaction) {
         if (interaction.guild.premiumTier==='TIER_2'||interaction.guild.premiumTier==='TIER_3'){
             let Obj = new database.ServerDB(interaction.guild.id)
-            if (!Obj.findServer(interaction.guild.id)){
+            if (!await Obj.findServer(interaction.guild.id)){
                 interaction.reply({content:'請通知管理員先執行`/setup`指令',ephemeral:true})
                 return
             }
