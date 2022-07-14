@@ -2,14 +2,15 @@ const {SlashCommandBuilder} = require('@discordjs/builders')
 const {MessageEmbed} = require('discord.js')
 const config = require('../config.json')
 const gameble = require('../modules/dbFunction/currencySystem')
-const {randomNumber} = require('../modules/utility')
+const {randomNumber, isOwner} = require('../modules/utility')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gambling').setDescription('賭博指令')
         .addSubcommand(sub=>sub.setName('help').setDescription('幫助'))
         .addSubcommand(sub=>sub.setName('status').setDescription('領錢、註冊、查看資訊'))
         .addSubcommand(sub=>sub.setName('wheel').setDescription('命運之輪').addIntegerOption(option=>option.setName('bet').setDescription('賭注大小').setRequired(true)))
-        .addSubcommand(sub=>sub.setName('betroll').setDescription('擲骰子').addIntegerOption(option=>option.setName('bet').setDescription('賭注大小').setRequired(true))),
+        .addSubcommand(sub=>sub.setName('betroll').setDescription('擲骰子').addIntegerOption(option=>option.setName('bet').setDescription('賭注大小').setRequired(true)))
+        .addSubcommand(sub=>sub.setName('award').setDescription('獎勵(擁有者限定)').addUserOption(option=>option.setName('user').setDescription('目標').setRequired(true)).addIntegerOption(option=>option.setName('amount').setDescription('$$').setRequired(true))),
         
 
     async execute(interaction){
@@ -81,13 +82,13 @@ module.exports = {
                     const roll = randomNumber(1,36)
                     const embed = new MessageEmbed().setColor('#0000FF').setTitle('擲骰結果')
                     if(roll == 36){
-                        embed.setDescription(`${interaction.user.id} 擲出了 36 ! 獲得4倍獎金 !`)
+                        embed.setDescription(`${interaction.user.tag} 擲出了 36 ! 獲得4倍獎金 !`)
                         Obj.updateBalance(interaction.user.id, stat.balance + Math.round(bet*4))
                     }else if(roll > 30){
-                        embed.setDescription(`${interaction.user.id} 擲出了 ${roll} ! 獲得2倍獎金 !`)
+                        embed.setDescription(`${interaction.user.tag} 擲出了 ${roll} ! 獲得2倍獎金 !`)
                         Obj.updateBalance(interaction.user.id, stat.balance + Math.round(bet*2))
                     }else if(roll > 24){
-                        embed.setDescription(`${interaction.user.id} 擲出了 ${roll} ! 獲得1倍獎金 !`)
+                        embed.setDescription(`${interaction.user.tag} 擲出了 ${roll} ! 獲得1倍獎金 !`)
                         Obj.updateBalance(interaction.user.id, stat.balance + Math.round(bet*1))
                     }else{
                         embed.setDescription(`${interaction.user.id} 擲出了 ${roll}，銘謝惠顧再接再厲～`)
@@ -106,6 +107,16 @@ module.exports = {
             case 'edit':
                 ;
                 break;*/
+            case 'award':
+                const user = interaction.options.getUser('user')
+                const money = interaction.options.getInteger('amount')
+                const status = await Obj.getUserStats(user.id);
+                if(isOwner(interaction.user.id)){
+                    await Obj.updateBalance(user.id, status.balance + money);
+                    interaction.reply(`給予 ${user.tag} ${money} ${config.currencyName}`)
+                }else{
+                    await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true })};
+                break;
             default:
                 await interaction.reply({ content: '出現問題，請重試後洽<@678493512836317194>', ephemeral: true });
                 break;
