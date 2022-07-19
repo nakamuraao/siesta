@@ -63,8 +63,8 @@ module.exports = {
 		            await interaction.reply({ content: '請先執行stats指令', ephemeral: true });
 	            }else if(stats.balance < bets) {
 		            await interaction.reply({ content: '賭注不能高過總財產', ephemeral: true });
-	            }else if(bets < 0) {
-		            await interaction.reply({ content: '賭注不可為負', ephemeral: true });
+	            }else if(bets < 10) {
+		            await interaction.reply({ content: '賭注不可小於10', ephemeral: true });
 	            }else {
 		            const pos = randomNumber(0, 7);
 		            const plate = `【0.5】 【1.5】 【2.5】\n\n【0.3】      ${arrow[pos]}       【1.7】\n\n【0.1】 【0.2】 【1.2】`;
@@ -81,8 +81,8 @@ module.exports = {
 		            await interaction.reply({ content: '請先執行stats指令', ephemeral: true });
 	            }else if(stat.balance < bet) {
 		            await interaction.reply({ content: '賭注不能高過總財產', ephemeral: true });
-	            }else if(bet < 0) {
-		            await interaction.reply({ content: '賭注不可為負', ephemeral: true });
+	            }else if(bet < 10) {
+		            await interaction.reply({ content: '賭注不可小於10', ephemeral: true });
 	            }else{
                     const roll = randomNumber(1,36)
                     const embed = new MessageEmbed().setColor('#0000FF').setTitle('擲骰結果')
