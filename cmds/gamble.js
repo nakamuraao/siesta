@@ -117,21 +117,21 @@ module.exports = {
                 const answer = randomNumber(1,20)
                 const jackpot = await Obj.getUserStats('00000000')
                 if(await Obj.isUserExist(interaction.user.id)) {
-	                if (number == answer){
-                        const stats = await Obj.getUserStats(interaction.user.id);
+                    const stats = await Obj.getUserStats(interaction.user.id);
+                    if (stats.balance<100){
+                        await interaction.reply({ content: '賭注不能高過總財產', ephemeral: true });
+	                }else if (number == answer){
                         const embed = new MessageEmbed().setColor('GREY').setTitle('恭喜中獎!!!!!').setDescription(`獲得累計獎金 : ${jackpot.balance}\n現有財產 : ${stats.balance + jackpot.balance}`)
                         await Obj.updateBalance(interaction.user.id,stats.balance + jackpot.balance)
                         await Obj.updateBalance('00000000',1000)
                         await interaction.reply({embeds:[embed]})
                     }else{
-                        const stats = await Obj.getUserStats(interaction.user.id);
                         await Obj.updateBalance(interaction.user.id,stats.balance-100)
                         await Obj.updateBalance('00000000',jackpot.balance+100)
                         const embed = new MessageEmbed().setColor('GREY').setDescription(`未中獎，下次再努力吧～\n累計獎金 : ${jackpot.balance+100}`)
                         await interaction.reply({embeds:[embed]})}
                 }else{
-                    await interaction.reply({ content: '請先執行stats指令', ephemeral: true });
-                }
+                    await interaction.reply({ content: '請先執行stats指令', ephemeral: true });}
             break;
             case 'leaderboard':
                 const boardEmbed = new MessageEmbed().setColor('BLUE')
