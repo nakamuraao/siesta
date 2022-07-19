@@ -7,25 +7,27 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('gambling').setDescription('賭博指令')
         .addSubcommand(sub=>sub.setName('help').setDescription('幫助'))
-        .addSubcommand(sub=>sub.setName('status').setDescription('領錢、註冊、查看資訊'))
+        .addSubcommand(sub=>sub.setName('stats').setDescription('領錢、註冊、查看資訊'))
         .addSubcommand(sub=>sub.setName('wheel').setDescription('命運之輪').addIntegerOption(option=>option.setName('bet').setDescription('賭注大小').setRequired(true)))
         .addSubcommand(sub=>sub.setName('betroll').setDescription('擲骰子').addIntegerOption(option=>option.setName('bet').setDescription('賭注大小').setRequired(true)))
+        .addSubcommand(sub=>sub.setName('leaderboard').setDescription('排行榜'))
+        .addSubcommand(sub=>sub.setName('guessnumber').setDescription('猜數字，每注100').addIntegerOption(option=>option.setName('number').setDescription('數字').setRequired(true)))
+        .addSubcommand(sub=>sub.setName('giveaway').setDescription('全伺服器歡天喜地(擁有者限定)').addIntegerOption(option=>option.setName('amount').setDescription('數量').setRequired(true)))
         .addSubcommand(sub=>sub.setName('award').setDescription('獎勵(擁有者限定)').addUserOption(option=>option.setName('user').setDescription('目標').setRequired(true)).addIntegerOption(option=>option.setName('amount').setDescription('$$').setRequired(true))),
         
 
-    async execute(interaction){
+    async execute(interaction,client){
         const Obj = new gameble.currency(interaction.user.id)
         switch(interaction.options.getSubcommand()){
             case 'help':
                 const embed = new MessageEmbed().setTitle('賭博模組').setColor('BLUE').addFields(
-                    {name:'status',value:`檢視自身使用者資訊\n每小時可領取100${config.currencyName}\n第一次使用賭博指令者請先執行此指令進行註冊`},
+                    {name:'stats',value:`檢視自身使用者資訊\n每小時可領取100${config.currencyName}\n第一次使用賭博指令者請先執行此指令進行註冊`},
                     {name:'wheel',value:'命運之輪'},
                     {name:'betroll',value:'擲骰子\n24(含)以下得0\n25-30得1倍\n31-35得2倍\n36得4倍'},
-                    /*{name:'buyticket',value:''},*/
-                    /*{name:'mine',value:`在危險礦場挖礦。不須賭注，一分鐘限挖掘一次，每次得5${config.currencyName}\n有機率發生工安意外而住院治療(未來視情況導入保險系統)`}*/);
+                    );
                 interaction.reply({ embeds: [embed] });
                 break;
-            case 'status':
+            case 'stats':
                 if(await Obj.isUserExist(interaction.user.id)){
                     const stats = await Obj.getUserStats(interaction.user.id);
 		            const embed = new MessageEmbed().setColor('#0000FF').setTitle('使用者資料')
@@ -39,8 +41,9 @@ module.exports = {
 		            } else {
 			            embed.addField('餘額：', `${stats.balance}`, true)} 
                     await interaction.reply({ embeds: [embed] });
+                    await Obj.updateUserTag(interaction.user.id,interaction.user.tag)
                 }else{
-                    await Obj.addUser(interaction.user.id);
+                    await Obj.addUser(interaction.user.id,interaction.user.tag);
 		            const embed = new MessageEmbed().setColor('#0000FF').setTitle('使用者資料')
 			            .setDescription('初來乍到')
 			            .addField('使用者名稱：', interaction.user.tag, true)
@@ -55,7 +58,7 @@ module.exports = {
 	            const wheel = [0.1, 0.2, 0.3, 0.5, 1.2, 1.5, 1.7, 2.5];
 	            const arrow = ['↙️', '⬇️', '⬅️', '↖️', '↘️', '⬆️', '➡️', '↗️'];
 	            if(!stats) {
-		            await interaction.reply({ content: '請先執行status指令', ephemeral: true });
+		            await interaction.reply({ content: '請先執行stats指令', ephemeral: true });
 	            }else if(stats.balance < bets) {
 		            await interaction.reply({ content: '賭注不能高過總財產', ephemeral: true });
 	            }else if(bets < 0) {
@@ -73,7 +76,7 @@ module.exports = {
                 const stat = await Obj.getUserStats(interaction.user.id);
 	            const bet = interaction.options.getInteger('bet');
                 if(!stat) {
-		            await interaction.reply({ content: '請先執行status指令', ephemeral: true });
+		            await interaction.reply({ content: '請先執行stats指令', ephemeral: true });
 	            }else if(stat.balance < bet) {
 		            await interaction.reply({ content: '賭注不能高過總財產', ephemeral: true });
 	            }else if(bet < 0) {
@@ -106,6 +109,44 @@ module.exports = {
                 break;
             case 'edit':
                 ;
+                break;*/
+            case 'guessnumber':
+                const number = await interaction.options.getInteger('number')
+                const answer = randomNumber(1,10)
+                const jackpot = await Obj.getUserStats('00000000')
+                if(await Obj.isUserExist(interaction.user.id)) {
+	                if (number == answer){
+                        const stats = await Obj.getUserStats(interaction.user.id);
+                        const embed = new MessageEmbed().setColor('GREY').setTitle('恭喜中獎!!!!!').setDescription(`獲得累計獎金 : ${jackpot.balance}\n現有財產 : ${stats.balance + jackpot.balance}`)
+                        await Obj.updateBalance(interaction.user.id,stats.balance + jackpot.balance)
+                        await Obj.updateBalance('00000000',1000)
+                        await interaction.reply({embeds:[embed]})
+                    }else{
+                        const stats = await Obj.getUserStats(interaction.user.id);
+                        await Obj.updateBalance(interaction.user.id,stats.balance-100)
+                        await Obj.updateBalance('00000000',jackpot.balance+100)
+                        const embed = new MessageEmbed().setColor('GREY').setDescription(`未中獎，下次再努力吧～\n累計獎金 : ${jackpot.balance+100}`)
+                        await interaction.reply({embeds:[embed]})}
+                }else{
+                    await interaction.reply({ content: '請先執行stats指令', ephemeral: true });
+                }
+            break;
+            case 'leaderboard':
+                const boardEmbed = new MessageEmbed().setColor('BLUE')
+                const board = await Obj.leaderboard();
+                let i = 0;
+                for(const user of board) {
+                    i ++;
+                    const tag = await client.users.cache.get(user.user_id)
+                    //console.log(tag)
+                    boardEmbed.addField(tag.username,user.balance.toString(),false)
+                    if (i == 10) break;
+                }
+                await interaction.reply({embeds:[boardEmbed]})
+                break;
+            /*case 'giveaway':
+                const amount = interaction.options.getInteger('amount')
+                
                 break;*/
             case 'award':
                 const user = interaction.options.getUser('user')
