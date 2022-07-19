@@ -12,7 +12,7 @@ module.exports = {
         .addSubcommand(sub=>sub.setName('betroll').setDescription('擲骰子').addIntegerOption(option=>option.setName('bet').setDescription('賭注大小').setRequired(true)))
         .addSubcommand(sub=>sub.setName('leaderboard').setDescription('排行榜'))
         .addSubcommand(sub=>sub.setName('guessnumber').setDescription('猜數字，每注100').addIntegerOption(option=>option.setName('number').setDescription('數字').setRequired(true)))
-        .addSubcommand(sub=>sub.setName('giveaway').setDescription('全伺服器歡天喜地(擁有者限定)').addIntegerOption(option=>option.setName('amount').setDescription('數量').setRequired(true)))
+        //.addSubcommand(sub=>sub.setName('giveaway').setDescription('全伺服器歡天喜地(擁有者限定)').addIntegerOption(option=>option.setName('amount').setDescription('數量').setRequired(true)))
         .addSubcommand(sub=>sub.setName('award').setDescription('獎勵(擁有者限定)').addUserOption(option=>option.setName('user').setDescription('目標').setRequired(true)).addIntegerOption(option=>option.setName('amount').setDescription('$$').setRequired(true))),
         
 
@@ -24,6 +24,8 @@ module.exports = {
                     {name:'stats',value:`檢視自身使用者資訊\n每小時可領取100${config.currencyName}\n第一次使用賭博指令者請先執行此指令進行註冊`},
                     {name:'wheel',value:'命運之輪'},
                     {name:'betroll',value:'擲骰子\n24(含)以下得0\n25-30得1倍\n31-35得2倍\n36得4倍'},
+                    {name:'guessnumber',value:'猜數字(1～10)，每注100\n未猜中獎金會累計'},
+                    {name:'leaderboard',value:'排行榜'}
                     );
                 interaction.reply({ embeds: [embed] });
                 break;
