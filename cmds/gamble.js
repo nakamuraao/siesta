@@ -24,7 +24,7 @@ module.exports = {
                     {name:'stats',value:`檢視自身使用者資訊\n每小時可領取100${config.currencyName}\n第一次使用賭博指令者請先執行此指令進行註冊`},
                     {name:'wheel',value:'命運之輪'},
                     {name:'betroll',value:'擲骰子\n24(含)以下得0\n25-30得1倍\n31-35得2倍\n36得4倍'},
-                    {name:'guessnumber',value:'猜數字(1～10)，每注100\n未猜中獎金會累計'},
+                    {name:'guessnumber',value:'猜數字(1～20)，每注100\n未猜中獎金會累計'},
                     {name:'leaderboard',value:'排行榜'}
                     );
                 interaction.reply({ embeds: [embed] });
@@ -114,7 +114,7 @@ module.exports = {
                 break;*/
             case 'guessnumber':
                 const number = await interaction.options.getInteger('number')
-                const answer = randomNumber(1,10)
+                const answer = randomNumber(1,20)
                 const jackpot = await Obj.getUserStats('00000000')
                 if(await Obj.isUserExist(interaction.user.id)) {
 	                if (number == answer){
