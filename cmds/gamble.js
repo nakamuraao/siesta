@@ -139,11 +139,16 @@ module.exports = {
                 let i = 0;
                 for(const user of board) {
                     i ++;
-                    const tag = await interaction.guild.members.cache.get(user.user_id)
+                    //const tag = await interaction.guild.members.cache.get(user.user_id)
+                    const tag = await client.users.fetch(user.user_id)
+                    //const tag = await interaction.guild.members.cache.fetch(user.user_id)
                     //console.log(tag)
                     //console.log(await interaction.guild);
                     //console.log(tag.user.username)
-                    boardEmbed.addField(tag.user.username,user.balance.toString(),false)
+                    //console.log(user.user_id)
+                    //console.log(tag)
+                    //console.log(board)
+                    boardEmbed.addField(tag.username,user.balance.toString(),false)
                     if (i == 10) break;
                 }
                 await interaction.reply({embeds:[boardEmbed]})
