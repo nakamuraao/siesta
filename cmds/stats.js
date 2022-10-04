@@ -16,7 +16,7 @@ module.exports = {
                 {name: `ID :`, value: `${interaction.client.user.id}`},
                 {name: `建立時間 :`, value: `${interaction.client.user.createdAt.toLocaleDateString()} ${interaction.client.user.createdAt.toLocaleTimeString()}`},
                 {name: `擁有者 :`, value: `蒼アオ<@${oid}>`},
-                {name: '版本',value: 'v 2.2.0 (2022/7/19)'}
+                {name: '版本',value: 'v 2.2.1 (2022/10/4)'}
             )
 
 		await interaction.reply({ embeds: [botstatsembed] });

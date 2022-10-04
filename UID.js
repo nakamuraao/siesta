@@ -133,23 +133,38 @@ client.on('messageCreate', async msg => {
 	if (msg.channelId === config.webhooks.mikeneko.normalChannel){
 
 		const webhook = new WebhookClient({url : config.webhooks.mikeneko.normal});
-		webhook.send({
-			content: ` : ${msg.content}`,
-			username: `${msg.author.tag}`,
-			avatarURL: `${msg.author.avatarURL()}`
-		})
-
+		if (msg.content.startsWith('補')||msg.content.startsWith('—')||msg.content.startsWith('-')||msg.content.startsWith('–')){
+			webhook.send({
+				content: `${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}else{
+			webhook.send({
+				content: ` : ${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}
 	}
 
 	//tc
 	if (msg.channelId === config.webhooks.mikeneko.tcChannel){
 
 		const webhook = new WebhookClient({url : config.webhooks.mikeneko.tcMember});
-		webhook.send({
-			content: ` : ${msg.content}`,
-			username: `${msg.author.tag}`,
-			avatarURL: `${msg.author.avatarURL()}`
-		})
+		if (msg.content.startsWith('補')||msg.content.startsWith('—')||msg.content.startsWith('-')||msg.content.startsWith('–')){
+			webhook.send({
+				content: `${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}else{
+			webhook.send({
+				content: ` : ${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}
 
 	}
 
@@ -157,12 +172,19 @@ client.on('messageCreate', async msg => {
 	if (msg.channelId === config.webhooks.mikeneko.ytChannel){
 
 		const webhook = new WebhookClient({url : config.webhooks.mikeneko.ytMember});
-		webhook.send({
-			content: ` : ${msg.content}`,
-			username: `${msg.author.tag}`,
-			avatarURL: `${msg.author.avatarURL()}`
-		})
-
+		if (msg.content.startsWith('補')||msg.content.startsWith('—')||msg.content.startsWith('-')||msg.content.startsWith('–')){
+			webhook.send({
+				content: `${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}else{
+			webhook.send({
+				content: ` : ${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}
 	}
 	//檢舉區
 	if (msg.channelId === config.webhooks.mikeneko.reportChannel){
