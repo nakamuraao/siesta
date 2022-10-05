@@ -214,11 +214,19 @@ client.on('messageCreate', async msg => {
 	if (msg.channelId === config.webhooks.mikeneko.amemiyaChannel){
 
 		const webhook = new WebhookClient({url : config.webhooks.mikeneko.amemiya});
-		webhook.send({
-			content: ` : ${msg.content}`,
-			username: `${msg.author.tag}`,
-			avatarURL: `${msg.author.avatarURL()}`
-		})
+		if (msg.content.startsWith('補')||msg.content.startsWith('—')||msg.content.startsWith('-')||msg.content.startsWith('–')){
+			webhook.send({
+				content: `${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}else{
+			webhook.send({
+				content: ` : ${msg.content}`,
+				username: `${msg.author.tag}`,
+				avatarURL: `${msg.author.avatarURL()}`
+			})
+		}
 
 	}
 })
