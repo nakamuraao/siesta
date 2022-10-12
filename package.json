@@ -4,7 +4,9 @@
   "description": "",
   "main": "UID.js",
   "scripts": {
-    "test": "node ."
+    "run": "node .",
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "",
