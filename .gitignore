@@ -1,6 +1,11 @@
-config.json
+# Node files
 node_modules
 package-lock.json
+
+# Discord config file
+config.json
+
+# Others
 guildcmdreg.js
 todo
 database.sqlite

@@ -2,9 +2,11 @@
   "name": "uid",
   "version": "2.0.0",
   "description": "",
-  "main": "uid.js",
+  "main": "UID.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node .",
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "",
@@ -16,5 +18,8 @@
     "discord.js": "^13.7.0",
     "sequelize": "^6.19.0",
     "sqlite3": "^5.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.25.0"
   }
 }
