@@ -1,0 +1,7 @@
+{
+  "cid": "Your application's client ID",
+  "oid": "The Owner ID",
+  "token": "The bot token",
+
+  "currencyName": "Currency name used for gambling coins"
+}
