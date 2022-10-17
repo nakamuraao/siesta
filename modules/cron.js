@@ -1,5 +1,7 @@
-// const Discord = require("discord.js");
 const { schedule } = require('node-cron');
+
+// Cron小幫手
+// https://crontab.guru/
 
 class cronJob {
   constructor(client, channelId) {
@@ -7,6 +9,7 @@ class cronJob {
     this.channelId = channelId;
   }
 
+  // 輸送簡易訊息
   setPlainMessage(period, message, channelId = this.channelId) {
     if (channelId === undefined) throw "Channel ID not provided";
 
@@ -16,6 +19,7 @@ class cronJob {
     });
   }
 
+  // 輸送嵌入式訊息
   setEmbedMessage(period, embed_message, channelId = this.channelId) {
     if (channelId === undefined) throw "Channel ID not provided";
 
@@ -24,6 +28,8 @@ class cronJob {
     });
   }
 
+  // 自由放入Message Object
+  // https://discord.js.org/#/docs/discord.js/v13/typedef/MessageOptions
   setFreeMessage(period, content, channelId = this.channelId) {
     if (channelId === undefined) throw "Channel ID not provided";
 
@@ -32,14 +38,13 @@ class cronJob {
     });
   }
 
+  // 自訂行動
   setRepeatAction(period, action) {
     schedule(period, () => {
       action();
     });
   }
 }
-
-// https://discord.js.org/#/docs/discord.js/v13/typedef/MessageOptions
 
 module.exports = {
   "object": cronJob,
@@ -48,10 +53,3 @@ module.exports = {
   "DAILY": "0 */24 * * *", // Daily at 00:00
   "MONTH": "0 0 1 * *", // First day of every month
 };
-// module.exports = async client => {
-//   console.log("cron OK", new Date(), client.channels.cache.get("1029664008430682143"));
-//   cron.schedule("*/1 * * * *", async () => {
-//     console.log("cron job time", new Date(), client.channels);
-//     await client.channels.cache.get("1029664008430682143").send("cron");
-//   });
-// };
