@@ -16,53 +16,78 @@ function isOwner(id) {
 }
 
 function omikuji(msg) {
+  const random = randomNumber(0, 14);
+  const author = msg.author.tag;
+  const result = {
+    daikichi: {
+      color: '#c8a9d6',
+      image: 'https://media.discordapp.net/attachments/867034103097196544/928972567111401482/omikuji_daikichi.png'
+    },
+    syoukichi: {
+      color: '#c8a9d6',
+      image: 'https://media.discordapp.net/attachments/867034103097196544/928972567560216576/omikuji_syoukichi.png'
+    },
+    kichi: {
+      color: '#c8a9d6',
+      image: 'https://media.discordapp.net/attachments/867034103097196544/928972567967068200/omikuji_kichi.png'
+    },
+    suekichi: {
+      color: '#c8a9d6',
+      image: 'https://media.discordapp.net/attachments/867034103097196544/928972569137270794/omikuji_suekichi.png'
+    },
+    chuukichii: {
+      color: '#c8a9d6',
+      image: 'https://media.discordapp.net/attachments/867034103097196544/928972568684298290/omikuji_chuukichi.png'
+    },
+    kyou: {
+      color: '#c8a9d6',
+      image: 'https://media.discordapp.net/attachments/867034103097196544/928972568357122108/omikuji_kyou.png'
+    },
+    daikyou: {
+      color: '#c8a9d6',
+      image: 'https://media.discordapp.net/attachments/867034103097196544/928972569556680755/omikuji_daikyou.png'
+    },
+  };
 
-  const random = Math.floor(Math.random() * 15);
-  const daikichi = new MessageEmbed()
-    .setColor('#c8a9d6')
-    .setTitle(`**${msg.author.tag} 的抽籤結果**`)
-    .setImage('https://media.discordapp.net/attachments/867034103097196544/928972567111401482/omikuji_daikichi.png');
-  const syoukichi = new MessageEmbed()
-    .setColor('#c8a9d6')
-    .setTitle(`**${msg.author.tag} 的抽籤結果**`)
-    .setImage('https://media.discordapp.net/attachments/867034103097196544/928972567560216576/omikuji_syoukichi.png');
-  const kichi = new MessageEmbed()
-    .setColor('#c8a9d6')
-    .setTitle(`**${msg.author.tag} 的抽籤結果**`)
-    .setImage('https://media.discordapp.net/attachments/867034103097196544/928972567967068200/omikuji_kichi.png');
-  const suekichi = new MessageEmbed()
-    .setColor('#c8a9d6')
-    .setTitle(`**${msg.author.tag} 的抽籤結果**`)
-    .setImage('https://media.discordapp.net/attachments/867034103097196544/928972569137270794/omikuji_suekichi.png');
-  const chuukichii = new MessageEmbed()
-    .setColor('#c8a9d6')
-    .setTitle(`**${msg.author.tag} 的抽籤結果**`)
-    .setImage('https://media.discordapp.net/attachments/867034103097196544/928972568684298290/omikuji_chuukichi.png');
-  const kyou = new MessageEmbed()
-    .setColor('#c8a9d6')
-    .setTitle(`**${msg.author.tag} 的抽籤結果**`)
-    .setImage('https://media.discordapp.net/attachments/867034103097196544/928972568357122108/omikuji_kyou.png');
-  const daikyou = new MessageEmbed()
-    .setColor('#c8a9d6')
-    .setTitle(`**${msg.author.tag} 的抽籤結果**`)
-    .setImage('https://media.discordapp.net/attachments/867034103097196544/928972569556680755/omikuji_daikyou.png');
-  if ((random === 0) || (random === 1) || (random === 2)) {
-    msg.channel.send({ embeds:[daikichi] });
-  } else if ((random === 3) || (random === 4)) {
-    msg.channel.send({ embeds:[syoukichi] });
-  } else if ((random === 5) || (random === 6) || (random === 7)) {
-    msg.channel.send({ embeds:[kichi] });
-  } else if ((random === 8) || (random === 9)) {
-    msg.channel.send({ embeds:[suekichi] });
-  } else if ((random === 10) || (random === 11)) {
-    msg.channel.send({ embeds:[chuukichii] });
-  } else if ((random === 12) || (random === 13)) {
-    msg.channel.send({ embeds:[kyou] });
-  } else if (random === 14) {
-    msg.channel.send({ embeds:[daikyou] });
+  switch (random) {
+    case 0:
+    case 1:
+    case 2:
+      msg.channel.send({ embeds: getFormatOmikujiResult(result.daikichi, author) });
+      break;
+    case 3:
+    case 4:
+      msg.channel.send({ embeds: getFormatOmikujiResult(result.syoukichi, author) });
+      break;
+    case 5:
+    case 6:
+    case 7:
+      msg.channel.send({ embeds: getFormatOmikujiResult(result.kichi, author) });
+      break;
+    case 8:
+    case 9:
+      msg.channel.send({ embeds: getFormatOmikujiResult(result.suekichi, author) });
+      break;
+    case 10:
+    case 11:
+      msg.channel.send({ embeds: getFormatOmikujiResult(result.chuukichii, author) });
+      break;
+    case 12:
+    case 13:
+      msg.channel.send({ embeds: getFormatOmikujiResult(result.kyou, author) });
+      break;
+    case 14:
+      msg.channel.send({ embeds: getFormatOmikujiResult(result.daikyou, author) });
+      break;
   }
-
 }
+
+const getFormatOmikujiResult = (result, author) => {
+  return [new MessageEmbed()
+    .setColor(result.color)
+    .setTitle(`**${author} 的抽籤結果**`)
+    .setImage(result.image)];
+};
 
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
