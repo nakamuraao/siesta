@@ -17,7 +17,7 @@
 		"dot-location": ["error", "property"],
 		"eol-last": "error",
 		"handle-callback-err": "off",
-		"indent": ["error", 2],
+		"indent": ["error", 2, { "SwitchCase": 1 }],
 		"keyword-spacing": "error",
 		"max-nested-callbacks": ["warn", { "max": 4 }],
 		"max-statements-per-line": ["warn", { "max": 2 }],
