@@ -1,7 +1,8 @@
 const { token } = require('./config.json');
 const fs = require('fs');
 const sql = require('sequelize');
-const { Client, Collection, Intents, MessageEmbed, WebhookClient } = require('discord.js');
+const axios = require('axios');
+const { Client, Collection, Intents, MessageEmbed, WebhookClient, MessageAttachment } = require('discord.js');
 const config = require('./config.json');
 const { omikuji, randomNumber, isOwner, dinnerTonight } = require('./modules/utility');
 const botzoneDB = require('./modules/dbFunction/botChannel');
@@ -69,9 +70,13 @@ client.on('messageDelete', async msg => {
       }
       const logChannel = client.channels.cache.get(await Obj.logChannelId(msg.guildId));
 
-      msg.attachments.forEach(a => {
+      msg.attachments.forEach(async a => {
         const url = a.url;
-        logChannel.send(url);
+        const response = await axios.get(url, { responseType: "arraybuffer" });
+        const buff = Buffer.from(response.data, "base64");
+        //console.log(buff);
+        const file = new MessageAttachment(buff);
+        logChannel.send({ files: [file] });
       });
       await logChannel.send({ embeds:[embed] });
     } else {return;}
