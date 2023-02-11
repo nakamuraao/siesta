@@ -60,28 +60,50 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageDelete', async msg => {
-  const Obj = new logging.log;
-  if (msg.attachments.size > 0) {
-    if (await Obj.findLogChannel(msg.guildId)) {
-
-      const embed = new MessageEmbed().setColor('GREEN').setTitle(`附件刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
-      if (msg.content) {
-        embed.addField('訊息內容', `${msg.content}`, false);
+    const Obj = new logging.log;
+    if (msg.attachments.size > 0) {
+      if (await Obj.findLogChannel(msg.guildId)) {
+  
+        const embed = new MessageEmbed().setColor('GREEN').setTitle(`附件刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
+        if (msg.content) {
+          embed.addFields({name: '訊息內容', value: `${msg.content}`, inline: false});
+        }
+        const logChannel = client.channels.cache.get(await Obj.logChannelId(msg.guildId));
+  
+        msg.attachments.forEach(async a => {
+          const url = a.url;
+          const response = await axios.get(url, { responseType: "arraybuffer" });
+          const buff = Buffer.from(response.data, "base64");
+          const file = new MessageAttachment(buff);
+          logChannel.send({ files: [file] });
+        });
+        await logChannel.send({ embeds:[embed] });
+      } else { return; };
+    } else {
+      if (await Obj.findLogChannel(msg.guildId)) {
+        const embed = new MessageEmbed().setColor('GREEN').setTitle(`訊息刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
+        if (msg.content) {
+          embed.addFields({name: '訊息內容', value: `${msg.content}`, inline: false});
+        }
+        const logChannel = client.channels.cache.get(await Obj.logChannelId(msg.guildId));
+        await logChannel.send({ embeds:[embed] });
+      } else { return; };
+    }
+  });
+  
+  client.on('messageUpdate', async (oldMessage, newMessage) => {
+    const Obj = new logging.log;
+    const logChannel = client.channels.cache.get(await Obj.logChannelId(oldMessage.guildId));
+    if (await Obj.findLogChannel(oldMessage.guildId)) {
+      const embed = new MessageEmbed().setColor('DARK_GREEN').setTitle(`訊息編輯 #${oldMessage.channel.name}`).setDescription(oldMessage.author.tag);
+      if (oldMessage.content) {
+        embed.addFields({name: '舊訊息', value: `${oldMessage.content}`, inline: false},{name: '新訊息', value: `${newMessage.content}`, inline: false});
+      } else {
+        embed.addFields({name: '舊訊息', value: '`'+'nothing'+'`', inline: false},{name: '新訊息', value: `${newMessage.content}`, inline: false});
       }
-      const logChannel = client.channels.cache.get(await Obj.logChannelId(msg.guildId));
-
-      msg.attachments.forEach(async a => {
-        const url = a.url;
-        const response = await axios.get(url, { responseType: "arraybuffer" });
-        const buff = Buffer.from(response.data, "base64");
-        //console.log(buff);
-        const file = new MessageAttachment(buff);
-        logChannel.send({ files: [file] });
-      });
       await logChannel.send({ embeds:[embed] });
-    } else {return;}
-  }
-});
+    } else { return; };
+  })  
 
 client.on('messageCreate', async msg => {
 
