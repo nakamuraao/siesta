@@ -74,7 +74,7 @@ client.on('messageDelete', async msg => {
           const url = a.url;
           const response = await axios.get(url, { responseType: "arraybuffer" });
           const buff = Buffer.from(response.data, "base64");
-          const file = new MessageAttachment(buff);
+          const file = new MessageAttachment(buff, a.name );
           logChannel.send({ files: [file] });
         });
         await logChannel.send({ embeds:[embed] });
