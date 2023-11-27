@@ -27,7 +27,7 @@ const sequelize = new sql('database', 'user', 'password', {
 const servers = require('./modules/dbStructure/servers')(sequelize, sql.DataTypes);
 const botzone = require('./modules/dbStructure/botChannel')(sequelize, sql.DataTypes);
 const log = require('./modules/dbStructure/log')(sequelize, sql.DataTypes);
-const currency = require('./modules/dbStructure/currency')(sequelize, sql.DataTypes);
+//const currency = require('./modules/dbStructure/currency')(sequelize, sql.DataTypes);
 
 client.once('ready', () => {
   const now = new Date();
@@ -38,7 +38,7 @@ client.once('ready', () => {
   // 新增 : 更新servers人數
   botzone.sync();
   log.sync();
-  currency.sync();
+  //currency.sync();
 
   console.log(`以 ${client.user.tag} 登入`);
 });
