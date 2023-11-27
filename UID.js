@@ -155,11 +155,11 @@ client.on('messageCreate', async msg => {
       .setDescription(`<#${msg.channelId}> <@${msg.author.id}>\n` + msg.content);
     client.users.fetch(config.oid).then((owner) =>
       owner.send({ embeds:[embed] }));
-  } else if (msg.content.includes('https://twitter')) {
-    const newMessage = msg.content.replace("https://twitter", "https://vxtwitter");
+  } else if (msg.content.includes('https://twitter/')) {
+    const newMessage = msg.content.replace("https://twitter/", "https://vxtwitter/");
     msg.reply(newMessage);
-  } else if (msg.content.includes('https://x.com')) {
-    const newMessage = msg.content.replace("https://x.com", "https://vxtwitter.com");
+  } else if (msg.content.includes('https://x.com/')) {
+    const newMessage = msg.content.replace("https://x.com/", "https://vxtwitter.com/");
     msg.reply(newMessage);
   } 
 
