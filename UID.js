@@ -92,6 +92,7 @@ client.on('messageDelete', async msg => {
   });
   
   client.on('messageUpdate', async (oldMessage, newMessage) => {
+    if (oldMessage.content === newMessage.content) return;
     const Obj = new logging.log;
     const logChannel = client.channels.cache.get(await Obj.logChannelId(oldMessage.guildId));
     if (await Obj.findLogChannel(oldMessage.guildId)) {
@@ -145,13 +146,22 @@ client.on('messageCreate', async msg => {
     }
   } else if (msg.content.includes('蒼')) {
     if (msg.author.id === config.oid) return;
+    for (i = 0; i < config.ignore.length; i++){
+      if (msg.content.includes(config.ignore[i])) return;
+    };
     const embed = new MessageEmbed()
       .setColor('AQUA')
       .setTitle(`${msg.author.tag}(${msg.author.id}) 在 #${msg.channel.name} 提及了蒼`)
       .setDescription(`<#${msg.channelId}> <@${msg.author.id}>\n` + msg.content);
     client.users.fetch(config.oid).then((owner) =>
       owner.send({ embeds:[embed] }));
-  }
+  } else if (msg.content.includes('https://twitter')) {
+    const newMessage = msg.content.replace("https://twitter", "https://vxtwitter");
+    msg.reply(newMessage);
+  } else if (msg.content.includes('https://x.com')) {
+    const newMessage = msg.content.replace("https://x.com", "https://vxtwitter.com");
+    msg.reply(newMessage);
+  } 
 
   // normal
   if (msg.channelId === config.webhooks.mikeneko.normalChannel) {

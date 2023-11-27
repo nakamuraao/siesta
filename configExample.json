@@ -4,6 +4,5 @@
   "token": "The bot token",
 
   "webhooks": "Webhooks",
-
-  "currencyName": "Currency name used for gambling coins"
+  "ignore":""
 }
