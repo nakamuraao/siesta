@@ -5,7 +5,7 @@ const { logTime } = require('../modules/utility');
 module.exports = {
   data: new SlashCommandBuilder().setName('report').setDescription('開啟檢舉用私人討論串'),
   async execute(interaction) {
-    if (interaction.guild.premiumTier === 'TIER_2' || interaction.guild.premiumTier === 'TIER_3') {
+    //if (interaction.guild.premiumTier === 'TIER_2' || interaction.guild.premiumTier === 'TIER_3') {
       const Obj = new database.ServerDB(interaction.guild.id);
       if (!await Obj.findServer(interaction.guild.id)) {
         interaction.reply({ content:'請通知管理員先執行`/setup`指令', ephemeral:true });
@@ -27,8 +27,8 @@ module.exports = {
       thread.members.add(interaction.member.id);
       thread.send(`<@${interaction.member.id}>您好\n這個討論串只有您與<@&${admin}>看的見\n請將您要投訴的內容、訊息鏈結、截圖都貼在這個地方，會由管理員進行處置。`);
       await interaction.reply({ content:`投訴專用討論串<#${thread.id}>已建立，請放心的在該討論串進行投訴`, ephemeral: true });
-    } else {
+    }/* else {
       await interaction.reply({ content:'伺服器加成等級未達2，無法使用此指令', ephemeral: true });
     }
-  }
+  }*/
 };
