@@ -156,10 +156,13 @@ client.on('messageCreate', async msg => {
     client.users.fetch(config.oid).then((owner) =>
       owner.send({ embeds:[embed] }));
   } else if (msg.content.includes('https://twitter.com/')) {
-    const newMessage = msg.content.replace("https://twitter.com/", "https://vxtwitter.com/");
+    const newMessage = msg.content.replace("https://twitter.com/", "https://fxtwitter.com/");
     msg.reply(newMessage);
   } else if (msg.content.includes('https://x.com/')) {
-    const newMessage = msg.content.replace("https://x.com/", "https://vxtwitter.com/");
+    const newMessage = msg.content.replace("https://x.com/", "https://fxtwitter.com/");
+    msg.reply(newMessage);
+  } else if (msg.content.includes('https://www.instagram.com/')) {
+    const newMessage = msg.content.replace("https://www.instagram.com/", "https://www.ddinstagram.com/");
     msg.reply(newMessage);
   } 
 
