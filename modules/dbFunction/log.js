@@ -8,8 +8,7 @@ const sequelize = new sql('database', 'user', 'password', {
 });
 
 class log {
-  constructor(serverId) {
-    this.serverId = serverId;
+  constructor() {
     this.server = require('../dbStructure/log.js')(sequelize, sql.DataTypes);
   }
 

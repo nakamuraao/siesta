@@ -8,8 +8,7 @@ const sequelize = new sql('database', 'user', 'password', {
 });
 
 class botzone {
-  constructor(channelId) {
-    this.channelId = channelId;
+  constructor() {
     this.channel = require('../dbStructure/botChannel.js')(sequelize, sql.DataTypes);
   }
 

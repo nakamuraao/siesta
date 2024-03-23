@@ -8,6 +8,8 @@ const { omikuji, randomNumber, isOwner, dinnerTonight } = require('./modules/uti
 const botzoneDB = require('./modules/dbFunction/botChannel');
 const logging = require('./modules/dbFunction/log');
 const client = new Client({ partials:["CHANNEL", "MESSAGE", "USER"], intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_WEBHOOKS, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MEMBERS] });
+const Obj_cre = new botzoneDB.botzone;
+const Obj_del = new logging.log;
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./cmds').filter(file => file.endsWith('.js'));
@@ -60,15 +62,14 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageDelete', async msg => {
-    const Obj = new logging.log;
     if (msg.attachments.size > 0) {
-      if (await Obj.findLogChannel(msg.guildId)) {
+      if (await Obj_del.findLogChannel(msg.guildId)) {
   
         const embed = new MessageEmbed().setColor('GREEN').setTitle(`附件刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
         if (msg.content) {
           embed.addFields({name: '訊息內容', value: `${msg.content}`, inline: false});
         }
-        const logChannel = client.channels.cache.get(await Obj.logChannelId(msg.guildId));
+        const logChannel = client.channels.cache.get(await Obj_del.logChannelId(msg.guildId));
   
         msg.attachments.forEach(async a => {
           const url = a.url;
@@ -80,12 +81,12 @@ client.on('messageDelete', async msg => {
         await logChannel.send({ embeds:[embed] });
       } else { return; };
     } else {
-      if (await Obj.findLogChannel(msg.guildId)) {
+      if (await Obj_del.findLogChannel(msg.guildId)) {
         const embed = new MessageEmbed().setColor('GREEN').setTitle(`訊息刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
         if (msg.content) {
           embed.addFields({name: '訊息內容', value: `${msg.content}`, inline: false});
         }
-        const logChannel = client.channels.cache.get(await Obj.logChannelId(msg.guildId));
+        const logChannel = client.channels.cache.get(await Obj_del.logChannelId(msg.guildId));
         await logChannel.send({ embeds:[embed] });
       } else { return; };
     }
@@ -109,7 +110,6 @@ client.on('messageDelete', async msg => {
 client.on('messageCreate', async msg => {
 
   if (msg.author.bot) return;
-  const Obj = new botzoneDB.botzone(msg.channel.id);
   // 監控
   if (msg.channel.type === 'DM') {
     if (msg.author.id === config.oid) return;
@@ -128,14 +128,14 @@ client.on('messageCreate', async msg => {
     client.users.fetch(config.oid).then((owner) =>
       owner.send({ embeds:[embed1] })
     );
-  } else if (msg.content.includes('機率') && (await Obj.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+  } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
     const min = 0;
     const max = 100;
     const num = randomNumber(min, max);
     msg.channel.send(`${num}%`);
-  } else if (msg.content.includes('抽籤') && await Obj.findChannel(msg.channelId)) {
+  } else if (msg.content.includes('抽籤') && await Obj_cre.findChannel(msg.channelId)) {
     omikuji(msg);
-  } else if (msg.content.includes('晚餐吃什麼') && await Obj.findChannel(msg.channelId)) {
+  } else if (msg.content.includes('晚餐吃什麼') && await Obj_cre.findChannel(msg.channelId)) {
     // const din = await dinnerTonight()
     msg.reply(`今天晚餐吃 ${dinnerTonight()}`);
   } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
@@ -155,12 +155,6 @@ client.on('messageCreate', async msg => {
       .setDescription(`<#${msg.channelId}> <@${msg.author.id}>\n` + msg.content);
     client.users.fetch(config.oid).then((owner) =>
       owner.send({ embeds:[embed] }));
-  } else if (msg.content.includes('https://twitter.com/')) {
-    const newMessage = msg.content.replace("https://twitter.com/", "https://fxtwitter.com/");
-    msg.reply(newMessage);
-  } else if (msg.content.includes('https://x.com/')) {
-    const newMessage = msg.content.replace("https://x.com/", "https://fxtwitter.com/");
-    msg.reply(newMessage);
   } else if (msg.content.includes('https://www.instagram.com/')) {
     const newMessage = msg.content.replace("https://www.instagram.com/", "https://www.ddinstagram.com/");
     msg.reply(newMessage);
