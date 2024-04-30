@@ -1,8 +1,8 @@
 {
-  "name": "uid",
-  "version": "2.0.0",
+  "name": "siesta",
+  "version": "2.4.4",
   "description": "",
-  "main": "UID.js",
+  "main": "index.js",
   "scripts": {
     "run": "node .",
     "lint": "eslint .",

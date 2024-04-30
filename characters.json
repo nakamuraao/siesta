@@ -1,37 +1,25 @@
 {
-  "list":["エミリア","めぐみん","ニニム","シエスタ","シエル","イレイナ","Zeta","レーナ","猫又 おかゆ"],
+  "list":["エミリア","めぐみん","シエスタ","シエル","イレイナ"],
   "characters":{
     "1":{
       "name":"エミリア",
-      "icon":"https://media.discordapp.net/attachments/867034103097196544/964534390451490857/unknown.png"
+      "icon":"./botAvatar/emilia.png"
     },
     "2":{
       "name":"めぐみん",
-      "icon":"https://media.discordapp.net/attachments/867034103097196544/964534908414459914/unknown.png"
+      "icon":"./botAvatar/megumin.png"
     },
     "3":{
-      "name":"ニニム",
-      "icon":"https://cdn.discordapp.com/attachments/867034103097196544/964535108369518654/unknown.png"
+      "name":"シエスタ",
+      "icon":"./botAvatar/siesta.png"
     },
     "4":{
-      "name":"シエスタ",
-      "icon":"https://media.discordapp.net/attachments/867034103097196544/964852363707953162/IMG_20220402_1134062.jpg?width=468&height=468"
+      "name":"シエル",
+      "icon":"./botAvatar/siel.png"
     },
     "5":{
-      "name":"シエル",
-      "icon":"https://media.discordapp.net/attachments/867034103097196544/962620978075160586/FGo0dVpVEAAWgjS.png"
-    },
-    "6":{
       "name":"イレイナ",
-      "icon":"https://media.discordapp.net/attachments/867034103097196544/964535722457575454/unknown.png"
-    },
-    "7":{
-      "name":"Zeta",
-      "icon":"https://media.discordapp.net/attachments/867034103097196544/964850615991803904/zeta.png"
-    },
-    "8":{
-      "name":"レーナ",
-      "icon":"https://media.discordapp.net/attachments/867034103097196544/964536496801591307/unknown.png"
+      "icon":"./botAvatar/elaina.png"
     }
   }
 }
