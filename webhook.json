@@ -1,0 +1,21 @@
+{
+    "mikeneko":{
+        "normalChannel":"950020050792894464",
+        "tcChannel":"951115920607154186",
+        "ytChannel":"951116441497792664",
+        "reportChannel":"965615569686642729",
+        "amemiyaChannel":"995590776862027816",
+        "normal":"https://discord.com/api/webhooks/977781060731559957/B8HeX2oWm5kZX-m1WH43ZFnY2v87clsbYv-0VwpjbLaG8xFMiw1bwJ6NRAZultkCxuCW",
+        "tcMember":"https://discord.com/api/webhooks/977781402382778418/aWzV8XuQwz8pz1S-lK4zffd3n4wjrth3TTRxify-IctVYdNHKmQ5aIMhD2_cl8Y5NG1K",
+        "ytMember":"https://discord.com/api/webhooks/977781308451348510/ahyxmM0DiJ3cleyFLZtm-PANuL85YnUVyhMz4JE4oszgWf-_9TVrplFAMJLnh_qST5g0",
+        "report":"https://discord.com/api/webhooks/977782586602569828/CS83UAIDAvzYcBxaVKAnz1RXtjmE6RhpnQ64BaEnN2J9FFe3U7EuiHfxIkQeeyVjt8kV",
+        "amemiya":"https://discord.com/api/webhooks/996262037606903898/nKkJ-BLRS6gPyKvEtOTMR9SDQesOVpU8X2KSFTDGhp-4tPhs3gBoVTwLavUiw9Uykrt6"},
+    
+    "yoru":{
+        "normalChannel":"1241678110546595934",
+        "reportChannel":"1236875421258354729",
+        "normal":"https://discord.com/api/webhooks/1241679926747467817/-WS6CEDG_JlMgdtXMTGAMphmwXIrsyvOaOII_vnVHcfmBvkGkG1onklJSM3QPh20ZZVV",
+        "report":"https://discord.com/api/webhooks/1241679672752996372/vdm1Zyk0CeruRnknrGEN4_zIFL5jMETcu9QhwdNzE5L9BMURYHhTH1Nu5-8TA73YWHjb"
+    }
+
+}

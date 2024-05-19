@@ -1,15 +1,13 @@
 const { token } = require('./config.json');
 const fs = require('fs');
-const sql = require('sequelize');
 const axios = require('axios');
-const { Client, Collection, Intents, MessageEmbed, WebhookClient, MessageAttachment } = require('discord.js');
+const sql = require('sequelize');
+const { Client, Collection, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
 const config = require('./config.json');
 const { omikuji, randomNumber, isOwner, dinnerTonight } = require('./modules/utility');
 const botzoneDB = require('./modules/dbFunction/botChannel');
-const logging = require('./modules/dbFunction/log');
 const client = new Client({ partials:["CHANNEL", "MESSAGE", "USER"], intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_WEBHOOKS, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MEMBERS] });
 const Obj_cre = new botzoneDB.botzone;
-const Obj_del = new logging.log;
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./cmds').filter(file => file.endsWith('.js'));
@@ -37,10 +35,8 @@ client.once('ready', () => {
   console.log(`${time}`);
 
   servers.sync();
-  // 新增 : 更新servers人數
   botzone.sync();
   log.sync();
-  //currency.sync();
 
   console.log(`以 ${client.user.tag} 登入`);
 });
@@ -62,54 +58,23 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageDelete', async msg => {
-    if (msg.attachments.size > 0) {
-      if (await Obj_del.findLogChannel(msg.guildId)) {
+  const del = require('./modules/logEvents/messageDeleted');
+  del.execute(msg, client);
+});
   
-        const embed = new MessageEmbed().setColor('GREEN').setTitle(`附件刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
-        if (msg.content) {
-          embed.addFields({name: '訊息內容', value: `${msg.content}`, inline: false});
-        }
-        const logChannel = client.channels.cache.get(await Obj_del.logChannelId(msg.guildId));
-  
-        msg.attachments.forEach(async a => {
-          const url = a.url;
-          const response = await axios.get(url, { responseType: "arraybuffer" });
-          const buff = Buffer.from(response.data, "base64");
-          const file = new MessageAttachment(buff, a.name );
-          logChannel.send({ files: [file] });
-        });
-        await logChannel.send({ embeds:[embed] });
-      } else { return; };
-    } else {
-      if (await Obj_del.findLogChannel(msg.guildId)) {
-        const embed = new MessageEmbed().setColor('GREEN').setTitle(`訊息刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
-        if (msg.content) {
-          embed.addFields({name: '訊息內容', value: `${msg.content}`, inline: false});
-        }
-        const logChannel = client.channels.cache.get(await Obj_del.logChannelId(msg.guildId));
-        await logChannel.send({ embeds:[embed] });
-      } else { return; };
-    }
-  });
-  
-  client.on('messageUpdate', async (oldMessage, newMessage) => {
-    if (oldMessage.content === newMessage.content) return;
-    const Obj = new logging.log;
-    const logChannel = client.channels.cache.get(await Obj.logChannelId(oldMessage.guildId));
-    if (await Obj.findLogChannel(oldMessage.guildId)) {
-      const embed = new MessageEmbed().setColor('DARK_GREEN').setTitle(`訊息編輯 #${oldMessage.channel.name}`).setDescription(oldMessage.author.tag);
-      if (oldMessage.content) {
-        embed.addFields({name: '舊訊息', value: `${oldMessage.content}`, inline: false},{name: '新訊息', value: `${newMessage.content}`, inline: false});
-      } else {
-        embed.addFields({name: '舊訊息', value: '`'+'nothing'+'`', inline: false},{name: '新訊息', value: `${newMessage.content}`, inline: false});
-      }
-      await logChannel.send({ embeds:[embed] });
-    } else { return; };
-  })  
+client.on('messageUpdate', async (oldMessage, newMessage) => {
+  if (oldMessage.content === newMessage.content) return;
+  const up = require('./modules/logEvents/messageUpdate');
+  up.execute(oldMessage, newMessage, client);
+});
 
 client.on('messageCreate', async msg => {
-
   if (msg.author.bot) return;
+
+  //webhook
+  const webhook = require('./modules/webhook');
+  await webhook.execute(msg);
+
   // 監控
   if (msg.channel.type === 'DM') {
     if (msg.author.id === config.oid) return;
@@ -118,17 +83,9 @@ client.on('messageCreate', async msg => {
       .setTitle(`來自 ${msg.author.tag} (${msg.author.id})的訊息`)
       .setDescription(`<@${msg.author.id}>\n` + msg.content)
       .setFooter({ text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}` });
-
-    if (msg.attachments.size > 0) {
-      msg.attachments.forEach(a => {
-        const url = a.url;
-        embed1.setImage(url);
-      });
-    }
-    client.users.fetch(config.oid).then((owner) =>
-      owner.send({ embeds:[embed1] })
-    );
-  } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+      client.users.fetch(config.oid).then((owner) =>
+      owner.send({ embeds:[embed1] }));
+    } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
     const min = 0;
     const max = 100;
     const num = randomNumber(min, max);
@@ -159,108 +116,6 @@ client.on('messageCreate', async msg => {
     const newMessage = msg.content.replace("https://www.instagram.com/", "https://www.ddinstagram.com/");
     msg.reply(newMessage);
   } 
-
-  // normal
-  if (msg.channelId === config.webhooks.mikeneko.normalChannel) {
-
-    const webhook = new WebhookClient({ url : config.webhooks.mikeneko.normal });
-    if (msg.content.startsWith('補') || msg.content.startsWith('—') || msg.content.startsWith('-') || msg.content.startsWith('–')) {
-      webhook.send({
-        content: `${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    } else {
-      webhook.send({
-        content: ` : ${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    }
-  }
-
-  // tc
-  if (msg.channelId === config.webhooks.mikeneko.tcChannel) {
-
-    const webhook = new WebhookClient({ url : config.webhooks.mikeneko.tcMember });
-    if (msg.content.startsWith('補') || msg.content.startsWith('—') || msg.content.startsWith('-') || msg.content.startsWith('–')) {
-      webhook.send({
-        content: `${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    } else {
-      webhook.send({
-        content: ` : ${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    }
-
-  }
-
-  // yt
-  if (msg.channelId === config.webhooks.mikeneko.ytChannel) {
-
-    const webhook = new WebhookClient({ url : config.webhooks.mikeneko.ytMember });
-    if (msg.content.startsWith('補') || msg.content.startsWith('—') || msg.content.startsWith('-') || msg.content.startsWith('–')) {
-      webhook.send({
-        content: `${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    } else {
-      webhook.send({
-        content: ` : ${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    }
-  }
-  // 檢舉區
-  if (msg.channelId === config.webhooks.mikeneko.reportChannel) {
-
-    msg.author.send('已收到你的檢舉，管理員會盡速處理').catch(error => {
-      console.log(error);
-    });
-    const webhook = new WebhookClient({ url : config.webhooks.mikeneko.report });
-    webhook.send({
-      content: `${msg.content}`,
-      username: `${msg.author.tag}`,
-      avatarURL: `${msg.author.avatarURL()}`
-    });
-
-    if (msg.attachments.size > 0) {
-      msg.attachments.forEach(a => {
-        const url = a.url;
-        webhook.send({
-          content: `${url}`,
-          username: `${msg.author.tag}`,
-          avatarURL: `${msg.author.avatarURL()}`
-        });
-      });
-    }
-  }
-
-  // amemiya
-  if (msg.channelId === config.webhooks.mikeneko.amemiyaChannel) {
-
-    const webhook = new WebhookClient({ url : config.webhooks.mikeneko.amemiya });
-    if (msg.content.startsWith('補') || msg.content.startsWith('—') || msg.content.startsWith('-') || msg.content.startsWith('–')) {
-      webhook.send({
-        content: `${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    } else {
-      webhook.send({
-        content: ` : ${msg.content}`,
-        username: `${msg.author.tag}`,
-        avatarURL: `${msg.author.avatarURL()}`
-      });
-    }
-
-  }
 });
 
 client.login(token);
