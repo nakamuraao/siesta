@@ -4,6 +4,7 @@ package-lock.json
 
 # Discord config file
 config.json
+webhook.json
 
 # Others
 guildcmdreg.js
