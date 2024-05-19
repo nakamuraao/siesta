@@ -21,7 +21,7 @@ module.exports = {
       let string = '';
 
       for (let i = 0; i < (characters.list.length); i++) {
-        string = string.concat(`${i+1}. ${characters.list[i]}\n`);
+        string = string.concat(`${i + 1}. ${characters.list[i]}\n`);
       }
       embed.setDescription(string);
       await interaction.reply({ embeds:[embed] });

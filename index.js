@@ -1,8 +1,7 @@
 const { token } = require('./config.json');
 const fs = require('fs');
-const axios = require('axios');
 const sql = require('sequelize');
-const { Client, Collection, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
+const { Client, Collection, Intents, MessageEmbed } = require('discord.js');
 const config = require('./config.json');
 const { omikuji, randomNumber, isOwner, dinnerTonight } = require('./modules/utility');
 const botzoneDB = require('./modules/dbFunction/botChannel');
@@ -27,7 +26,7 @@ const sequelize = new sql('database', 'user', 'password', {
 const servers = require('./modules/dbStructure/servers')(sequelize, sql.DataTypes);
 const botzone = require('./modules/dbStructure/botChannel')(sequelize, sql.DataTypes);
 const log = require('./modules/dbStructure/log')(sequelize, sql.DataTypes);
-//const currency = require('./modules/dbStructure/currency')(sequelize, sql.DataTypes);
+// const currency = require('./modules/dbStructure/currency')(sequelize, sql.DataTypes);
 
 client.once('ready', () => {
   const now = new Date();
@@ -61,7 +60,7 @@ client.on('messageDelete', async msg => {
   const del = require('./modules/logEvents/messageDeleted');
   del.execute(msg, client);
 });
-  
+
 client.on('messageUpdate', async (oldMessage, newMessage) => {
   if (oldMessage.content === newMessage.content) return;
   const up = require('./modules/logEvents/messageUpdate');
@@ -71,7 +70,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return;
 
-  //webhook
+  // webhook
   const webhook = require('./modules/webhook');
   await webhook.execute(msg);
 
@@ -83,9 +82,9 @@ client.on('messageCreate', async msg => {
       .setTitle(`來自 ${msg.author.tag} (${msg.author.id})的訊息`)
       .setDescription(`<@${msg.author.id}>\n` + msg.content)
       .setFooter({ text:`來信時間 : ${msg.createdAt.toLocaleDateString()} ${msg.createdAt.toLocaleTimeString()}` });
-      client.users.fetch(config.oid).then((owner) =>
+    client.users.fetch(config.oid).then((owner) =>
       owner.send({ embeds:[embed1] }));
-    } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+  } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
     const min = 0;
     const max = 100;
     const num = randomNumber(min, max);
@@ -103,9 +102,9 @@ client.on('messageCreate', async msg => {
     }
   } else if (msg.content.includes('蒼')) {
     if (msg.author.id === config.oid) return;
-    for (i = 0; i < config.ignore.length; i++){
+    for (i = 0; i < config.ignore.length; i++) {
       if (msg.content.includes(config.ignore[i])) return;
-    };
+    }
     const embed = new MessageEmbed()
       .setColor('AQUA')
       .setTitle(`${msg.author.tag}(${msg.author.id}) 在 #${msg.channel.name} 提及了蒼`)
@@ -115,7 +114,7 @@ client.on('messageCreate', async msg => {
   } else if (msg.content.includes('https://www.instagram.com/')) {
     const newMessage = msg.content.replace("https://www.instagram.com/", "https://www.ddinstagram.com/");
     msg.reply(newMessage);
-  } 
+  }
 });
 
 client.login(token);
