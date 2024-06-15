@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { isOwner } = require('../modules/utility');
 
 module.exports = {
@@ -14,10 +13,11 @@ module.exports = {
     }
     const guildId = client.guilds.cache.map(guild => guild.id);
     const guildName = client.guilds.cache.map(guild => guild.name);
-    const embed = new MessageEmbed().setColor('GREY').setTitle('所在伺服器');
+    let string = '';
     for (i = 0; i < guildId.length; i++) {
-      embed.addField(guildName[i], guildId[i]);
+      string = string.concat('`' + guildId[i] + '`' + ' ' + guildName[i] + '\n');
     }
+    const embed = new EmbedBuilder().setColor('#FFFFFF').setTitle('所在伺服器').setDescription(string);
     await interaction.reply({ embeds:[embed] });
   }
 };

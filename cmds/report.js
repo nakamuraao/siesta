@@ -1,19 +1,23 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const database = require('../modules/dbFunction/database');
 const { logTime } = require('../modules/utility');
 
 module.exports = {
-  data: new SlashCommandBuilder().setName('report').setDescription('開啟檢舉用私人討論串'),
+  data: new SlashCommandBuilder()
+    .setName('report')
+    .setDescription('開啟檢舉用私人討論串'),
+
   async execute(interaction) {
     const Obj = new database.ServerDB(interaction.guild.id);
     if (!await Obj.findServer(interaction.guild.id)) {
-      interaction.reply({ content:'請通知管理員先執行`/setup`指令', ephemeral:true });
+      interaction.reply({ content:'請通知管理員先執行`/serversetup`指令', ephemeral:true });
       return;
     }
 
     const admin = await Obj.findAdminRole(interaction.guild.id);
-    const minute = new Date().getMinutes() < 10 ? `0${new Date().getMinutes()}` : new Date().getMinutes();
-    const time = `${new Date().getDate()}` + ` ` + `${new Date().getHours()}` + `-` + `${minute}`;
+    const date = new Date();
+    const minute = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+    const time = `${date.getFullYear}-${date.getMonth}-${date.getDate()} ${date.getHours()}-${minute}`;
 
     const thread = await interaction.channel.threads.create({
       name: `編號[${time}]`,
@@ -21,7 +25,7 @@ module.exports = {
       type: 'GUILD_PRIVATE_THREAD',
     });
     logTime();
-    console.log(`討論串建立了 : ${interaction.guild.name} ${thread.name}\n檢舉人 : ${interaction.user.tag} ${interaction.user.id}\n-----------------------`);
+    console.log(`討論串建立了 : ${interaction.guild.name} ${thread.name}\n檢舉人 : ${interaction.user.displayName} ${interaction.user.id}\n-----------------------`);
 
     thread.members.add(interaction.member.id);
     thread.send(`<@${interaction.member.id}>您好\n這個討論串只有您與<@&${admin}>看的見\n請將您要投訴的內容、訊息鏈結、截圖都貼在這個地方，會由管理員進行處置。`);

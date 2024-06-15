@@ -1,13 +1,13 @@
 const logging = require('../dbFunction/log');
 const Obj_del = new logging.log;
 const axios = require('axios');
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { EmbedBuilder, MessageAttachment } = require('discord.js');
 
 module.exports = {
   async execute(msg, client) {
     if (msg.attachments.size > 0) {
       if (await Obj_del.findLogChannel(msg.guildId)) {
-        const embed = new MessageEmbed().setColor('GREEN').setTitle(`附件刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
+        const embed = new EmbedBuilder().setColor('#FFFFFF').setTitle(`附件刪除 #${msg.channel.name}`).setDescription(msg.author.displayName + `<@${msg.author.id}>`);
         if (msg.content) {
           embed.addFields({ name: '訊息內容', value: `${msg.content}`, inline: false });
         }
@@ -23,7 +23,7 @@ module.exports = {
         await logChannel.send({ embeds:[embed] });
       } else { return; }
     } else if (await Obj_del.findLogChannel(msg.guildId)) {
-      const embed = new MessageEmbed().setColor('GREEN').setTitle(`訊息刪除 #${msg.channel.name}`).setDescription(msg.author.tag);
+      const embed = new EmbedBuilder().setColor('#FFFFFF').setTitle(`訊息刪除 #${msg.channel.name}`).setDescription(msg.author.displayName + `<@${msg.author.id}>`);
       if (msg.content) {
         embed.addFields({ name: '訊息內容', value: `${msg.content}`, inline: false });
       }

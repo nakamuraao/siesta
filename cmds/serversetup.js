@@ -1,10 +1,12 @@
-// 設定DB-server
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const database = require('../modules/dbFunction/database');
 const { isAdmin, logTime } = require('../modules/utility');
 
 module.exports = {
-  data: new SlashCommandBuilder().setName('setup').setDescription('設定伺服器資訊').addRoleOption(option => option.setName('admin').setDescription('管理員身分組').setRequired(true))/* .addRoleOption(option => option.setName('muterole').setDescription('禁言身分組').setRequired(true))*/,
+  data: new SlashCommandBuilder()
+    .setName('serversetup')
+    .setDescription('設定伺服器資訊')
+    .addRoleOption(option => option.setName('admin').setDescription('管理員身分組').setRequired(false)), /* .addRoleOption(option => option.setName('muterole').setDescription('禁言身分組').setRequired(true))*/
   async execute(interaction) {
     if (!isAdmin(interaction)) {
       interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true });
@@ -28,6 +30,6 @@ module.exports = {
 
     await interaction.reply('已更新伺服器設定');
     logTime();
-    console.log(`${interaction.user.tag} 更新了 ${interaction.guild.name} 的設定\n-----------------------`);
+    console.log(`-----------------------\n${interaction.user.displayName} 更新了 ${interaction.guild.name} 的設定\n-----------------------`);
   }
 };

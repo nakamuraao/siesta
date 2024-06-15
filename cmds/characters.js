@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const characters = require('../characters.json');
 const { isOwner } = require('../modules/utility');
 
@@ -7,8 +6,16 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('characters')
     .setDescription('切換人設(擁有者限定)')
-    .addSubcommand(sub => sub.setName('list').setDescription('列出可用人設'))
-    .addSubcommand(sub => sub.setName('set').setDescription('設定人設').addNumberOption(option => option.setName('character').setDescription('人設編號').setRequired(true))),
+    .addSubcommand(sub =>
+      sub.setName('list')
+        .setDescription('列出可用人設'))
+    .addSubcommand(sub =>
+      sub.setName('set')
+        .setDescription('設定人設')
+        .addNumberOption(option =>
+          option.setName('character')
+            .setDescription('人設編號')
+            .setRequired(true))),
 
   async execute(interaction, client) {
     if (!isOwner(interaction.user.id)) {
@@ -17,7 +24,7 @@ module.exports = {
     }
 
     if (interaction.options.getSubcommand() === 'list') {
-      const embed = new MessageEmbed().setTitle('可用人設').setColor('#c8a9d6');
+      const embed = new EmbedBuilder().setTitle('可用人設').setColor('#FFFFFF');
       let string = '';
 
       for (let i = 0; i < (characters.list.length); i++) {

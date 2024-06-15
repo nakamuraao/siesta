@@ -3,19 +3,23 @@ const { isOwner } = require('../modules/utility');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('bomb')
+    .setName('say')
     .setDescription('洗版指令(擁有者限定)')
     .addStringOption(option => option.setName('message').setDescription('message').setRequired(true))
-    .addIntegerOption(option => option.setName('times').setDescription('times').setRequired(true)),
+    .addIntegerOption(option => option.setName('times').setDescription('times').setRequired(false)),
 
   async execute(interaction) {
     if (isOwner(interaction.user.id)) {
       const message = interaction.options.getString('message');
       const times = interaction.options.getInteger('times');
-
-      await interaction.reply({ content:'重複' + '`' + message + '`' + times + '次', ephemeral:true });
-      for (let i = 0; i < times; i++) {
+      if (times == null) {
+        await interaction.reply({ content:'`' + message + '`', ephemeral:true });
         await interaction.channel.send(message);
+      } else {
+        await interaction.reply({ content:'重複' + '`' + message + '`' + times + '次', ephemeral:true });
+        for (let i = 0; i < times; i++) {
+          await interaction.channel.send(message);
+        }
       }
 
     } else {

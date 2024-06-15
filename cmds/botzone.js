@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const { isAdmin, logTime } = require('../modules/utility');
 const botzone = require('../modules/dbFunction/botChannel');
 
@@ -6,7 +6,11 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('botzone')
     .setDescription('設定機器人區域')
-    .addStringOption(option => option.setName('move').setDescription('選擇動作').setRequired(true).addChoices({ name:'add', value:'add' }, { name:'remove', value:'remove' })),
+    .addStringOption(option =>
+      option.setName('move')
+        .setDescription('選擇動作')
+        .setRequired(true)
+        .addChoices({ name:'add', value:'add' }, { name:'remove', value:'remove' })),
 
   async execute(interaction) {
     if (!isAdmin(interaction)) {
@@ -22,7 +26,7 @@ module.exports = {
         await Obj.addBotZone(channelId);
         await interaction.reply('已將此頻道設為機器人區域');
         logTime();
-        console.log(`${interaction.user.tag} 新增了機器人頻道 ${channelId}\n-----------------------`);
+        console.log(`-----------------------\n${interaction.user.displayName} 新增了機器人頻道 ${channelId}\n-----------------------`);
       } else {
         await interaction.reply({ content:'此頻道已經是機器人區域', ephemeral: true });
         return;
@@ -35,7 +39,7 @@ module.exports = {
         await Obj.deleteChannel(channelId);
         await interaction.reply('已取消機器人區域');
         logTime();
-        console.log(`${interaction.user.tag} 取消了機器人頻道 ${channelId}\n-----------------------`);
+        console.log(`-----------------------\n${interaction.user.displayName} 取消了機器人頻道 ${channelId}\n-----------------------`);
       }
     } else {
       await interaction.reply({ content:'執行此指令時出現問題', ephemeral: true });

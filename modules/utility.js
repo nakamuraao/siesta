@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const dinner = require('../dinner.json');
 
 function isAdmin(interaction) {
@@ -83,7 +83,7 @@ function omikuji(msg) {
 }
 
 const getFormatOmikujiResult = (result, author) => {
-  return [new MessageEmbed()
+  return [new EmbedBuilder()
     .setColor(result.color)
     .setTitle(`**${author} 的抽籤結果**`)
     .setImage(result.image)];

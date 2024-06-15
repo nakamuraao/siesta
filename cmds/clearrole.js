@@ -1,11 +1,14 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const { isAdmin, logTime } = require('../modules/utility');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('clearrole')
     .setDescription('清除身分組中的成員')
-    .addRoleOption(option => option.setName('role').setDescription('目標身分組').setRequired(true)),
+    .addRoleOption(option =>
+      option.setName('role')
+        .setDescription('目標身分組')
+        .setRequired(true)),
 
   async execute(interaction) {
     if (!isAdmin(interaction)) {
@@ -25,6 +28,6 @@ module.exports = {
     await interaction.reply('已執行');
 
     logTime();
-    console.log(`${interaction.user.tag} 清除了 ${targetrole.name} 中的成員 (${interaction.guild.name})\n-----------------------`);
+    console.log(`-----------------------\n${interaction.user.displayName} 清除了 ${targetrole.name} 中的成員 (${interaction.guild.name})\n-----------------------`);
   }
 };
