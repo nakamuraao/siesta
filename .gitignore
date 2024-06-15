@@ -4,6 +4,7 @@ package-lock.json
 
 # Discord config file
 config.json
+config copy.json
 webhook.json
 
 # Others

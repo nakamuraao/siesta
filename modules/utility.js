@@ -17,7 +17,7 @@ function isOwner(id) {
 
 function omikuji(msg) {
   const random = randomNumber(0, 14);
-  const author = msg.author.tag;
+  const author = msg.author.displayName;
   const result = {
     daikichi: {
       color: '#c8a9d6',
