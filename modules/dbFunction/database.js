@@ -42,8 +42,8 @@ class ServerDB {
     let i;
     await this.server.findAll().then(servers => {
       for (i = 0; i < servers.length; i++) {
-        string = string.concat('`' + servers[i].server_id + '`' + ' `' + servers[i].server_name + '`' + '：' + '`' + servers[i].adminrole + '` ' + '<@&'+ servers[i].adminrole + '>' + '\n');
-      };
+        string = string.concat('`' + servers[i].server_id + '`' + ' `' + servers[i].server_name + '`' + '：' + '`' + servers[i].adminrole + '` ' + '<@&' + servers[i].adminrole + '>' + '\n');
+      }
     });
     return string;
   }

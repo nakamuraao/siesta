@@ -18,7 +18,7 @@ module.exports = {
         { name: '用戶名 :', value: `${user.displayName}` },
         { name: `UID :`, value: `${user.id}` },
         { name: `加入DC時間 :`, value: `<t:${parseInt(user.createdTimestamp / 1000)}>` },
-        { name: `加入伺服器時間 :`, value: `<t:${parseInt( joinTime / 1000)}>` },
+        { name: `加入伺服器時間 :`, value: `<t:${parseInt(joinTime / 1000)}>` },
       );
     await interaction.reply({ embeds: [userinfoembed] });
 

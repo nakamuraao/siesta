@@ -13,7 +13,7 @@ module.exports = {
       .addFields(
         { name: '用戶名 :', value: `${interaction.client.user.displayName}` },
         { name: `ID :`, value: `${interaction.client.user.id}` },
-        { name: `建立時間 :`, value: `<t:${parseInt(interaction.client.user.createdTimestamp/1000)}>` },
+        { name: `建立時間 :`, value: `<t:${parseInt(interaction.client.user.createdTimestamp / 1000)}>` },
         { name: `擁有者 :`, value: `蒼アオ <@${oid}>` },
         { name: '版本', value: version }
       );

@@ -1,7 +1,8 @@
-const { token } = require('./config.json');
+const { token, oid } = require('./config.json');
 const fs = require('fs');
 const sql = require('sequelize');
 const { Client, Collection, GatewayIntentBits, ActivityType } = require('discord.js');
+
 const client = new Client({
   partials:["CHANNEL", "MESSAGE", "USER"],
   intents: [
@@ -38,7 +39,7 @@ client.once('ready', () => {
   botzone.sync();
   log.sync();
   //  messageReaction.sync();
-	client.user.setActivity('蒼アオ', { type: ActivityType.Watching });
+  client.user.setActivity('蒼アオ', { type: ActivityType.Watching });
   console.log(`以 ${client.user.displayName} 登入`);
 });
 
@@ -50,7 +51,7 @@ client.on('interactionCreate', async interaction => {
     await command.execute(interaction, client);
   } catch (error) {
     console.error(error);
-    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    await interaction.reply({ content: `執行指令時出現問題，請洽伺服器管理員或<@${oid}>`, ephemeral: true });
   }
 
 });
@@ -81,7 +82,7 @@ client.on('messageCreate', async msg => {
   // fun
   const fun = require('./modules/messageUtility/fun');
   await fun.execute(msg);
-  
+
   /*
   if (msg.content.includes('https://www.instagram.com/')) {
     const newMessage = msg.content.replace("https://www.instagram.com/", "https://www.ddinstagram.com/");

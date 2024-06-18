@@ -20,7 +20,7 @@ module.exports = {
     if (!isOwner(interaction.user.id)) {
       await interaction.reply({ content:'此指令僅限擁有者使用', ephemeral: true });
       return;
-    };
+    }
 
     if (interaction.options.getSubcommand() === 'bot') {
       const embed = new EmbedBuilder().setColor('#FFFFFF').setDescription('https://discordapp.com/api/oauth2/authorize?client_id=843890891704893530&permissions=8&scope=bot%20applications.commands');
@@ -34,7 +34,7 @@ module.exports = {
         .then(async invite => {
           const embed = new EmbedBuilder().setColor('#FFFFFF').setTitle('前往 ' + server.name).setDescription(invite.url);
           await interaction.reply({ embeds:[embed] });
-      });
+        });
 
     }
   }

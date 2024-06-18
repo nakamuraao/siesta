@@ -11,8 +11,8 @@ module.exports = {
         .setDescription('設定伺服器資訊')
         .addRoleOption(option =>
           option.setName('admin')
-          .setDescription('管理員身分組')
-          .setRequired(true)))
+            .setDescription('管理員身分組')
+            .setRequired(true)))
     .addSubcommand(sub =>
       sub.setName('list')
         .setDescription('列出伺服器資訊')),
@@ -34,7 +34,7 @@ module.exports = {
         await Obj.addServer(guildId, guildName, adminrole);
       } else {
         await Obj.updateServer(guildId, guildName, adminrole);
-      };
+      }
       await interaction.reply('已更新伺服器設定');
     } else if (interaction.options.getSubcommand() === 'list') {
       if (isOwner) {
@@ -45,14 +45,13 @@ module.exports = {
           .setDescription(string);
         await interaction.reply({ embeds:[embed_o] });
       } else {
-        const admin = Obj.findAdminRole(guildId)
+        const admin = Obj.findAdminRole(guildId);
         const embed = new EmbedBuilder()
           .setColor('#FFFFFF')
           .setTitle('本伺服器之管理員身分組')
-          .setDescription('`' + admin + '` ' + '<@&'+ admin + '>');
+          .setDescription('`' + admin + '` ' + '<@&' + admin + '>');
         await interaction.reply({ embeds:[embed] });
       }
-
     }
   }
 };
