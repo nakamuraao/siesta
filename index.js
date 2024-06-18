@@ -81,11 +81,12 @@ client.on('messageCreate', async msg => {
   // fun
   const fun = require('./modules/messageUtility/fun');
   await fun.execute(msg);
-
+  /*
   if (msg.content.includes('https://www.instagram.com/')) {
     const newMessage = msg.content.replace("https://www.instagram.com/", "https://www.ddinstagram.com/");
     msg.reply(newMessage);
   }
+    */
 });
 
 client.login(token);

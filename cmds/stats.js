@@ -10,7 +10,6 @@ module.exports = {
     const botstatsembed = new EmbedBuilder()
       .setColor('#FFFFFF')
       .setThumbnail(`${interaction.client.user.avatarURL()}`)
-      .setURL('https://github.com/nakamuraao/siesta')
       .addFields(
         { name: '用戶名 :', value: `${interaction.client.user.displayName}` },
         { name: `ID :`, value: `${interaction.client.user.id}` },
