@@ -17,7 +17,8 @@ module.exports = {
     const admin = await Obj.findAdminRole(interaction.guild.id);
     const date = new Date();
     const minute = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-    const time = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}-${minute}`;
+    const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+    const time = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${hour}-${minute}`;
 
     const thread = await interaction.channel.threads.create({
       name: `編號[${time}]`,
