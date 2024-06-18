@@ -13,28 +13,23 @@ class ServerDB {
     this.server = require('../dbStructure/servers.js')(sequelize, sql.DataTypes);
   }
 
-  async addServer(guildId, guildName, guildMembers, adminrole) {
-
+  async addServer(guildId, guildName, adminrole) {
     await this.server.create({
       server_id: guildId,
       server_name: guildName,
-      server_members: guildMembers,
       adminrole: adminrole
     });
   }
 
-  async findServer(guildId) {
-
-    return await this.server.findOne({ where: { server_id: guildId }, raw:true });
-  }
-
-  async updateServer(guildId, guildName, guildMembers, adminrole) {
-
+  async updateServer(guildId, guildName, adminrole) {
     await this.server.update({
       server_name: guildName,
-      server_members: guildMembers,
-      adminrole:adminrole
+      adminrole: adminrole
     }, { where: { server_id: guildId } });
+  }
+
+  async findServer(guildId) {
+    return await this.server.findOne({ where: { server_id: guildId }, raw:true });
   }
 
   async findAdminRole(guildId) {
@@ -42,10 +37,16 @@ class ServerDB {
     return server.get('adminrole');
   }
 
-  /* async findMuteRole(guildId){
-		const server = await this.server.findOne({ where: { server_id: guildId } });
-		return server.get('muterole');
-	}*/
+  async listServer() {
+    let string = '';
+    let i;
+    await this.server.findAll().then(servers => {
+      for (i = 0; i < servers.length; i++) {
+        string = string.concat('`' + servers[i].server_id + '`' + ' `' + servers[i].server_name + '`' + '：' + '`' + servers[i].adminrole + '` ' + '<@&'+ servers[i].adminrole + '>' + '\n');
+      };
+    });
+    return string;
+  }
 }
 
 module.exports.ServerDB = ServerDB;

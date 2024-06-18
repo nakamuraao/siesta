@@ -1,12 +1,22 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const database = require('../modules/dbFunction/database');
-const { isAdmin, logTime } = require('../modules/utility');
+const { isAdmin, isOwner } = require('../modules/utility');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('serversetup')
-    .setDescription('設定伺服器資訊')
-    .addRoleOption(option => option.setName('admin').setDescription('管理員身分組').setRequired(false)), /* .addRoleOption(option => option.setName('muterole').setDescription('禁言身分組').setRequired(true))*/
+    .setDescription('伺服器資訊設定')
+    .addSubcommand(sub =>
+      sub.setName('setup')
+        .setDescription('設定伺服器資訊')
+        .addRoleOption(option =>
+          option.setName('admin')
+          .setDescription('管理員身分組')
+          .setRequired(true)))
+    .addSubcommand(sub =>
+      sub.setName('list')
+        .setDescription('列出伺服器資訊')),
+
   async execute(interaction) {
     if (!isAdmin(interaction)) {
       interaction.reply({ content:'此指令僅限管理員使用', ephemeral: true });
@@ -14,22 +24,35 @@ module.exports = {
     }
 
     const guildId = interaction.guild.id;
-    const guildName = interaction.guild.name;
-    // const muteroleid = interaction.options.getRole('muterole')
-    const adminroleid = interaction.options.getRole('admin');
-    const guildMembers = interaction.guild.memberCount;
-
-    // const muterole = muteroleid.id
-    const adminrole = adminroleid.id;
     const Obj = new database.ServerDB(guildId);
-    if (!await Obj.findServer(guildId)) {
-      await Obj.addServer(guildId, guildName, guildMembers, adminrole);
-    } else {
-      await Obj.updateServer(guildId, guildName, guildMembers, adminrole);
-    }
 
-    await interaction.reply('已更新伺服器設定');
-    logTime();
-    console.log(`-----------------------\n${interaction.user.displayName} 更新了 ${interaction.guild.name} 的設定\n-----------------------`);
+    if (interaction.options.getSubcommand() === 'setup') {
+      const guildName = interaction.guild.name;
+      const adminroleid = interaction.options.getRole('admin');
+      const adminrole = adminroleid.id;
+      if (!await Obj.findServer(guildId)) {
+        await Obj.addServer(guildId, guildName, adminrole);
+      } else {
+        await Obj.updateServer(guildId, guildName, adminrole);
+      };
+      await interaction.reply('已更新伺服器設定');
+    } else if (interaction.options.getSubcommand() === 'list') {
+      if (isOwner) {
+        string = await Obj.listServer();
+        const embed_o = new EmbedBuilder()
+          .setColor('#FFFFFF')
+          .setTitle('所有伺服器之管理員身分組')
+          .setDescription(string);
+        await interaction.reply({ embeds:[embed_o] });
+      } else {
+        const admin = Obj.findAdminRole(guildId)
+        const embed = new EmbedBuilder()
+          .setColor('#FFFFFF')
+          .setTitle('本伺服器之管理員身分組')
+          .setDescription('`' + admin + '` ' + '<@&'+ admin + '>');
+        await interaction.reply({ embeds:[embed] });
+      }
+
+    }
   }
 };

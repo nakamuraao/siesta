@@ -7,9 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     server_name:{
       type: DataTypes.STRING
     },
-    server_members:{
-      type: DataTypes.INTEGER
-    },
     adminrole:{
       type: DataTypes.STRING
     }
