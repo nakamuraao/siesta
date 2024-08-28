@@ -29,6 +29,8 @@ const servers = require('./modules/dbStructure/servers')(sequelize, sql.DataType
 const botzone = require('./modules/dbStructure/botChannel')(sequelize, sql.DataTypes);
 const log = require('./modules/dbStructure/log')(sequelize, sql.DataTypes);
 // const messageReaction = require('./modules/dbStructure/messageReaction')(sequelize, sql.DataTypes);
+const database = require('./modules/dbFunction/database');
+const Obj = new database.ServerDB();
 
 client.once('ready', () => {
   const now = new Date();
@@ -41,6 +43,15 @@ client.once('ready', () => {
   //  messageReaction.sync();
   client.user.setActivity('蒼アオ', { type: ActivityType.Watching });
   console.log(`以 ${client.user.displayName} 登入`);
+
+  setInterval(async () => {
+    let i;
+    const array = Obj.allServerId();
+    for (i = 0; i < (await array).length; i++) {
+      const serverName = client.guilds.cache.get((await array)[i]).name;
+      await Obj.updateServer((await array)[i], serverName);
+    }
+  },24*60*60*1000);
 });
 
 client.on('interactionCreate', async interaction => {
@@ -53,7 +64,6 @@ client.on('interactionCreate', async interaction => {
     console.error(error);
     await interaction.reply({ content: `執行指令時出現問題，請洽伺服器管理員或<@${oid}>`, ephemeral: true });
   }
-
 });
 
 client.on('messageDelete', async msg => {
@@ -82,12 +92,6 @@ client.on('messageCreate', async msg => {
   // fun
   const fun = require('./modules/messageUtility/fun');
   await fun.execute(msg);
-
-  /*
-  if (msg.content.includes('https://www.instagram.com/')) {
-    const newMessage = msg.content.replace("https://www.instagram.com/", "https://www.ddinstagram.com/");
-    msg.reply(newMessage);
-  }*/
 });
 
 client.login(token);

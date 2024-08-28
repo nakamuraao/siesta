@@ -1,7 +1,7 @@
 const logging = require('../dbFunction/log');
 const Obj_del = new logging.log;
 const axios = require('axios');
-const { EmbedBuilder, MessageAttachment } = require('discord.js');
+const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 
 module.exports = {
   async execute(msg, client) {
@@ -17,7 +17,7 @@ module.exports = {
           const url = a.url;
           const response = await axios.get(url, { responseType: "arraybuffer" });
           const buff = Buffer.from(response.data, "base64");
-          const file = new MessageAttachment(buff, a.name);
+          const file = new AttachmentBuilder(buff, {name: a.name});
           logChannel.send({ files: [file] });
         });
         await logChannel.send({ embeds:[embed] });

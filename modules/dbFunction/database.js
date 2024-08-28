@@ -47,6 +47,17 @@ class ServerDB {
     });
     return string;
   }
+
+  async allServerId() {
+    let i;
+    let array = [];
+    await this.server.findAll().then(servers => {
+      for (i = 0; i < servers.length; i++) {
+        array.push(servers[i].server_id);
+      }
+    });
+    return array;
+  }
 }
 
 module.exports.ServerDB = ServerDB;
