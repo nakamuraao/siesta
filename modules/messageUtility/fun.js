@@ -14,11 +14,7 @@ module.exports = {
       const res = dinnerTonight();
       msg.reply(res === "不要吃" ? `今天不要吃晚餐` : `今天晚餐吃 ${res}`);
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
-      if (isOwner(msg.author.id)) {
-        msg.reply('沒錯♥');
-      } else {
-        msg.reply('婆你個大頭 醒');
-      }
+      msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒');
     }
   }
 };
