@@ -3,16 +3,11 @@ const { EmbedBuilder } = require('discord.js');
 const dinner = require('../dinner.json');
 
 function isAdmin(interaction) {
-  if (interaction.memberPermissions.has('ADMINISTRATOR', true) || interaction.user.id === config.oid) {
-    return true;
-  }
-
+  return interaction.memberPermissions.has('ADMINISTRATOR', true) || interaction.user.id === config.oid;
 }
 
 function isOwner(id) {
-  if (id === config.oid) {
-    return true;
-  }
+  return id === config.oid;
 }
 
 function omikuji(msg) {
