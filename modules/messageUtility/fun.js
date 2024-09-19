@@ -12,7 +12,7 @@ module.exports = {
       omikuji(msg);
     } else if (msg.content.includes('晚餐吃什麼') && await Obj_cre.findChannel(msg.channelId)) {
       const res = dinnerTonight();
-      msg.reply(res === "不要吃" ? `今天不要吃晚餐` : `今天晚餐吃 ${res}`);
+      msg.reply(res === "不要吃" ? `不要吃晚餐` : `今天晚餐吃 ${res}`);
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒');
     }
