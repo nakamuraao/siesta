@@ -17,7 +17,7 @@ module.exports = {
           const url = a.url;
           const response = await axios.get(url, { responseType: "arraybuffer" });
           const buff = Buffer.from(response.data, "base64");
-          const file = new AttachmentBuilder(buff, {name: a.name});
+          const file = new AttachmentBuilder(buff, { name: a.name });
           logChannel.send({ files: [file] });
         });
         await logChannel.send({ embeds:[embed] });

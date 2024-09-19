@@ -51,7 +51,7 @@ client.once('ready', () => {
       const serverName = client.guilds.cache.get((await array)[i]).name;
       await Obj.updateServer((await array)[i], serverName);
     }
-  },24*60*60*1000);
+  }, 24 * 60 * 60 * 1000);
 });
 
 client.on('interactionCreate', async interaction => {

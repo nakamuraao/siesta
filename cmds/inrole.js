@@ -18,10 +18,11 @@ module.exports = {
         string = string.concat('`' + member.id + '`' + ' ' + member.user.displayName + '\n');
       }
     });
-    if ( string === '' ) {
+    if (string === '') {
       await interaction.reply({ content:'身分組中沒有成員', ephemeral:true });
     } else {
       const embed = new EmbedBuilder().setTitle(`在 ${targetrole.name} 中的成員`).setDescription(string).setColor('#FFFFFF');
-      await interaction.reply({ embeds:[embed] });}
+      await interaction.reply({ embeds:[embed] });
+    }
   }
 };
