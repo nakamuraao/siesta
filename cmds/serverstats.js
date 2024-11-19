@@ -8,15 +8,14 @@ module.exports = {
   async execute(interaction) {
     const serverinfoembed = new EmbedBuilder()
       .setColor('#FFFFFF')
-      .setTitle(`${interaction.guild.name} 伺服器資訊`)
-      .setThumbnail(`${interaction.guild.iconURL()}`)
-      // .setURL('YOUR_SERVER_INVITATION_GOES_HERE')
+      .setTitle(`${await (interaction.guild).name} 伺服器資訊`)
+      .setThumbnail(`${await (interaction.guild).iconURL()}`)
       .addFields(
-        { name: '伺服器人數 :', value: `${interaction.guild.memberCount}` },
-        { name: `伺服器建立時間 :`, value: interaction.guild.createdTimestamp / 1000 },
-        { name: `伺服器擁有者 :`, value:`<@${interaction.guild.ownerId}>` }
+        { name: '伺服器人數 :', value: `${await (interaction.guild).memberCount}` },
+        { name: `伺服器建立時間 :`, value: `${await (interaction.guild).createdTimestamp / 1000}` },
+        { name: `伺服器擁有者 :`, value:`<@${await (interaction.guild).ownerId}>` }
       )
-      .setFooter({ text:`伺服器ID : ${interaction.guild.id}` });
+      .setFooter({ text:`伺服器ID : ${await (interaction.guild).id}` });
 
     await interaction.reply({ embeds: [serverinfoembed] });
 

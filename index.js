@@ -2,7 +2,6 @@ const { token, oid } = require('./config.json');
 const fs = require('fs');
 const sql = require('sequelize');
 const { Client, Collection, GatewayIntentBits, ActivityType } = require('discord.js');
-
 const client = new Client({
   partials:["CHANNEL", "MESSAGE", "USER"],
   intents: [
@@ -28,9 +27,16 @@ const sequelize = new sql('database', 'user', 'password', {
 const servers = require('./modules/dbStructure/servers')(sequelize, sql.DataTypes);
 const botzone = require('./modules/dbStructure/botChannel')(sequelize, sql.DataTypes);
 const log = require('./modules/dbStructure/log')(sequelize, sql.DataTypes);
+// const twitterDB = require('./modules/dbStructure/twitter')(sequelize, sql.DataTypes);
+// const twitterNotifDB = require('./modules/dbStructure/twitterNotif')(sequelize, sql.DataTypes);
 // const messageReaction = require('./modules/dbStructure/messageReaction')(sequelize, sql.DataTypes);
 const database = require('./modules/dbFunction/database');
+// const twitterFunction = require('./modules/dbFunction/twitter');
+// const twitterNotifFunction = require('./modules/dbFunction/twitterNotif');
+
 const Obj = new database.ServerDB();
+// const twitterObj = new twitterFunction.twitter();
+// const twitterNotifObj = new twitterNotifFunction.twitterNotif();
 
 client.once('ready', () => {
   const now = new Date();
@@ -40,10 +46,13 @@ client.once('ready', () => {
   servers.sync();
   botzone.sync();
   log.sync();
-  //  messageReaction.sync();
+  // twitterDB.sync();
+  // twitterNotifDB.sync();
+  // messageReaction.sync();
   client.user.setActivity('蒼アオ', { type: ActivityType.Watching });
   console.log(`以 ${client.user.displayName} 登入`);
 
+  // serverstats db update
   setInterval(async () => {
     let i;
     const array = Obj.allServerId();

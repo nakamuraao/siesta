@@ -43,6 +43,5 @@ module.exports = {
         await interaction.reply('數值錯誤');
       }
     }
-
   }
 };

@@ -12,7 +12,8 @@ module.exports = {
       .setDescription('詳見 https://github.com/nakamuraao/siesta')
       .addFields(
         { name: 'v 4.1.0 (2024/8/29)', value: '修正log事件問題' },
-        { name: 'v 4.1.1 (2024/9/19)', value: '更新晚餐(由oliver139提供PR)、修正inrole指令問題、調整log事件顏色' }
+        { name: 'v 4.1.1 (2024/9/19)', value: '更新晚餐(由oliver139提供PR)、修正inrole指令問題、調整log事件顏色' },
+        { name: 'v 4.1.2 (2024/11/19)', value: '更新晚餐(由oliver139提供PR)、修正serverstats, report問題' }
       );
 
     await interaction.reply({ embeds: [botstatsembed] });
