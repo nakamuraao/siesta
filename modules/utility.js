@@ -99,9 +99,11 @@ function dinnerTonight() {
   return dinner.dinner[random];
 }
 
-module.exports.isAdmin = isAdmin;
-module.exports.isOwner = isOwner;
-module.exports.omikuji = omikuji;
-module.exports.randomNumber = randomNumber;
-module.exports.logTime = logTime;
-module.exports.dinnerTonight = dinnerTonight;
+module.exports = {
+  isAdmin,
+  isOwner,
+  omikuji,
+  randomNumber,
+  logTime,
+  dinnerTonight,
+};
