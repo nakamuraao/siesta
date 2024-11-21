@@ -12,8 +12,7 @@ module.exports = {
       omikuji(msg);
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒');
-    // } else if ((msg.content.includes('吃什麼') || msg.content.includes('食咩')) && await Obj_cre.findChannel(msg.channelId)) {
-    } else if ((msg.content.includes('吃什麼') || msg.content.includes('食咩'))) {
+    } else if ((msg.content.includes('吃什麼') || msg.content.includes('食咩')) && await Obj_cre.findChannel(msg.channelId)) {
       const mealMatch = [
         "早餐", "中餐", "午餐", "下午茶", "晚餐", "宵夜",
         "早上", "朝早", "上午", "上晝", "中午", "晏晝", "下午", "下晝", "晚上", "夜晚",
