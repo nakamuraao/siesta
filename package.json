@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run": "nodemon .",
-    "start": "nodemon .",
+    "run": "node .",
+    "dev": "nodemon .",
     "lint": "eslint .",
     "lint-fix": "eslint --fix ."
   },
