@@ -1,4 +1,5 @@
 const config = require('../config.json');
+const { default: randomFn } = require("random");
 const { EmbedBuilder } = require('discord.js');
 const dinner = require('../dinner.json');
 
@@ -95,8 +96,7 @@ function logTime() {
 }
 
 function dinnerTonight() {
-  const random = Math.floor(Math.random() * (dinner.dinner.length - 1));
-  return dinner.dinner[random];
+  return randomFn.choice(dinner.dinner);
 }
 
 module.exports = {

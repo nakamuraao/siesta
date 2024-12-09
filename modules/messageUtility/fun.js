@@ -5,9 +5,18 @@ const Obj_cre = new botzoneDB.botzone;
 
 module.exports = {
   async execute(msg) {
-    if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+    if (msg.content === "菜單機率" && await Obj_cre.findChannel(msg.channelId)) {
+      const { good, strange } = require("../../data/dinner");
+      const totalCount = good.length + strange.length;
+      const goodProbi = (good.length * 100 / totalCount).toFixed(2);
+      msg.reply([
+        `菜單裡有 **${totalCount}** 項東西，其中：`,
+        `- 正常的東西：有 **${good.length}** 項，抽到的機率約為 **${goodProbi}%**`,
+        `- 奇怪的東西：有 **${strange.length}** 項，抽到的機率約為 **${100 - goodProbi}%**`,
+      ].join("\n"));
+    } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
       const num = randomNumber(0, 100);
-      msg.channel.send(`${num}%`);
+      msg.reply(`${num}%`);
     } else if (msg.content.includes('抽籤') && await Obj_cre.findChannel(msg.channelId)) {
       omikuji(msg);
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
