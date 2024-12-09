@@ -1,7 +1,7 @@
 const config = require('../config.json');
 const { default: randomFn } = require("random");
 const { EmbedBuilder } = require('discord.js');
-const dinner = require('../dinner.json');
+const dinner = require('../data/dinner');
 
 function isAdmin(interaction) {
   return interaction.memberPermissions.has('ADMINISTRATOR', true) || interaction.user.id === config.oid;
@@ -96,7 +96,7 @@ function logTime() {
 }
 
 function dinnerTonight() {
-  return randomFn.choice(dinner.dinner);
+  return randomFn.choice(dinner);
 }
 
 module.exports = {
