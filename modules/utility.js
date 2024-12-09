@@ -13,7 +13,7 @@ function isOwner(id) {
 }
 
 function omikuji(msg) {
-  const random = randomNumber(0, 14);
+  const random = randomFn.int(0, 14);
   const author = msg.author.displayName;
   const result = {
     daikichi: {
@@ -86,9 +86,9 @@ const getFormatOmikujiResult = (result, author) => {
     .setImage(result.image)];
 };
 
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+// function randomNumber(min, max) {
+//   return Math.floor(Math.random() * (max - min + 1) + min);
+// }
 
 function logTime() {
   const now = new Date();
@@ -107,7 +107,7 @@ module.exports = {
   isAdmin,
   isOwner,
   omikuji,
-  randomNumber,
+  // randomNumber,
   logTime,
   dinnerTonight,
   pickDrinks,

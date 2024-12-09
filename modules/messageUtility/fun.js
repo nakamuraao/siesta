@@ -1,7 +1,8 @@
 const config = require('../../config.json');
-const { omikuji, randomNumber, isOwner, dinnerTonight, pickDrinks } = require('../utility');
+const { omikuji, isOwner, dinnerTonight, pickDrinks } = require('../utility');
 const botzoneDB = require('../dbFunction/botChannel');
 const Obj_cre = new botzoneDB.botzone;
+const { default: randomFn } = require("random");
 
 module.exports = {
   async execute(msg) {
@@ -24,7 +25,7 @@ module.exports = {
         `- 奇怪的東西：有 **${drinks.strange.length}** 項，抽到的機率約為 **${100 - drinksGoodProbi}%**`,
       ].join("\n"));
     } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
-      const num = randomNumber(0, 100);
+      const num = randomFn.int(0, 100);
       msg.reply(`${num}%`);
     } else if (msg.content.includes('抽籤') && await Obj_cre.findChannel(msg.channelId)) {
       omikuji(msg);
