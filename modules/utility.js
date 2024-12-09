@@ -1,6 +1,8 @@
 const config = require('../config.json');
+const { default: randomFn } = require("random");
 const { EmbedBuilder } = require('discord.js');
-const dinner = require('../dinner.json');
+const dinner = require('../data/dinner');
+const drinks = require('../data/drinks');
 
 function isAdmin(interaction) {
   return interaction.memberPermissions.has('ADMINISTRATOR', true) || interaction.user.id === config.oid;
@@ -11,7 +13,7 @@ function isOwner(id) {
 }
 
 function omikuji(msg) {
-  const random = randomNumber(0, 14);
+  const random = randomFn.int(0, 14);
   const author = msg.author.displayName;
   const result = {
     daikichi: {
@@ -84,9 +86,9 @@ const getFormatOmikujiResult = (result, author) => {
     .setImage(result.image)];
 };
 
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+// function randomNumber(min, max) {
+//   return Math.floor(Math.random() * (max - min + 1) + min);
+// }
 
 function logTime() {
   const now = new Date();
@@ -95,15 +97,18 @@ function logTime() {
 }
 
 function dinnerTonight() {
-  const random = Math.floor(Math.random() * (dinner.dinner.length - 1));
-  return dinner.dinner[random];
+  return randomFn.choice(dinner);
+}
+function pickDrinks() {
+  return randomFn.choice(drinks);
 }
 
 module.exports = {
   isAdmin,
   isOwner,
   omikuji,
-  randomNumber,
+  // randomNumber,
   logTime,
   dinnerTonight,
+  pickDrinks,
 };
