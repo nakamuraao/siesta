@@ -9,11 +9,11 @@ module.exports = {
     if (msg.content === "菜單機率" && await Obj_cre.findChannel(msg.channelId)) {
       const dinner = require("../../data/dinner");
       const foodTotalCount = dinner.good.length + dinner.strange.length;
-      const foodGoodProbi = (dinner.good.length * 100 / foodTotalCount).toFixed(2);
+      const foodGoodProbi = Math.round((dinner.good.length * 100 / foodTotalCount).toFixed(2)*100)/100;
 
       const drinks = require("../../data/drinks");
       const drinksTotalCount = drinks.good.length + drinks.strange.length;
-      const drinksGoodProbi = (drinks.good.length * 100 / drinksTotalCount).toFixed(2);
+      const drinksGoodProbi = Math.round((drinks.good.length * 100 / drinksTotalCount).toFixed(2)*100)/100;
 
       msg.reply([
         `:cooking:食物菜單裡有 **${foodTotalCount}** 項東西，其中：`,
