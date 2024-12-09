@@ -9,20 +9,22 @@ module.exports = {
     if (msg.content === "菜單機率" && await Obj_cre.findChannel(msg.channelId)) {
       const dinner = require("../../data/dinner");
       const foodTotalCount = dinner.good.length + dinner.strange.length;
-      const foodGoodProbi = Math.round((dinner.good.length * 100 / foodTotalCount).toFixed(2)*100)/100;
+      const foodGoodProbi = (dinner.good.length * 100 / foodTotalCount).toFixed(2);
+      const foodStrangProbi = (dinner.strange.length * 100 / foodTotalCount).toFixed(2);
 
       const drinks = require("../../data/drinks");
       const drinksTotalCount = drinks.good.length + drinks.strange.length;
-      const drinksGoodProbi = Math.round((drinks.good.length * 100 / drinksTotalCount).toFixed(2)*100)/100;
+      const drinksGoodProbi = (drinks.good.length * 100 / drinksTotalCount).toFixed(2);
+      const drinksStrangProbi = (drinks.strange.length * 100 / drinksTotalCount).toFixed(2);
 
       msg.reply([
         `:cooking:食物菜單裡有 **${foodTotalCount}** 項東西，其中：`,
         `- 正常的東西：有 **${dinner.good.length}** 項，抽到的機率約為 **${foodGoodProbi}%**`,
-        `- 奇怪的東西：有 **${dinner.strange.length}** 項，抽到的機率約為 **${100 - foodGoodProbi}%**`,
+        `- 奇怪的東西：有 **${dinner.strange.length}** 項，抽到的機率約為 **${foodStrangProbi}%**`,
         "",
         `:bubble_tea:飲料菜單裡有 **${drinksTotalCount}** 項東西，其中：`,
         `- 正常的東西：有 **${drinks.good.length}** 項，抽到的機率約為 **${drinksGoodProbi}%**`,
-        `- 奇怪的東西：有 **${drinks.strange.length}** 項，抽到的機率約為 **${100 - drinksGoodProbi}%**`,
+        `- 奇怪的東西：有 **${drinks.strange.length}** 項，抽到的機率約為 **${drinksStrangProbi}%**`,
       ].join("\n"));
     } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
       const num = randomFn.int(0, 100);
