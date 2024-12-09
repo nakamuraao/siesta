@@ -2,6 +2,7 @@ const config = require('../config.json');
 const { default: randomFn } = require("random");
 const { EmbedBuilder } = require('discord.js');
 const dinner = require('../data/dinner');
+const drinks = require('../data/drinks');
 
 function isAdmin(interaction) {
   return interaction.memberPermissions.has('ADMINISTRATOR', true) || interaction.user.id === config.oid;
@@ -98,6 +99,9 @@ function logTime() {
 function dinnerTonight() {
   return randomFn.choice(dinner);
 }
+function pickDrinks() {
+  return randomFn.choice(drinks);
+}
 
 module.exports = {
   isAdmin,
@@ -106,4 +110,5 @@ module.exports = {
   randomNumber,
   logTime,
   dinnerTonight,
+  pickDrinks,
 };

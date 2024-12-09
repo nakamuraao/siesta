@@ -1,18 +1,27 @@
 const config = require('../../config.json');
-const { omikuji, randomNumber, isOwner, dinnerTonight } = require('../utility');
+const { omikuji, randomNumber, isOwner, dinnerTonight, pickDrinks } = require('../utility');
 const botzoneDB = require('../dbFunction/botChannel');
 const Obj_cre = new botzoneDB.botzone;
 
 module.exports = {
   async execute(msg) {
     if (msg.content === "菜單機率" && await Obj_cre.findChannel(msg.channelId)) {
-      const { good, strange } = require("../../data/dinner");
-      const totalCount = good.length + strange.length;
-      const goodProbi = (good.length * 100 / totalCount).toFixed(2);
+      const dinner = require("../../data/dinner");
+      const foodTotalCount = dinner.good.length + dinner.strange.length;
+      const foodGoodProbi = (dinner.good.length * 100 / foodTotalCount).toFixed(2);
+
+      const drinks = require("../../data/drinks");
+      const drinksTotalCount = drinks.good.length + drinks.strange.length;
+      const drinksGoodProbi = (drinks.good.length * 100 / drinksTotalCount).toFixed(2);
+
       msg.reply([
-        `菜單裡有 **${totalCount}** 項東西，其中：`,
-        `- 正常的東西：有 **${good.length}** 項，抽到的機率約為 **${goodProbi}%**`,
-        `- 奇怪的東西：有 **${strange.length}** 項，抽到的機率約為 **${100 - goodProbi}%**`,
+        `:cooking:食物菜單裡有 **${foodTotalCount}** 項東西，其中：`,
+        `- 正常的東西：有 **${dinner.good.length}** 項，抽到的機率約為 **${foodGoodProbi}%**`,
+        `- 奇怪的東西：有 **${dinner.strange.length}** 項，抽到的機率約為 **${100 - foodGoodProbi}%**`,
+        "",
+        `:bubble_tea:飲料菜單裡有 **${drinksTotalCount}** 項東西，其中：`,
+        `- 正常的東西：有 **${drinks.good.length}** 項，抽到的機率約為 **${drinksGoodProbi}%**`,
+        `- 奇怪的東西：有 **${drinks.strange.length}** 項，抽到的機率約為 **${100 - drinksGoodProbi}%**`,
       ].join("\n"));
     } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
       const num = randomNumber(0, 100);
@@ -39,6 +48,13 @@ module.exports = {
           msg.reply(res === "不要吃" ? "唔好食" : res === "自己想啦" ? `${mealMatch[index]}食咩？咁大個人自己諗啦` : `${mealMatch[index]}就食${res}`);
           break;
         }
+      }
+    } else if ((msg.content.includes('喝什麼') || msg.content.includes('飲咩')) && await Obj_cre.findChannel(msg.channelId)) {
+      const drink = pickDrinks();
+      if (msg.content.includes("喝什麼")) {
+        msg.reply(drink === "不要喝" ? "不要喝" : drink === "自己想啦" ? "喝什麼？自己想啦" : `就喝${drink}`);
+      } else if (msg.content.includes("飲咩")) {
+        msg.reply(drink === "不要喝" ? "唔好飲" : drink === "自己想啦" ? "飲咩？咁大個人自己諗啦" : `就飲${drink}`);
       }
     }
   }
