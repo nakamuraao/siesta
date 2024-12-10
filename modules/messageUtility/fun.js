@@ -28,7 +28,7 @@ module.exports = {
       ].join("\n"));
     } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
       const num = randomFn.int(0, 100);
-      msg.reply(`${num}%`);
+      msg.channel.send(`${num}%`);
     } else if (msg.content.includes('抽籤') && await Obj_cre.findChannel(msg.channelId)) {
       omikuji(msg);
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
