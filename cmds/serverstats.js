@@ -12,7 +12,7 @@ module.exports = {
       .setThumbnail(`${await (interaction.guild).iconURL()}`)
       .addFields(
         { name: '伺服器人數 :', value: `${await (interaction.guild).memberCount}` },
-        { name: `伺服器建立時間 :`, value: `${await (interaction.guild).createdTimestamp / 1000}` },
+        { name: `伺服器建立時間 :`, value: `<t:${await (interaction.guild).createdTimestamp / 1000}>` },
         { name: `伺服器擁有者 :`, value:`<@${await (interaction.guild).ownerId}>` }
       )
       .setFooter({ text:`伺服器ID : ${await (interaction.guild).id}` });
