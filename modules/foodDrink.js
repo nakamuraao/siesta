@@ -92,7 +92,6 @@ function eatDrinkWhat(msg, testMode) {
   ]);
 
   const meal = mealMatch.find(term => msg.includes(term));
-  console.log(`🚀 ~ eatDrinkWhat ~ meal:`, meal);
   if (meal) {
     matchPatterns.push(
       { key: `${meal}吃什麼`, type: "food", lang: "cn" },
@@ -102,7 +101,6 @@ function eatDrinkWhat(msg, testMode) {
   }
 
   const match = matchPatterns.find(({ key }) => msg.includes(key));
-  console.log(`🚀 ~ eatDrinkWhat ~ match:`, match);
 
   if (!match) return null;
 
@@ -113,7 +111,6 @@ function eatDrinkWhat(msg, testMode) {
       case "drink":
         choice = pickFoodDrink(match.type, testMode);
         reply = dict[match.type].get(choice)?.[match.lang] ?? replyTemplate.get(match.type)[match.lang];
-        console.log(`🚀 ~ eatDrinkWhat ~ reply:`, reply);
         return reply
           .replace(`{meal}`, meal)
           .replace(`{${match.type}}`, choice);
@@ -127,7 +124,6 @@ function eatDrinkWhat(msg, testMode) {
           food: dict.setMeal.get(choice.food)?.[match.lang] ?? replyTemplate.get("setMeal")["food"][match.lang],
           drink: dict.setMeal.get(choice.drink)?.[match.lang] ?? replyTemplate.get("setMeal")["drink"][match.lang],
         };
-        console.log(`🚀 ~ eatDrinkWhat ~ Object.values(reply):`, Object.values(reply));
         return Object.values(reply).join("\n")
           .replace(`{food}`, choice.food)
           .replace(`{drink}`, choice.drink);
