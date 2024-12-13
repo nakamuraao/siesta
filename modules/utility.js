@@ -96,29 +96,10 @@ function logTime() {
   console.log(time);
 }
 
-function dinnerTonight() {
-  return randomFn.choice(dinner);
-}
-function pickDrinks() {
-  return randomFn.choice(drinks);
-}
-function pickFoodDrink(type) {
-  switch (type) {
-    case "food":
-      return dinnerTonight();
-
-    case "drink":
-      return pickDrinks();
-  }
-}
-
 module.exports = {
   isAdmin,
   isOwner,
   omikuji,
   // randomNumber,
   logTime,
-  dinnerTonight,
-  pickDrinks,
-  pickFoodDrink,
 };
