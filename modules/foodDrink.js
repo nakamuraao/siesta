@@ -62,9 +62,14 @@ const mealMatch = [
 function isAskingMeal(msg) {
   const matchPatterns = [
     "吃什麼",
+    "吃甚麼",
     "食咩",
+    "食乜",
     "喝什麼",
+    "喝甚麼",
     "飲咩",
+    "飲乜",
+    "來個套餐",
     "來份套餐",
     "要個套餐",
     "要份套餐",
@@ -76,7 +81,9 @@ function isAskingMeal(msg) {
 function eatDrinkWhat(msg, testMode) {
   const matchPatterns = [
     { key: `喝什麼`, type: "drink", lang: "cn" },
+    { key: `喝甚麼`, type: "drink", lang: "cn" },
     { key: `飲咩`, type: "drink", lang: "canto" },
+    { key: `飲乜`, type: "drink", lang: "canto" },
     { key: `來個套餐`, type: "setMeal", lang: "cn" },
     { key: `來份套餐`, type: "setMeal", lang: "cn" },
     { key: `要個套餐`, type: "setMeal", lang: "canto" },
@@ -95,7 +102,9 @@ function eatDrinkWhat(msg, testMode) {
   if (meal) {
     matchPatterns.push(
       { key: `${meal}吃什麼`, type: "food", lang: "cn" },
+      { key: `${meal}吃甚麼`, type: "food", lang: "cn" },
       { key: `${meal}食咩`, type: "food", lang: "canto" },
+      { key: `${meal}食乜`, type: "food", lang: "canto" },
     );
     replyTemplate.set("food", { cn: `${meal}就吃{food}`, canto: `${meal}就食{food}` });
   }
