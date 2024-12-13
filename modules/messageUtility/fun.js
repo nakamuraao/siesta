@@ -1,8 +1,86 @@
 const config = require('../../config.json');
-const { omikuji, isOwner, dinnerTonight, pickDrinks } = require('../utility');
+const { omikuji, isOwner, dinnerTonight, pickDrinks, pickFoodDrink } = require('../utility');
 const botzoneDB = require('../dbFunction/botChannel');
 const Obj_cre = new botzoneDB.botzone;
 const { default: randomFn } = require("random");
+
+// #region : 吃什麼喝什麼
+
+// 時間和類別
+const mealMatch = [
+  "早餐", "中餐", "午餐", "下午茶", "晚餐", "宵夜",
+  "早上", "朝早", "上午", "上晝", "中午", "晏晝", "下午", "下晝", "晚上", "夜晚",
+  "今早", "今朝", "今晚",
+  "明天", "聽日", "明早", "聽朝", "明晚", "聽晚",
+  "待會", "陣間",
+  "前菜", "主菜", "正餐", "甜品", "零食", "小吃",
+];
+
+// 觸發的文字
+function isAskingMeal(msg) {
+  const matchPatterns = [
+    "吃什麼",
+    "食咩",
+    "喝什麼",
+    "飲咩",
+    // "來份套餐",
+    // "要個套餐",
+  ];
+  return matchPatterns.some(item => msg.includes(item));
+}
+
+// 選擇餐點
+function eatDrinkWhat(msg) {
+  const matchPatterns = [
+    { key: `喝什麼`, type: "drink", lang: "cn", ans: "就喝{drink}" },
+    { key: `飲咩`, type: "drink", lang: "canto", ans: "就飲{drink}" },
+    // { key: `來份套餐`, type: "set", lang: "cn", ans: "那就吃{food}\n飲料的話就要{drink}" },
+    // { key: `要個套餐`, type: "set", lang: "canto", ans: "咁就食{food}\n野飲就要{drink}" },
+  ];
+
+  const meal = mealMatch.find(term => msg.includes(term));
+  if (meal) {
+    matchPatterns.push(
+      { key: `${meal}吃什麼`, type: "food", lang: "cn", ans: `${meal}就吃{food}` },
+      { key: `${meal}食咩`, type: "food", lang: "canto", ans: `${meal}就食{food}` },
+    );
+  }
+
+  const match = matchPatterns.find(({ key }) => msg.includes(key));
+
+  if (!match) return null;
+
+  const dict = require("../../data/dictionary");
+  try {
+    let choice, choiceProcessed;
+    switch (match.type) {
+      case "food":
+      case "drink":
+        choice = pickFoodDrink(match.type);
+        choiceProcessed = dict[match.type].get(choice)?.[match.lang] ?? choice;
+        return match.ans
+          .replace(`{meal}`, meal)
+          .replace(`{${match.type}}`, choiceProcessed);
+
+      case "set":
+        choice = {
+          food: pickFoodDrink("food"),
+          drink: pickFoodDrink("drink"),
+        };
+        choiceProcessed = {
+          food: dict.food.get(choice.food)?.[match.lang] ?? choice.food,
+          drink: dict.drink.get(choice.drink)?.[match.lang] ?? choice.drink,
+        };
+        return match.ans
+          .replace(`{food}`, choiceProcessed.food)
+          .replace(`{drink}`, choiceProcessed.drink);
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+//  #endregion
 
 module.exports = {
   async execute(msg) {
@@ -33,32 +111,16 @@ module.exports = {
       omikuji(msg);
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒');
-    } else if ((msg.content.includes('吃什麼') || msg.content.includes('食咩')) && !msg.author.bot && await Obj_cre.findChannel(msg.channelId)) {
-      const mealMatch = [
-        "早餐", "中餐", "午餐", "下午茶", "晚餐", "宵夜",
-        "早上", "朝早", "上午", "上晝", "中午", "晏晝", "下午", "下晝", "晚上", "夜晚",
-        "今早", "今朝", "今晚",
-        "明天", "聽日", "明早", "聽朝", "明晚", "聽晚",
-        "待會", "陣間",
-      ];
-      for (let index = 0; index < mealMatch.length; index++) {
-        if (msg.content.includes(`${mealMatch[index]}吃什麼`)) {
-          const res = dinnerTonight();
-          msg.reply(res === "不要吃" ? "不要吃" : res === "自己想啦" ? `${mealMatch[index]}吃什麼？自己想啦` : `${mealMatch[index]}就吃${res}`);
-          break;
-        } else if (msg.content.includes(`${mealMatch[index]}食咩`)) {
-          const res = dinnerTonight();
-          msg.reply(res === "不要吃" ? "唔好食" : res === "自己想啦" ? `${mealMatch[index]}食咩？咁大個人自己諗啦` : `${mealMatch[index]}就食${res}`);
-          break;
-        }
+    } else if (isAskingMeal(msg.content) && !msg.author.bot && await Obj_cre.findChannel(msg.channelId)) {
+      const choice = eatDrinkWhat(msg.content);
+
+      // Error Handle
+      if (choice === false) {
+        msg.reply("累了，你自己想吧");
+        return;
       }
-    } else if ((msg.content.includes('喝什麼') || msg.content.includes('飲咩')) && !msg.author.bot && await Obj_cre.findChannel(msg.channelId)) {
-      const drink = pickDrinks();
-      if (msg.content.includes("喝什麼")) {
-        msg.reply(drink === "不要喝" ? "不要喝" : drink === "自己想啦" ? "喝什麼？自己想啦" : `就喝${drink}`);
-      } else if (msg.content.includes("飲咩")) {
-        msg.reply(drink === "不要喝" ? "唔好飲" : drink === "自己想啦" ? "飲咩？咁大個人自己諗啦" : `就飲${drink}`);
-      }
+
+      if (choice !== null) msg.reply(choice);
     }
   }
 };

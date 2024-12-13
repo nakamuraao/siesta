@@ -102,6 +102,15 @@ function dinnerTonight() {
 function pickDrinks() {
   return randomFn.choice(drinks);
 }
+function pickFoodDrink(type) {
+  switch (type) {
+    case "food":
+      return dinnerTonight();
+
+    case "drink":
+      return pickDrinks();
+  }
+}
 
 module.exports = {
   isAdmin,
@@ -111,4 +120,5 @@ module.exports = {
   logTime,
   dinnerTonight,
   pickDrinks,
+  pickFoodDrink,
 };
