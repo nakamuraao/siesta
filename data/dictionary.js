@@ -2,6 +2,7 @@ const food = new Map([
   ["不要吃", { cn: "不要吃", canto: "唔好食" }],
   ["吃什麼自己想啦", { cn: "{meal}吃什麼？自己想啦", canto: "{meal}食咩？咁大個人自己諗啦" }],
   ["那個吧", { cn: "{meal}就吃那個吧", canto: "{meal}就食嗰樣啦" }],
+  ["牛奶卡樂B", { cn: "{meal}就把牛奶和卡樂B倒一起搖來吃", canto: "{meal}就將牛奶同卡樂B撈埋Shake來食" }],
 ]);
 
 const drink = new Map([
@@ -16,6 +17,7 @@ const setMeal = new Map([
   ["吃什麼自己想啦", { cn: "吃什麼就自己想啦", canto: "食咩就自己諗啦" }],
   ["喝什麼自己想啦", { cn: "而喝什麼就自己想啦", canto: "至於飲咩就自己諗啦" }],
   ["那個吧", { cn: "那個吧", canto: "嗰樣啦" }],
+  ["牛奶卡樂B", { cn: "那就把牛奶和卡樂B倒一起搖來吃", canto: "咁就將牛奶同卡樂B撈埋Shake來食" }],
 ]);
 
 module.exports = {

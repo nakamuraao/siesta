@@ -13,13 +13,13 @@ function pickDrinks() {
 function pickFoodDrink(type, testMode) {
   switch (type) {
     case "food":
-      if (testMode === 1) return "吃什麼自己想啦";
-      if (testMode === 2) return "不要吃";
+      // if (testMode === 1) return "吃什麼自己想啦";
+      // if (testMode === 2) return "不要吃";
       return pickFood();
 
     case "drink":
-      if (testMode === 1) return "喝什麼自己想啦";
-      if (testMode === 2) return "不要喝";
+      // if (testMode === 1) return "喝什麼自己想啦";
+      // if (testMode === 2) return "不要喝";
       return pickDrinks();
   }
 }
@@ -56,6 +56,9 @@ const mealMatch = [
   "明天", "聽日", "明早", "聽朝", "明晚", "聽晚",
   "待會", "陣間",
   "前菜", "主菜", "正餐", "甜品", "零食", "小吃",
+  "聖誕", "聖誕大餐", "拳擊日", "冬至", "除夕", "除夕晚", "除夕晚上", "元旦", "過年", "新年",
+  "清明", "清明節", "清明大餐", "餓鬼節", "復活節", "佛誕", "國慶", "重陽", "重陽節", "端午", "端午節", "中秋", "中秋節",
+  "巴尼陣亡紀念日", "生日", "光棍節",
 ];
 
 // 觸發的文字
@@ -114,7 +117,7 @@ function eatDrinkWhat(msg, testMode) {
   if (!match) return null;
 
   try {
-    let choice, choiceProcessed, reply;
+    let choice, reply;
     switch (match.type) {
       case "food":
       case "drink":
