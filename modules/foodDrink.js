@@ -13,13 +13,13 @@ function pickDrinks() {
 function pickFoodDrink(type, testMode) {
   switch (type) {
     case "food":
-      if (testMode === 1) return "吃什麼自己想啦";
-      if (testMode === 2) return "不要吃";
+      // if (testMode === 1) return "吃什麼自己想啦";
+      // if (testMode === 2) return "不要吃";
       return pickFood();
 
     case "drink":
-      if (testMode === 1) return "喝什麼自己想啦";
-      if (testMode === 2) return "不要喝";
+      // if (testMode === 1) return "喝什麼自己想啦";
+      // if (testMode === 2) return "不要喝";
       return pickDrinks();
   }
 }
@@ -117,7 +117,7 @@ function eatDrinkWhat(msg, testMode) {
   if (!match) return null;
 
   try {
-    let choice, choiceProcessed, reply;
+    let choice, reply;
     switch (match.type) {
       case "food":
       case "drink":
