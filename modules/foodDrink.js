@@ -60,6 +60,7 @@ const mealMatch = [
   "清明", "清明節", "清明大餐", "餓鬼節", "復活節", "佛誕", "國慶", "重陽", "重陽節", "端午", "端午節", "中秋", "中秋節",
   "巴尼陣亡紀念日", "生日", "光棍節",
 ];
+mealMatch.sort((a, b) => b.length - a.length);
 
 // 觸發的文字
 function isAskingMeal(msg) {
@@ -102,6 +103,7 @@ function eatDrinkWhat(msg, testMode) {
   ]);
 
   const meal = mealMatch.find(term => msg.includes(term));
+  console.log(`🚀 ~ eatDrinkWhat ~ meal:`, meal);
   if (meal) {
     matchPatterns.push(
       { key: `${meal}吃什麼`, type: "food", lang: "cn" },
@@ -113,6 +115,7 @@ function eatDrinkWhat(msg, testMode) {
   }
 
   const match = matchPatterns.find(({ key }) => msg.includes(key));
+  console.log(`🚀 ~ eatDrinkWhat ~ match:`, match);
 
   if (!match) return null;
 
