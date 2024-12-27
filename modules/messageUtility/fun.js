@@ -3,11 +3,11 @@ const { omikuji, isOwner } = require('../utility');
 const botzoneDB = require('../dbFunction/botChannel');
 const Obj_cre = new botzoneDB.botzone;
 const { default: randomFn } = require("random");
-const { isAskingMeal, eatDrinkWhat, getMenuStat } = require("../foodDrink");
+const { isAskingMeal, eatDrinkWhat, getMenuStat, isCheckingMenu, checkItem } = require("../foodDrink");
 
 module.exports = {
   async execute(msg) {
-    if (msg.content === "菜單機率" && await Obj_cre.findChannel(msg.channelId)) {
+    if (msg.content === "菜單機率" && isOwner(msg.author.id)) {
       msg.reply(getMenuStat());
     } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
       const num = randomFn.int(0, 100);
@@ -26,6 +26,9 @@ module.exports = {
       }
 
       if (choice !== null) msg.reply(choice);
+    } else if (isCheckingMenu(msg.content) && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+      const item = msg.content.replace("菜單有沒有", "");
+      msg.reply(checkItem(item));
     } else if (msg.content === "菜單測試" && isOwner(msg.author.id)) {
       const output = [
         eatDrinkWhat("早餐吃什麼"),
