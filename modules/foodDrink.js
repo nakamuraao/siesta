@@ -13,13 +13,13 @@ function pickDrinks() {
 function pickFoodDrink(type, testMode) {
   switch (type) {
     case "food":
-      // if (testMode === 1) return "吃什麼自己想啦";
-      // if (testMode === 2) return "不要吃";
+      if (testMode === 1) return "吃什麼自己想啦";
+      if (testMode === 2) return "不要吃";
       return pickFood();
 
     case "drink":
-      // if (testMode === 1) return "喝什麼自己想啦";
-      // if (testMode === 2) return "不要喝";
+      if (testMode === 1) return "喝什麼自己想啦";
+      if (testMode === 2) return "不要喝";
       return pickDrinks();
   }
 }
@@ -103,7 +103,7 @@ function eatDrinkWhat(msg, testMode) {
   ]);
 
   const meal = mealMatch.find(term => msg.includes(term));
-  console.log(`🚀 ~ eatDrinkWhat ~ meal:`, meal);
+  // console.debug(`🚀 ~ eatDrinkWhat ~ meal:`, meal);
   if (meal) {
     matchPatterns.push(
       { key: `${meal}吃什麼`, type: "food", lang: "cn" },
@@ -115,7 +115,7 @@ function eatDrinkWhat(msg, testMode) {
   }
 
   const match = matchPatterns.find(({ key }) => msg.includes(key));
-  console.log(`🚀 ~ eatDrinkWhat ~ match:`, match);
+  // console.debug(`🚀 ~ eatDrinkWhat ~ match:`, match);
 
   if (!match) return null;
 
@@ -151,6 +151,109 @@ function eatDrinkWhat(msg, testMode) {
 
 // #endregion
 
+// #region : 辨別菜單
+function isCheckingMenu(msg) {
+  return msg.startsWith("菜單有沒有");
+}
+
+function identifyItem(item) {
+  // const output = {
+  //   type: "food|drink",
+  //   matchType: "exact|similar",
+  //   matchedKey: "",
+  //   menuType: "good|strange",
+  // };
+  // find for exact match
+  if (dinner.good.includes(item)) {
+    return {
+      type: "food",
+      matchType: "exact",
+      matchedKey: item,
+      menuType: "good",
+    };
+  } else if (dinner.strange.includes(item)) {
+    return {
+      type: "food",
+      matchType: "exact",
+      matchedKey: item,
+      menuType: "strange",
+    };
+  } else if (drinks.good.includes(item)) {
+    return {
+      type: "drink",
+      matchType: "exact",
+      matchedKey: item,
+      menuType: "good",
+    };
+  } else if (drinks.strange.includes(item)) {
+    return {
+      type: "drink",
+      matchType: "exact",
+      matchedKey: item,
+      menuType: "strange",
+    };
+  }
+
+  // find for similar match
+  let matchedItem = dinner.good.find(menuItem => menuItem.includes(item));
+  if (matchedItem) {
+    return {
+      type: "food",
+      matchType: "similar",
+      matchedKey: matchedItem,
+      menuType: "good",
+    };
+  }
+  matchedItem = dinner.strange.find(menuItem => menuItem.includes(item));
+  if (matchedItem) {
+    return {
+      type: "food",
+      matchType: "similar",
+      matchedKey: matchedItem,
+      menuType: "strange",
+    };
+  }
+  matchedItem = drinks.good.find(menuItem => menuItem.includes(item));
+  if (matchedItem) {
+    return {
+      type: "drink",
+      matchType: "similar",
+      matchedKey: matchedItem,
+      menuType: "good",
+    };
+  }
+  matchedItem = drinks.strange.find(menuItem => menuItem.includes(item));
+  if (matchedItem) {
+    return {
+      type: "drink",
+      matchType: "similar",
+      matchedKey: matchedItem,
+      menuType: "strange",
+    };
+  }
+
+  return null;
+}
+
+function checkItem(item) {
+  const res = identifyItem(item);
+  if (res === null) return "沒有";
+
+  const trans = new Map([
+    ["food", "食物"],
+    ["drink", "飲品"],
+    ["good", "正常"],
+    ["strange", "奇怪"],
+  ]);
+
+  if (res.matchType === "exact") {
+    return `**「${item}」**有在 **${trans.get(res.type)}** 菜單裡，屬於 **${trans.get(res.menuType)}** 類別`;
+  } else {
+    return `**「${item}」**沒有在菜單裡。最相似的項目是 **${trans.get(res.type)}** 菜單裡的 **「${res.matchedKey}」**，屬於 **${trans.get(res.menuType)}** 類別`;
+  }
+}
+//  #endregion
+
 module.exports = {
   getMenuStat,
   pickFood,
@@ -158,4 +261,7 @@ module.exports = {
   pickFoodDrink,
   isAskingMeal,
   eatDrinkWhat,
+  isCheckingMenu,
+  identifyItem,
+  checkItem,
 };
