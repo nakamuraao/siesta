@@ -27,6 +27,10 @@ module.exports = {
 
       if (choice !== null) msg.reply(choice);
     } else if (isCheckingMenu(msg.content) && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+      if (msg.content.trim() === "菜單有沒有") {
+        msg.reply(randomFn.boolean() ? "有，有菜單" : "你要不要看看你到底在問什麼？");
+        return;
+      }
       const item = msg.content.replace("菜單有沒有", "");
       msg.reply(checkItem(item));
     } else if (msg.content === "菜單測試" && isOwner(msg.author.id)) {
