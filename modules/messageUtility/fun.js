@@ -7,17 +7,17 @@ const { isAskingMeal, eatDrinkWhat, getMenuStat, isCheckingMenu, checkItem } = r
 
 module.exports = {
   async execute(msg) {
-    if (msg.content === "菜單機率" && isOwner(msg.author.id)) {
-    if (msg.content === "菜單機率" && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+    const isRightChannel = await Obj_cre.findChannel(msg.channelId);
+    if (msg.content === "菜單機率" && (isRightChannel || isOwner(msg.author.id))) {
       msg.reply(getMenuStat());
-    } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+    } else if (msg.content.includes('機率') && (isRightChannel || isOwner(msg.author.id))) {
       const num = randomFn.int(0, 100);
       msg.channel.send(`${num}%`);
-    } else if (msg.content.includes('抽籤') && await Obj_cre.findChannel(msg.channelId)) {
+    } else if (msg.content.includes('抽籤') && isRightChannel) {
       omikuji(msg);
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒');
-    } else if (isAskingMeal(msg.content) && !msg.author.bot && await Obj_cre.findChannel(msg.channelId)) {
+    } else if (isAskingMeal(msg.content) && !msg.author.bot && isRightChannel) {
       const choice = eatDrinkWhat(msg.content);
 
       // Error Handling
@@ -27,7 +27,7 @@ module.exports = {
       }
 
       if (choice !== null) msg.reply(choice);
-    } else if (isCheckingMenu(msg.content) && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
+    } else if (isCheckingMenu(msg.content) && (isRightChannel || isOwner(msg.author.id))) {
       if (msg.content.trim() === "菜單有沒有") {
         msg.reply(randomFn.boolean() ? "有，有菜單" : "你要不要看看你到底在問什麼？");
         return;
