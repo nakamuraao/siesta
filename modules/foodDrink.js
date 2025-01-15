@@ -4,25 +4,43 @@ const dinner = require('../data/dinner');
 const drinks = require('../data/drinks');
 const dict = require("../data/dictionary");
 
-function pickFood() {
-  return randomFn.choice(dinner);
+function pickFood(group) {
+  switch (group) {
+    case "good":
+      return randomFn.choice(dinner.good);
+
+    case "strange":
+      return randomFn.choice(dinner.strange);
+
+    default:
+      return randomFn.choice(dinner);
+  }
 }
-function pickDrinks() {
-  return randomFn.choice(drinks);
+function pickDrinks(group) {
+  switch (group) {
+    case "good":
+      return randomFn.choice(drinks.good);
+
+    case "strange":
+      return randomFn.choice(drinks.strange);
+
+    default:
+      return randomFn.choice(drinks);
+  }
 }
-function pickFoodDrink(type, testMode) {
+function pickFoodDrink(type, testMode, group) {
   switch (type) {
     case "food":
       if (testMode === 1) return "吃什麼自己想啦";
       if (testMode === 2) return "不要吃";
       if (testMode === 3) return "那個食物吧";
-      return pickFood();
+      return pickFood(group);
 
     case "drink":
       if (testMode === 1) return "喝什麼自己想啦";
       if (testMode === 2) return "不要喝";
       if (testMode === 3) return "那個飲料吧";
-      return pickDrinks();
+      return pickDrinks(group);
   }
 }
 
@@ -79,6 +97,14 @@ function isAskingMeal(msg) {
     "來份套餐",
     "要個套餐",
     "要份套餐",
+    "來個正常套餐",
+    "來份正常套餐",
+    "要個正常套餐",
+    "要份正常套餐",
+    "來個奇怪套餐",
+    "來份奇怪套餐",
+    "要個奇怪套餐",
+    "要份奇怪套餐",
   ];
   return matchPatterns.some(item => msg.includes(item));
 }
@@ -86,10 +112,26 @@ function isAskingMeal(msg) {
 // 抽
 function eatDrinkWhat(msg, testMode) {
   const matchPatterns = [
+    { key: `喝什麼正常的`, type: "drink", lang: "cn", group: "good" },
+    { key: `喝甚麼正常的`, type: "drink", lang: "cn", group: "good" },
+    { key: `喝什麼奇怪的`, type: "drink", lang: "cn", group: "strange" },
+    { key: `喝甚麼奇怪的`, type: "drink", lang: "cn", group: "strange" },
     { key: `喝什麼`, type: "drink", lang: "cn" },
     { key: `喝甚麼`, type: "drink", lang: "cn" },
+    { key: `飲咩正常野`, type: "drink", lang: "canto", group: "good" },
+    { key: `飲乜正常野`, type: "drink", lang: "canto", group: "good" },
+    { key: `飲咩奇怪野`, type: "drink", lang: "canto", group: "strange" },
+    { key: `飲乜奇怪野`, type: "drink", lang: "canto", group: "strange" },
     { key: `飲咩`, type: "drink", lang: "canto" },
     { key: `飲乜`, type: "drink", lang: "canto" },
+    { key: `來個正常套餐`, type: "setMeal", lang: "cn", group: "good" },
+    { key: `來份正常套餐`, type: "setMeal", lang: "cn", group: "good" },
+    { key: `要個正常套餐`, type: "setMeal", lang: "canto", group: "good" },
+    { key: `要份正常套餐`, type: "setMeal", lang: "canto", group: "good" },
+    { key: `來個奇怪套餐`, type: "setMeal", lang: "cn", group: "strange" },
+    { key: `來份奇怪套餐`, type: "setMeal", lang: "cn", group: "strange" },
+    { key: `要個奇怪套餐`, type: "setMeal", lang: "canto", group: "strange" },
+    { key: `要份奇怪套餐`, type: "setMeal", lang: "canto", group: "strange" },
     { key: `來個套餐`, type: "setMeal", lang: "cn" },
     { key: `來份套餐`, type: "setMeal", lang: "cn" },
     { key: `要個套餐`, type: "setMeal", lang: "canto" },
@@ -108,8 +150,16 @@ function eatDrinkWhat(msg, testMode) {
   // console.debug(`🚀 ~ eatDrinkWhat ~ meal:`, meal);
   if (meal) {
     matchPatterns.push(
+      { key: `${meal}吃什麼正常的`, type: "food", lang: "cn", group: "good" },
+      { key: `${meal}吃甚麼正常的`, type: "food", lang: "cn", group: "good" },
+      { key: `${meal}吃什麼奇怪的`, type: "food", lang: "cn", group: "strange" },
+      { key: `${meal}吃甚麼奇怪的`, type: "food", lang: "cn", group: "strange" },
       { key: `${meal}吃什麼`, type: "food", lang: "cn" },
       { key: `${meal}吃甚麼`, type: "food", lang: "cn" },
+      { key: `${meal}食咩正常野`, type: "food", lang: "canto", group: "good" },
+      { key: `${meal}食乜正常野`, type: "food", lang: "canto", group: "good" },
+      { key: `${meal}食咩奇怪野`, type: "food", lang: "canto", group: "strange" },
+      { key: `${meal}食乜奇怪野`, type: "food", lang: "canto", group: "strange" },
       { key: `${meal}食咩`, type: "food", lang: "canto" },
       { key: `${meal}食乜`, type: "food", lang: "canto" },
     );
@@ -126,7 +176,7 @@ function eatDrinkWhat(msg, testMode) {
     switch (match.type) {
       case "food":
       case "drink":
-        choice = pickFoodDrink(match.type, testMode);
+        choice = pickFoodDrink(match.type, testMode, match.group);
         reply = dict[match.type].get(choice)?.[match.lang] ?? replyTemplate.get(match.type)[match.lang];
         return reply
           .replace(`{meal}`, meal)
@@ -134,8 +184,8 @@ function eatDrinkWhat(msg, testMode) {
 
       case "setMeal":
         choice = {
-          food: pickFoodDrink("food", testMode),
-          drink: pickFoodDrink("drink", testMode),
+          food: pickFoodDrink("food", testMode, match.group),
+          drink: pickFoodDrink("drink", testMode, match.group),
         };
         reply = {
           food: dict.setMeal.get(choice.food)?.[match.lang] ?? replyTemplate.get("setMeal")["food"][match.lang],
