@@ -8,6 +8,7 @@ const { isAskingMeal, eatDrinkWhat, getMenuStat, isCheckingMenu, checkItem } = r
 module.exports = {
   async execute(msg) {
     if (msg.content === "菜單機率" && isOwner(msg.author.id)) {
+    if (msg.content === "菜單機率" && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
       msg.reply(getMenuStat());
     } else if (msg.content.includes('機率') && (await Obj_cre.findChannel(msg.channelId) || isOwner(msg.author.id))) {
       const num = randomFn.int(0, 100);
