@@ -86,9 +86,29 @@ const getFormatOmikujiResult = (result, author) => {
     .setImage(result.image)];
 };
 
-// function randomNumber(min, max) {
-//   return Math.floor(Math.random() * (max - min + 1) + min);
-// }
+function flipCoin(msg) {
+  let resultImage = "";
+  let resultTxt = "";
+  const author = msg.author.displayName;
+  if (randomFn.int(0, 100) === 50) {
+    resultTxt = "硬幣立起來了！";
+    resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104198662619166/coin-side.png";
+  } else if (randomFn.boolean()) {
+    resultTxt = "正面";
+    resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104198931058748/coin-upside.png";
+  } else {
+    resultTxt = "反面";
+    resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104199195168921/coin-downside.png";
+  }
+
+  const embedMessage = new EmbedBuilder()
+    .setColor('#a5a9b4')
+    .setTitle(`**${author} 的擲硬幣結果**`)
+    .setDescription(resultTxt)
+    .setThumbnail(resultImage);
+
+  msg.reply({ embeds: [embedMessage] });
+}
 
 function logTime() {
   const now = new Date();
@@ -100,6 +120,6 @@ module.exports = {
   isAdmin,
   isOwner,
   omikuji,
-  // randomNumber,
+  flipCoin,
   logTime,
 };
