@@ -39,14 +39,17 @@ module.exports = {
         eatDrinkWhat("早餐吃什麼"),
         eatDrinkWhat("早餐吃什麼", 1),
         eatDrinkWhat("早餐吃什麼", 2),
+        eatDrinkWhat("早餐吃什麼", 3),
         "-----------------------------",
         eatDrinkWhat("喝什麼"),
         eatDrinkWhat("喝什麼", 1),
         eatDrinkWhat("喝什麼", 2),
+        eatDrinkWhat("喝什麼", 3),
         "-----------------------------",
         eatDrinkWhat("來份套餐"),
         eatDrinkWhat("來份套餐", 1),
         eatDrinkWhat("來份套餐", 2),
+        eatDrinkWhat("來份套餐", 3),
       ];
       console.debug(output);
       msg.reply(output.join("\n"));

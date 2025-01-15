@@ -15,11 +15,13 @@ function pickFoodDrink(type, testMode) {
     case "food":
       if (testMode === 1) return "吃什麼自己想啦";
       if (testMode === 2) return "不要吃";
+      if (testMode === 3) return "那個食物吧";
       return pickFood();
 
     case "drink":
       if (testMode === 1) return "喝什麼自己想啦";
       if (testMode === 2) return "不要喝";
+      if (testMode === 3) return "那個飲料吧";
       return pickDrinks();
   }
 }
