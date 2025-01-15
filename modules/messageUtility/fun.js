@@ -32,7 +32,7 @@ module.exports = {
         msg.reply(randomFn.boolean() ? "有，有菜單" : "你要不要看看你到底在問什麼？");
         return;
       }
-      const item = msg.content.replace("菜單有沒有", "");
+      const item = msg.content.replace("菜單有沒有", "").replace("?", "").replace("？", "").trim();
       msg.reply(checkItem(item));
     } else if (msg.content === "菜單測試" && isOwner(msg.author.id)) {
       const output = [
