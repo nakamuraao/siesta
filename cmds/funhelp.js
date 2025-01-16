@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 function generateHelpMsg() {
   return {
@@ -70,7 +70,8 @@ function generateHelpMsg() {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('funhelp')
-    .setDescription('顯示趣味功能的說明書'),
+    .setDescription('顯示趣味功能的說明書')
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
   async execute(interaction) {
     await interaction.reply({ content: "沒問題" });
