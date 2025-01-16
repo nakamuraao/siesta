@@ -76,7 +76,7 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
   async execute(interaction) {
-    const isRightChannel = await Obj_cre.findChannel(msg.channelId);
+    const isRightChannel = await Obj_cre.findChannel(interaction.channelId);
     if (isRightChannel || isOwner(interaction.user.id)) {
       await interaction.reply({ content: "**正在思考...**" });
       await interaction.followUp({ embeds: [generateHelpMsg()] });
