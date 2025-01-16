@@ -1,5 +1,5 @@
 const config = require('../../config.json');
-const { omikuji, isOwner, flipCoin } = require('../utility');
+const { omikuji, isOwner, flipCoin, helpMe } = require('../utility');
 const botzoneDB = require('../dbFunction/botChannel');
 const Obj_cre = new botzoneDB.botzone;
 const { default: randomFn } = require("random");
@@ -8,7 +8,10 @@ const { isAskingMeal, eatDrinkWhat, getMenuStat, isCheckingMenu, checkItem } = r
 module.exports = {
   async execute(msg) {
     const isRightChannel = await Obj_cre.findChannel(msg.channelId);
-    if (msg.content === "菜單機率" && (isRightChannel || isOwner(msg.author.id))) {
+    if (msg.content === "阿喔A夢幫幫我" && (isRightChannel || isOwner(msg.author.id))) {
+      const reply = helpMe();
+      msg.reply(reply);
+    } else if (msg.content === "菜單機率" && (isRightChannel || isOwner(msg.author.id))) {
       msg.reply(getMenuStat());
     } else if (msg.content.includes('機率') && (isRightChannel || isOwner(msg.author.id))) {
       const num = randomFn.int(0, 100);
