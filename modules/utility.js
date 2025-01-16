@@ -103,7 +103,7 @@ function flipCoin(msg) {
 
   const embedMessage = new EmbedBuilder()
     .setColor('#a5a9b4')
-    .setTitle(`**${author} 的擲硬幣結果**`)
+    .setTitle(`${author} 的擲硬幣結果`)
     .setDescription(resultTxt)
     .setThumbnail(resultImage);
 
