@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const botzoneDB = require('../modules/dbFunction/botChannel');
 const Obj_cre = new botzoneDB.botzone;
+const { isOwner } = require('../modules/utility');
 
 function generateHelpMsg() {
   return {
