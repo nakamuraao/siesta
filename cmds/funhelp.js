@@ -1,4 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const botzoneDB = require('../modules/dbFunction/botChannel');
+const Obj_cre = new botzoneDB.botzone;
 
 function generateHelpMsg() {
   return {
@@ -74,7 +76,12 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
   async execute(interaction) {
-    await interaction.reply({ content: "沒問題" });
-    await interaction.followUp({ embeds: [generateHelpMsg()], ephemeral: true });
+    const isRightChannel = await Obj_cre.findChannel(msg.channelId);
+    if (isRightChannel || isOwner(interaction.user.id)) {
+      await interaction.reply({ content: "**正在思考...**" });
+      await interaction.followUp({ embeds: [generateHelpMsg()] });
+    } else {
+      await interaction.reply({ content:'請在機器人區域中使用', ephemeral: true });
+    }
   }
 };
