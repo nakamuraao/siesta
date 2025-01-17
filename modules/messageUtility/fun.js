@@ -18,7 +18,9 @@ module.exports = {
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒');
     } else if (["擲幣", "擲硬幣", "擲銀", "擲銀仔", "擲公字"].includes(msg.content) && isRightChannel) {
-      flipCoin(msg);
+      msg.reply(flipCoin(msg.author));
+    } else if (msg.content === "撒幣" && isRightChannel) {
+      msg.reply(flipCoin(msg.author, true));
     } else if (isAskingMeal(msg.content) && !msg.author.bot && isRightChannel) {
       const choice = eatDrinkWhat(msg.content);
 

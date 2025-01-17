@@ -86,28 +86,36 @@ const getFormatOmikujiResult = (result, author) => {
     .setImage(result.image)];
 };
 
-function flipCoin(msg) {
-  let resultImage = "";
-  let resultTxt = "";
-  const author = msg.author.displayName;
-  if (randomFn.int(0, 100) === 50) {
-    resultTxt = "硬幣立起來了！";
-    resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104198662619166/coin-side.png";
-  } else if (randomFn.boolean()) {
-    resultTxt = "正面";
-    resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104198931058748/coin-upside.png";
-  } else {
-    resultTxt = "反面";
-    resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104199195168921/coin-downside.png";
+function flipCoin(author, multiple = false) {
+  const output = [];
+  const count = multiple ? randomFn.int(3, 8) : 1;
+  let haveMiddle = false;
+  for (let i = 0; i < count; i++) {
+    let resultImage = "";
+    let resultTxt = "";
+    if (randomFn.int(0, 100) === 50) {
+      resultTxt = "硬幣立起來了！";
+      resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104198662619166/coin-side.png";
+      haveMiddle = true;
+    } else if (randomFn.boolean()) {
+      resultTxt = "正面";
+      resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104198931058748/coin-upside.png";
+    } else {
+      resultTxt = "反面";
+      resultImage = "https://cdn.discordapp.com/attachments/966618791276605470/1329104199195168921/coin-downside.png";
+    }
+
+    output.push({
+      color: 0xa5a9b4,
+      title: multiple ? `硬幣${i + 1}哪邊向上了？` : `${author.displayName} 的擲硬幣結果`,
+      description: resultTxt,
+      thumbnail: { url: resultImage }
+    });
   }
 
-  const embedMessage = new EmbedBuilder()
-    .setColor('#a5a9b4')
-    .setTitle(`${author} 的擲硬幣結果`)
-    .setDescription(resultTxt)
-    .setThumbnail(resultImage);
-
-  msg.reply({ embeds: [embedMessage] });
+  let content = multiple ? `<@${author.id}> 撒出了${count}枚硬幣！` : "";
+  if (haveMiddle) content += "竟然擲到了中間，這真的是太牛逼了，該請客了！";
+  return { content, embeds: output };
 }
 
 function logTime() {
