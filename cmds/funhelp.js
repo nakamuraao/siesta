@@ -6,11 +6,10 @@ const { isOwner } = require('../modules/utility');
 function generateHelpMsg() {
   return {
     color: 0xffffff,
-    title: "好的好的",
-    description: "現在可用的功能",
-    thumbnail: { url: "https://cdn.discordapp.com/attachments/966618791276605470/1329445510485905522/image.png" },
+    title: "現在可用的功能",
+    // description: "現在可用的功能",
+    // thumbnail: { url: "https://cdn.discordapp.com/attachments/966618791276605470/1329445510485905522/image.png" },
     fields: [
-      { name: "", value: "" },
       {
         name: "# 指令",
         value: [
@@ -34,7 +33,7 @@ function generateHelpMsg() {
           "- 要份(正常｜奇怪)套餐",
           "",
           "**其他：**",
-          "- 擲幣",
+          "- 擲幣、擲硬幣、擲銀、擲銀仔、擲公字",
           "- 抽籤",
           "====================",
         ].join("\n"),
