@@ -48,19 +48,23 @@ function pickFoodDrink(type, testMode, group) {
 function getMenuStat() {
   const foodTotalCount = dinner.good.length + dinner.strange.length;
   const foodGoodProbi = (dinner.good.length * 100 / foodTotalCount).toFixed(2);
+  const foodUmmmProbi = (dinner.ummm.length * 100 / foodTotalCount).toFixed(2);
   const foodStrangeProbi = (dinner.strange.length * 100 / foodTotalCount).toFixed(2);
 
   const drinksTotalCount = drinks.good.length + drinks.strange.length;
   const drinksGoodProbi = (drinks.good.length * 100 / drinksTotalCount).toFixed(2);
+  const drinksUmmmProbi = (drinks.ummm.length * 100 / drinksTotalCount).toFixed(2);
   const drinksStrangeProbi = (drinks.strange.length * 100 / drinksTotalCount).toFixed(2);
 
   return [
     `:cooking:食物菜單裡有 **${foodTotalCount}** 項東西，其中：`,
     `- 正常的東西：有 **${dinner.good.length}** 項，抽到的機率約為 **${foodGoodProbi}%**`,
+    `- 難說的東西：有 **${dinner.ummm.length}** 項，抽到的機率約為 **${foodUmmmProbi}%**`,
     `- 奇怪的東西：有 **${dinner.strange.length}** 項，抽到的機率約為 **${foodStrangeProbi}%**`,
     "",
     `:bubble_tea:飲料菜單裡有 **${drinksTotalCount}** 項東西，其中：`,
     `- 正常的東西：有 **${drinks.good.length}** 項，抽到的機率約為 **${drinksGoodProbi}%**`,
+    `- 難說的東西：有 **${drinks.ummm.length}** 項，抽到的機率約為 **${drinksUmmmProbi}%**`,
     `- 奇怪的東西：有 **${drinks.strange.length}** 項，抽到的機率約為 **${drinksStrangeProbi}%**`,
   ].join("\n");
 }
@@ -167,7 +171,6 @@ function eatDrinkWhat(msg, testMode) {
   }
 
   const match = matchPatterns.find(({ key }) => msg.includes(key));
-  // console.debug(`🚀 ~ eatDrinkWhat ~ match:`, match);
 
   if (!match) return null;
 
@@ -216,7 +219,14 @@ function identifyItem(item) {
   //   menuType: "good|strange",
   // };
   // find for exact match
-  if (dinner.good.includes(item)) {
+  if (dinner.ummm.includes(item)) {
+    return {
+      type: "food",
+      matchType: "exact",
+      matchedKey: item,
+      menuType: "ummm",
+    };
+  } else if (dinner.good.includes(item)) {
     return {
       type: "food",
       matchType: "exact",
@@ -229,6 +239,13 @@ function identifyItem(item) {
       matchType: "exact",
       matchedKey: item,
       menuType: "strange",
+    };
+  } else if (drinks.ummm.includes(item)) {
+    return {
+      type: "drink",
+      matchType: "exact",
+      matchedKey: item,
+      menuType: "ummm",
     };
   } else if (drinks.good.includes(item)) {
     return {
@@ -247,7 +264,16 @@ function identifyItem(item) {
   }
 
   // find for similar match
-  let matchedItem = dinner.good.find(menuItem => menuItem.includes(item));
+  let matchedItem = dinner.ummm.find(menuItem => menuItem.includes(item));
+  if (matchedItem) {
+    return {
+      type: "food",
+      matchType: "similar",
+      matchedKey: matchedItem,
+      menuType: "ummm",
+    };
+  }
+  matchedItem = dinner.good.find(menuItem => menuItem.includes(item));
   if (matchedItem) {
     return {
       type: "food",
@@ -263,6 +289,15 @@ function identifyItem(item) {
       matchType: "similar",
       matchedKey: matchedItem,
       menuType: "strange",
+    };
+  }
+  matchedItem = drinks.ummm.find(menuItem => menuItem.includes(item));
+  if (matchedItem) {
+    return {
+      type: "drink",
+      matchType: "similar",
+      matchedKey: matchedItem,
+      menuType: "ummm",
     };
   }
   matchedItem = drinks.good.find(menuItem => menuItem.includes(item));
@@ -295,6 +330,7 @@ function checkItem(item) {
     ["food", "食物"],
     ["drink", "飲品"],
     ["good", "正常"],
+    ["ummm", "難說欸"],
     ["strange", "奇怪"],
   ]);
 
