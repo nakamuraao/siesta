@@ -7,6 +7,7 @@
   "keywords": [],
   "main": "index.js",
   "scripts": {
+    "prepare": "simple-git-hooks",
     "run": "node .",
     "dev": "nodemon .",
     "lint": "eslint .",
@@ -23,8 +24,16 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "@oliver139/eslint-config": "^2.0.0",
+    "@oliver139/eslint-config": "^2.1.1",
     "eslint": "^9.22.0",
-    "nodemon": "^3.1.9"
+    "lint-staged": "^15.5.0",
+    "nodemon": "^3.1.9",
+    "simple-git-hooks": "^2.12.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }
