@@ -4,5 +4,5 @@
   "token": "The bot token",
 
   "webhooks": "Webhooks",
-  "ignore":""
+  "ignore": ""
 }

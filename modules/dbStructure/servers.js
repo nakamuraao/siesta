@@ -1,17 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('servers', {
-    server_id:{
+    server_id: {
       type: DataTypes.STRING,
-      primaryKey: true
+      primaryKey: true,
     },
-    server_name:{
-      type: DataTypes.STRING
+    server_name: {
+      type: DataTypes.STRING,
     },
-    adminrole:{
-      type: DataTypes.STRING
-    }
+    adminrole: {
+      type: DataTypes.STRING,
+    },
   }, {
     freezeTableName: true,
-    timestamps: false
-  });
-};
+    timestamps: false,
+  })
+}

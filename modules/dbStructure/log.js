@@ -1,20 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('logChannel', {
 
-    server_id:{
+    server_id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
     },
-    server_name:{
-      type: DataTypes.STRING
-    },
-    channel_id:{
+    server_name: {
       type: DataTypes.STRING,
-      allowNull:false
-    }
+    },
+    channel_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   }, {
     freezeTableName: true,
-    timestamps: false
-  });
-};
+    timestamps: false,
+  })
+}
