@@ -1,13 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define('botzone', {
 
-    channel_id:{
+    channel_id: {
       type: DataTypes.STRING,
       primaryKey: true,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   }, {
     freezeTableName: true,
-    timestamps: false
-  });
-};
+    timestamps: false,
+  })
+}

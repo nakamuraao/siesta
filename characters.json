@@ -1,25 +1,25 @@
 {
-  "list":["エミリア","めぐみん","シエスタ","シエル","イレイナ"],
-  "characters":{
-    "1":{
-      "name":"エミリア",
-      "icon":"./botAvatar/emilia.png"
+  "list": ["エミリア", "めぐみん", "シエスタ", "シエル", "イレイナ"],
+  "characters": {
+    "1": {
+      "name": "エミリア",
+      "icon": "./botAvatar/emilia.png"
     },
-    "2":{
-      "name":"めぐみん",
-      "icon":"./botAvatar/megumin.png"
+    "2": {
+      "name": "めぐみん",
+      "icon": "./botAvatar/megumin.png"
     },
-    "3":{
-      "name":"シエスタ",
-      "icon":"./botAvatar/siesta.png"
+    "3": {
+      "name": "シエスタ",
+      "icon": "./botAvatar/siesta.png"
     },
-    "4":{
-      "name":"シエル",
-      "icon":"./botAvatar/siel.png"
+    "4": {
+      "name": "シエル",
+      "icon": "./botAvatar/siel.png"
     },
-    "5":{
-      "name":"イレイナ",
-      "icon":"./botAvatar/elaina.png"
+    "5": {
+      "name": "イレイナ",
+      "icon": "./botAvatar/elaina.png"
     }
   }
 }
