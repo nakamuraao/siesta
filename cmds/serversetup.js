@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
 const database = require('../modules/dbFunction/database')
 const { isAdmin, isOwner } = require('../modules/utility')
 
@@ -19,7 +19,7 @@ module.exports = {
 
   async execute(interaction) {
     if (!isAdmin(interaction)) {
-      interaction.reply({ content: '此指令僅限管理員使用', ephemeral: true })
+      interaction.reply({ content: '此指令僅限管理員使用', flags: MessageFlags.Ephemeral })
       return
     }
 

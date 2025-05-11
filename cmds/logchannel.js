@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 const log = require('../modules/dbFunction/log')
 const { isAdmin, logTime } = require('../modules/utility')
 
@@ -17,7 +17,7 @@ module.exports = {
 
   async execute(interaction) {
     if (!isAdmin(interaction)) {
-      interaction.reply({ content: '此指令僅限管理員使用', ephemeral: true })
+      interaction.reply({ content: '此指令僅限管理員使用', flags: MessageFlags.Ephemeral })
       return
     }
     const channelId = interaction.channel.id
@@ -30,11 +30,11 @@ module.exports = {
         logTime()
         console.log(`${interaction.user.displayName} 新增了紀錄頻道 ${channelId}`)
       } else {
-        await interaction.reply({ content: '此頻道已經是紀錄頻道', ephemeral: true })
+        await interaction.reply({ content: '此頻道已經是紀錄頻道', flags: MessageFlags.Ephemeral })
       }
     } else if (interaction.options.getSubcommand() === 'remove') {
       if (!await Obj.findLogChannel(serverId)) {
-        await interaction.reply({ content: '此頻道非紀錄頻道', ephemeral: true })
+        await interaction.reply({ content: '此頻道非紀錄頻道', flags: MessageFlags.Ephemeral })
       } else {
         await Obj.deleteLogChannel(serverId)
         await interaction.reply('已取消紀錄頻道')

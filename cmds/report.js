@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChannelType, ThreadAutoArchiveDuration } = require('discord.js')
+const { SlashCommandBuilder, ChannelType, ThreadAutoArchiveDuration, MessageFlags } = require('discord.js')
 const { consoleChannel } = require('../config.json')
 const database = require('../modules/dbFunction/database')
 const { logTime } = require('../modules/utility')
@@ -11,7 +11,7 @@ module.exports = {
   async execute(interaction, client) {
     const Obj = new database.ServerDB(interaction.guild.id)
     if (!await Obj.findServer(interaction.guild.id)) {
-      interaction.reply({ content: '請通知管理員先執行`/serversetup`指令', ephemeral: true })
+      interaction.reply({ content: '請通知管理員先執行`/serversetup`指令', flags: MessageFlags.Ephemeral })
       return
     }
 
@@ -34,6 +34,6 @@ module.exports = {
 
     thread.members.add(interaction.member.id)
     thread.send(`<@${interaction.member.id}>您好\n這個討論串只有您與<@&${admin}>看的見\n請將您要投訴的內容、訊息連結、截圖都貼在這個地方，會由管理員進行處置。\n**請務必注意若在此標註任何人，他將會被邀請進入此討論串。**`)
-    await interaction.reply({ content: `投訴專用討論串<#${thread.id}>已建立，請放心的在該討論串進行投訴`, ephemeral: true })
+    await interaction.reply({ content: `投訴專用討論串<#${thread.id}>已建立，請放心的在該討論串進行投訴`, flags: MessageFlags.Ephemeral })
   },
 }

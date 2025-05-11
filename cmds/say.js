@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 const { isOwner } = require('../modules/utility')
 
 module.exports = {
@@ -13,16 +13,16 @@ module.exports = {
       const message = interaction.options.getString('message')
       const times = interaction.options.getInteger('times')
       if (times == null) {
-        await interaction.reply({ content: `\`${message}\``, ephemeral: true })
+        await interaction.reply({ content: `\`${message}\``, flags: MessageFlags.Ephemeral })
         await interaction.channel.send(message)
       } else {
-        await interaction.reply({ content: `重複` + `\`${message}\`${times}次`, ephemeral: true })
+        await interaction.reply({ content: `重複` + `\`${message}\`${times}次`, flags: MessageFlags.Ephemeral })
         for (let i = 0; i < times; i++) {
           await interaction.channel.send(message)
         }
       }
     } else {
-      await interaction.reply({ content: '此指令僅限擁有者使用', ephemeral: true })
+      await interaction.reply({ content: '此指令僅限擁有者使用', flags: MessageFlags.Ephemeral })
     }
   },
 }

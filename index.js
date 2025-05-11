@@ -1,5 +1,5 @@
 const fs = require('node:fs')
-const { Client, Collection, GatewayIntentBits, ActivityType } = require('discord.js')
+const { Client, Collection, GatewayIntentBits, ActivityType, MessageFlags } = require('discord.js')
 const sql = require('sequelize')
 const { token, oid } = require('./config.json')
 
@@ -82,7 +82,7 @@ client.on('interactionCreate', async (interaction) => {
     await command.execute(interaction, client)
   } catch (error) {
     console.error(error)
-    await interaction.reply({ content: `執行指令時出現問題，請洽伺服器管理員或<@${oid}>`, ephemeral: true })
+    await interaction.reply({ content: `執行指令時出現問題，請洽伺服器管理員或<@${oid}>`, flags: MessageFlags.Ephemeral })
   }
 })
 

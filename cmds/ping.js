@@ -5,8 +5,8 @@ module.exports = {
     .setName('ping')
     .setDescription('確認延遲'),
 
-  async execute(interaction) {
-    const sent = await interaction.reply({ content: 'Pinging...', fetchReply: true })
-    await interaction.editReply(`${sent.createdTimestamp - interaction.createdTimestamp}ms`)
+  async execute(interaction, client) {
+    const sent = await interaction.reply({ content: 'Pinging...' })
+    interaction.editReply(`Roundtrip latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms\nWebsocket heartbeat: ${client.ws.ping}ms.`)
   },
 }

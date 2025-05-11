@@ -132,8 +132,7 @@ module.exports = {
   async execute(interaction) {
     const isRightChannel = await Obj_cre.findChannel(interaction.channelId)
     if (isRightChannel || isOwner(interaction.user.id)) {
-      await interaction.reply({ content: '**正在思考...**' })
-      await interaction.editReply({ content: '**趣味功能**', embeds: [generateHelpMsg()] })
+      await interaction.reply({ content: '**趣味功能**', embeds: [generateHelpMsg()] })
     } else {
       await interaction.reply({ content: '請在機器人區域中使用', ephemeral: true })
     }

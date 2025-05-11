@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js')
+const { EmbedBuilder, SlashCommandBuilder, MessageFlags } = require('discord.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,7 +19,7 @@ module.exports = {
       }
     })
     if (string === '') {
-      await interaction.reply({ content: '身分組中沒有成員', ephemeral: true })
+      await interaction.reply({ content: '身分組中沒有成員', flags: MessageFlags.Ephemeral })
     } else {
       const embed = new EmbedBuilder().setTitle(`在 ${targetrole.name} 中的成員`).setDescription(string).setColor('#FFFFFF')
       await interaction.reply({ embeds: [embed] })

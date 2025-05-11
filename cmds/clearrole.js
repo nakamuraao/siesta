@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, MessageFlags } = require('discord.js')
 const { isAdmin, logTime } = require('../modules/utility')
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 
   async execute(interaction) {
     if (!isAdmin(interaction)) {
-      await interaction.reply({ content: '此指令僅限管理員使用', ephemeral: true })
+      await interaction.reply({ content: '此指令僅限管理員使用', flags: MessageFlags.Ephemeral })
       return
     }
 

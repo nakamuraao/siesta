@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js')
+const { EmbedBuilder, SlashCommandBuilder, MessageFlags } = require('discord.js')
 const characters = require('../characters.json')
 const { isOwner } = require('../modules/utility')
 
@@ -19,7 +19,7 @@ module.exports = {
 
   async execute(interaction, client) {
     if (!isOwner(interaction.user.id)) {
-      await interaction.reply({ content: '此指令僅限擁有者使用', ephemeral: true })
+      await interaction.reply({ content: '此指令僅限擁有者使用', flags: MessageFlags.Ephemeral })
       return
     }
 
