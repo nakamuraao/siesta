@@ -42,6 +42,9 @@ importers:
       nodemon:
         specifier: ^3.1.9
         version: 3.1.9
+      run-func:
+        specifier: ^3.0.0
+        version: 3.0.0
       simple-git-hooks:
         specifier: ^2.12.1
         version: 2.12.1
@@ -1962,6 +1965,11 @@ packages:
 
   rspack-resolver@1.2.2:
     resolution: {integrity: sha512-Fwc19jMBA3g+fxDJH2B4WxwZjE0VaaOL7OX/A4Wn5Zv7bOD/vyPZhzXfaO73Xc2GAlfi96g5fGUa378WbIGfFw==}
+
+  run-func@3.0.0:
+    resolution: {integrity: sha512-RZwVzBrD7biV5CiAgwEUdaRGt0hLjBrhn4PqemBuNogH9Sc/8Bv8p+6F6AweU5bxZXsb3Mxltgu+/f+TGi0udA==}
+    engines: {node: '>=10.0.0', npm: '>=6.0.0'}
+    hasBin: true
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
@@ -4634,6 +4642,8 @@ snapshots:
       '@unrs/rspack-resolver-binding-wasm32-wasi': 1.2.2
       '@unrs/rspack-resolver-binding-win32-arm64-msvc': 1.2.2
       '@unrs/rspack-resolver-binding-win32-x64-msvc': 1.2.2
+
+  run-func@3.0.0: {}
 
   run-parallel@1.2.0:
     dependencies:
