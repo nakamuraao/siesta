@@ -57,6 +57,9 @@ function pickFoodDrink(type, testMode, group) {
 }
 
 // #region : 菜單機率
+function outputMenuStat() {
+  console.log(getMenuStat())
+}
 function getMenuStat() {
   const foodTotalCount = dinner.good.length + dinner.strange.length
   const foodGoodProbi = (dinner.good.length * 100 / foodTotalCount).toFixed(2)
@@ -449,6 +452,7 @@ function checkItem(item) {
 //  #endregion
 
 module.exports = {
+  outputMenuStat,
   getMenuStat,
   pickFood,
   pickDrinks,
