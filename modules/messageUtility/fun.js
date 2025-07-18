@@ -1,6 +1,6 @@
 const config = require('../../config.json')
 const botzoneDB = require('../dbFunction/botChannel')
-const { omikuji, isOwner, flipCoin } = require('../utility')
+const { omikuji, isOwner, flipCoin, helpMeSelect } = require('../utility')
 
 const Obj_cre = new botzoneDB.botzone()
 const { default: randomFn } = require('random')
@@ -16,6 +16,19 @@ module.exports = {
       msg.channel.send(`${num}%`)
     } else if (msg.content.includes('抽籤') && isRightChannel) {
       omikuji(msg)
+    } else if ((msg.content.startsWith('隨機') || msg.content.startsWith('抽一個')) && isRightChannel) {
+      console.log(`🚀 ~ fun.js:20 ~ execute ~ 隨機:`)
+      const items = msg.content.split(' ').slice(1)
+      if (items.length <= 1) {
+        msg.reply('蛤？抽什麼？')
+        return
+      }
+
+      if (randomFn.int(0, 100) === 50) {
+        msg.reply(randomFn.boolean() ? '小孩子才做選擇，全都要！' : '都不要')
+      } else {
+        msg.reply(`就這個吧：${helpMeSelect(items)}`)
+      }
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒')
     } else if (msg.content.includes('擲幣') && isRightChannel) {

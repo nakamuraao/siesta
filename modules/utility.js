@@ -124,10 +124,15 @@ function logTime() {
   console.log(time)
 }
 
+function helpMeSelect(items) {
+  return randomFn.choice(items)
+}
+
 module.exports = {
   isAdmin,
   isOwner,
   omikuji,
   flipCoin,
   logTime,
+  helpMeSelect,
 }
