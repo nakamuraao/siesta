@@ -17,8 +17,7 @@ module.exports = {
     } else if (msg.content.includes('抽籤') && isRightChannel) {
       omikuji(msg)
     } else if ((msg.content.startsWith('隨機') || msg.content.startsWith('抽一個')) && isRightChannel) {
-      console.log(`🚀 ~ fun.js:20 ~ execute ~ 隨機:`)
-      const items = msg.content.split(' ').slice(1)
+      const items = msg.content.replace(/\s+/g, ' ').trim().split(' ').slice(1)
       if (items.length <= 1) {
         msg.reply('蛤？抽什麼？')
         return

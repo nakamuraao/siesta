@@ -12,6 +12,9 @@ function pickFood(group) {
     case 'strange':
       return randomFn.choice(dinner.strange)
 
+    case 'ummm':
+      return randomFn.choice(dinner.ummm)
+
     default:
       return randomFn.choice(dinner)
   }
@@ -23,6 +26,9 @@ function pickDrinks(group) {
 
     case 'strange':
       return randomFn.choice(drinks.strange)
+
+    case 'ummm':
+      return randomFn.choice(drinks.ummm)
 
     default:
       return randomFn.choice(drinks)
@@ -216,6 +222,10 @@ function isAskingMeal(msg) {
     '來份奇怪套餐',
     '要個奇怪套餐',
     '要份奇怪套餐',
+    '來個難說欸套餐',
+    '來份難說欸套餐',
+    '要個難說欸套餐',
+    '要份難說欸套餐',
   ]
   return matchPatterns.some(item => msg.includes(item))
 }
@@ -225,24 +235,47 @@ function eatDrinkWhat(msg, testMode) {
   const matchPatterns = [
     { key: `喝什麼正常的`, type: 'drink', lang: 'cn', group: 'good' },
     { key: `喝甚麼正常的`, type: 'drink', lang: 'cn', group: 'good' },
+
     { key: `喝什麼奇怪的`, type: 'drink', lang: 'cn', group: 'strange' },
     { key: `喝甚麼奇怪的`, type: 'drink', lang: 'cn', group: 'strange' },
+
+    { key: `喝什麼難說欸的`, type: 'drink', lang: 'cn', group: 'ummm' },
+    { key: `喝甚麼難說欸的`, type: 'drink', lang: 'cn', group: 'ummm' },
+
     { key: `喝什麼`, type: 'drink', lang: 'cn' },
     { key: `喝甚麼`, type: 'drink', lang: 'cn' },
+
+    // ---------------------------------------------------------
+
     { key: `飲咩正常野`, type: 'drink', lang: 'canto', group: 'good' },
     { key: `飲乜正常野`, type: 'drink', lang: 'canto', group: 'good' },
+
     { key: `飲咩奇怪野`, type: 'drink', lang: 'canto', group: 'strange' },
     { key: `飲乜奇怪野`, type: 'drink', lang: 'canto', group: 'strange' },
+
+    { key: `飲咩難說欸野`, type: 'drink', lang: 'canto', group: 'ummm' },
+    { key: `飲乜難說欸野`, type: 'drink', lang: 'canto', group: 'ummm' },
+
     { key: `飲咩`, type: 'drink', lang: 'canto' },
     { key: `飲乜`, type: 'drink', lang: 'canto' },
+
+    // ---------------------------------------------------------
+
     { key: `來個正常套餐`, type: 'setMeal', lang: 'cn', group: 'good' },
     { key: `來份正常套餐`, type: 'setMeal', lang: 'cn', group: 'good' },
     { key: `要個正常套餐`, type: 'setMeal', lang: 'canto', group: 'good' },
     { key: `要份正常套餐`, type: 'setMeal', lang: 'canto', group: 'good' },
+
     { key: `來個奇怪套餐`, type: 'setMeal', lang: 'cn', group: 'strange' },
     { key: `來份奇怪套餐`, type: 'setMeal', lang: 'cn', group: 'strange' },
     { key: `要個奇怪套餐`, type: 'setMeal', lang: 'canto', group: 'strange' },
     { key: `要份奇怪套餐`, type: 'setMeal', lang: 'canto', group: 'strange' },
+
+    { key: `來個難說欸套餐`, type: 'setMeal', lang: 'cn', group: 'ummm' },
+    { key: `來份難說欸套餐`, type: 'setMeal', lang: 'cn', group: 'ummm' },
+    { key: `要個難說欸套餐`, type: 'setMeal', lang: 'canto', group: 'ummm' },
+    { key: `要份難說欸套餐`, type: 'setMeal', lang: 'canto', group: 'ummm' },
+
     { key: `來個套餐`, type: 'setMeal', lang: 'cn' },
     { key: `來份套餐`, type: 'setMeal', lang: 'cn' },
     { key: `要個套餐`, type: 'setMeal', lang: 'canto' },
@@ -258,19 +291,26 @@ function eatDrinkWhat(msg, testMode) {
   ])
 
   const meal = mealMatch.find(term => msg.includes(term))
-  // console.debug(`🚀 ~ eatDrinkWhat ~ meal:`, meal);
+
   if (meal) {
     matchPatterns.push(
       { key: `${meal}吃什麼正常的`, type: 'food', lang: 'cn', group: 'good' },
       { key: `${meal}吃甚麼正常的`, type: 'food', lang: 'cn', group: 'good' },
-      { key: `${meal}吃什麼奇怪的`, type: 'food', lang: 'cn', group: 'strange' },
-      { key: `${meal}吃甚麼奇怪的`, type: 'food', lang: 'cn', group: 'strange' },
-      { key: `${meal}吃什麼`, type: 'food', lang: 'cn' },
-      { key: `${meal}吃甚麼`, type: 'food', lang: 'cn' },
       { key: `${meal}食咩正常野`, type: 'food', lang: 'canto', group: 'good' },
       { key: `${meal}食乜正常野`, type: 'food', lang: 'canto', group: 'good' },
+
+      { key: `${meal}吃什麼奇怪的`, type: 'food', lang: 'cn', group: 'strange' },
+      { key: `${meal}吃甚麼奇怪的`, type: 'food', lang: 'cn', group: 'strange' },
       { key: `${meal}食咩奇怪野`, type: 'food', lang: 'canto', group: 'strange' },
       { key: `${meal}食乜奇怪野`, type: 'food', lang: 'canto', group: 'strange' },
+
+      { key: `${meal}吃什麼難說欸的`, type: 'food', lang: 'cn', group: 'ummm' },
+      { key: `${meal}吃甚麼難說欸的`, type: 'food', lang: 'cn', group: 'ummm' },
+      { key: `${meal}食咩難說欸野`, type: 'food', lang: 'canto', group: 'ummm' },
+      { key: `${meal}食乜難說欸野`, type: 'food', lang: 'canto', group: 'ummm' },
+
+      { key: `${meal}吃什麼`, type: 'food', lang: 'cn' },
+      { key: `${meal}吃甚麼`, type: 'food', lang: 'cn' },
       { key: `${meal}食咩`, type: 'food', lang: 'canto' },
       { key: `${meal}食乜`, type: 'food', lang: 'canto' },
     )
