@@ -3,7 +3,7 @@ const { default: randomFn } = require('random')
 const config = require('../config.json')
 
 function isAdmin(interaction) {
-  return interaction.memberPermissions.has('ADMINISTRATOR', true) || interaction.user.id === config.oid
+  return (interaction.user.id === config.oid || interaction.memberPermissions.has('ADMINISTRATOR', true))
 }
 
 function isOwner(id) {
