@@ -28,8 +28,10 @@ module.exports = {
       } else {
         msg.reply(`就這個吧：${helpMeSelect(items)}`)
       }
-    } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@!${config.cid}>我婆`) {
+    } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@${config.cid}> 我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒')
+    } else if (msg.content === `<@${config.cid}>老婆` || msg.content === `<@${config.cid}> 老婆`) {
+      msg.reply(isOwner(msg.author.id) ? '怎麼了♥' : '<:miaomi_yue:1335451705613090826>')
     } else if (msg.content.includes('擲幣') && isRightChannel) {
       msg.reply(flipCoin(msg.author))
     } else if (msg.content === '撒幣' && isRightChannel) {

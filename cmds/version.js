@@ -13,6 +13,7 @@ module.exports = {
       .addFields(
         { name: 'v 4.2.0 (2025/5/12)', value: 'update npm, discord.js' },
         { name: 'v 4.3.0 (2025/7/22)', value: '新增隨機挑選(Oliver Mak)' },
+        { name: 'v 4.4.0 (2025/12/3)', value: '更新反應' },
       )
 
     await interaction.reply({ embeds: [botstatsembed] })
