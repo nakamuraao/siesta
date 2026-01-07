@@ -19,18 +19,18 @@
     "axios": "^1.8.4",
     "discord.js": "^14.18.0",
     "node-cron": "^3.0.3",
-    "random": "^5.3.0",
+    "random": "^5.4.1",
     "selenium-webdriver": "^4.29.0",
-    "sequelize": "^6.37.6",
+    "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "@oliver139/eslint-config": "^2.1.1",
-    "eslint": "^9.22.0",
-    "lint-staged": "^15.5.0",
-    "nodemon": "^3.1.9",
+    "@oliver139/eslint-config": "^4.2.0",
+    "eslint": "^9.39.2",
+    "lint-staged": "^16.2.7",
+    "nodemon": "^3.1.11",
     "run-func": "^3.0.0",
-    "simple-git-hooks": "^2.12.1"
+    "simple-git-hooks": "^2.13.1"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

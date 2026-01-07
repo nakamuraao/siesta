@@ -116,7 +116,7 @@ const good = [
   '黑啤',
   '黑松沙士',
   '龍蝦湯',
-]
+];
 
 const strange = [
   '...尖尖哇嘎乃！',
@@ -176,7 +176,7 @@ const strange = [
   '鬆餅糖漿',
   '魚缸裡的水',
   '鴨賞奶茶',
-]
+];
 
 const ummm = [
   '十億鳥蛋',
@@ -192,9 +192,9 @@ const ummm = [
   '美祿特調（美祿 + 生雞蛋 + 鮮牛奶 + 穀物片）',
   '苦瓜甘筍红菜頭汁',
   '雞骨草',
-]
+];
 
-module.exports = [...ummm, ...good, ...strange]
-module.exports.good = good
-module.exports.ummm = ummm
-module.exports.strange = strange
+module.exports = [...ummm, ...good, ...strange];
+module.exports.good = good;
+module.exports.ummm = ummm;
+module.exports.strange = strange;

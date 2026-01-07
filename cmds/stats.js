@@ -1,6 +1,6 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js')
-const { version } = require('../package.json')
-const { oid } = require('./../config.json')
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const { version } = require('../package.json');
+const { oid } = require('./../config.json');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -16,8 +16,8 @@ module.exports = {
         { name: `建立時間 :`, value: `<t:${Number.parseInt(interaction.client.user.createdTimestamp / 1000)}>` },
         { name: `擁有者 :`, value: `蒼アオ <@${oid}>` },
         { name: '版本', value: version },
-      )
+      );
 
-    await interaction.reply({ embeds: [botstatsembed] })
+    await interaction.reply({ embeds: [botstatsembed] });
   },
-}
+};
