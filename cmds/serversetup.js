@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js')
-const database = require('../modules/dbFunction/database')
-const { isAdmin, isOwner } = require('../modules/utility')
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags } = require('discord.js');
+const database = require('../modules/dbFunction/database');
+const { isAdmin, isOwner } = require('../modules/utility');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,39 +19,39 @@ module.exports = {
 
   async execute(interaction) {
     if (!isAdmin(interaction)) {
-      interaction.reply({ content: '此指令僅限管理員使用', flags: MessageFlags.Ephemeral })
-      return
+      interaction.reply({ content: '此指令僅限管理員使用', flags: MessageFlags.Ephemeral });
+      return;
     }
 
-    const guildId = interaction.guild.id
-    const Obj = new database.ServerDB(guildId)
+    const guildId = interaction.guild.id;
+    const Obj = new database.ServerDB(guildId);
 
     if (interaction.options.getSubcommand() === 'setup') {
-      const guildName = interaction.guild.name
-      const adminroleid = interaction.options.getRole('admin')
-      const adminrole = adminroleid.id
+      const guildName = interaction.guild.name;
+      const adminroleid = interaction.options.getRole('admin');
+      const adminrole = adminroleid.id;
       if (!await Obj.findServer(guildId)) {
-        await Obj.addServer(guildId, guildName, adminrole)
+        await Obj.addServer(guildId, guildName, adminrole);
       } else {
-        await Obj.updateServer(guildId, guildName, adminrole)
+        await Obj.updateServer(guildId, guildName, adminrole);
       }
-      await interaction.reply('已更新伺服器設定')
+      await interaction.reply('已更新伺服器設定');
     } else if (interaction.options.getSubcommand() === 'list') {
       if (isOwner) {
-        const serverList = await Obj.listServer()
+        const serverList = await Obj.listServer();
         const embed_o = new EmbedBuilder()
           .setColor('#FFFFFF')
           .setTitle('所有伺服器之管理員身分組')
-          .setDescription(serverList)
-        await interaction.reply({ embeds: [embed_o] })
+          .setDescription(serverList);
+        await interaction.reply({ embeds: [embed_o] });
       } else {
-        const admin = Obj.findAdminRole(guildId)
+        const admin = Obj.findAdminRole(guildId);
         const embed = new EmbedBuilder()
           .setColor('#FFFFFF')
           .setTitle('本伺服器之管理員身分組')
-          .setDescription(`\`${admin}\` ` + `<@&${admin}>`)
-        await interaction.reply({ embeds: [embed] })
+          .setDescription(`\`${admin}\` ` + `<@&${admin}>`);
+        await interaction.reply({ embeds: [embed] });
       }
     }
   },
-}
+};
