@@ -195,7 +195,7 @@ const good = [
   '麻醬麵',
   '黃瓜',
   '黯然銷魂飯',
-]
+];
 
 const strange = [
   '...尖尖哇嘎乃！',
@@ -353,7 +353,7 @@ const strange = [
   '鬆餅配京都念慈菴川貝枇杷糖漿',
   '鯡魚罐頭',
   '麻辣芝麻湯圓',
-]
+];
 
 const ummm = [
   '再睡五分鐘愚人節限定的牛肉麵奶蓋',
@@ -400,9 +400,9 @@ const ummm = [
   '魚皮飯',
   '麥味登鬆餅堡',
   '麥塊烤雞',
-]
+];
 
-module.exports = [...ummm, ...good, ...strange]
-module.exports.good = good
-module.exports.ummm = ummm
-module.exports.strange = strange
+module.exports = [...ummm, ...good, ...strange];
+module.exports.good = good;
+module.exports.ummm = ummm;
+module.exports.strange = strange;

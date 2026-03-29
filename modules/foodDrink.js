@@ -1,81 +1,81 @@
-const { default: randomFn } = require('random')
+const { default: randomFn } = require('random');
 
-const dict = require('../data/dictionary')
-const dinner = require('../data/dinner')
-const drinks = require('../data/drinks')
+const dict = require('../data/dictionary');
+const dinner = require('../data/dinner');
+const drinks = require('../data/drinks');
 
 function pickFood(group) {
   switch (group) {
     case 'good':
-      return randomFn.choice(dinner.good)
+      return randomFn.choice(dinner.good);
 
     case 'strange':
-      return randomFn.choice(dinner.strange)
+      return randomFn.choice(dinner.strange);
 
     case 'ummm':
-      return randomFn.choice(dinner.ummm)
+      return randomFn.choice(dinner.ummm);
 
     default:
-      return randomFn.choice(dinner)
+      return randomFn.choice(dinner);
   }
 }
 function pickDrinks(group) {
   switch (group) {
     case 'good':
-      return randomFn.choice(drinks.good)
+      return randomFn.choice(drinks.good);
 
     case 'strange':
-      return randomFn.choice(drinks.strange)
+      return randomFn.choice(drinks.strange);
 
     case 'ummm':
-      return randomFn.choice(drinks.ummm)
+      return randomFn.choice(drinks.ummm);
 
     default:
-      return randomFn.choice(drinks)
+      return randomFn.choice(drinks);
   }
 }
 function pickFoodDrink(type, testMode, group) {
   switch (type) {
     case 'food':
       if (testMode === 1) {
-        return '吃什麼自己想啦'
+        return '吃什麼自己想啦';
       }
       if (testMode === 2) {
-        return '不要吃'
+        return '不要吃';
       }
       if (testMode === 3) {
-        return '那個食物吧'
+        return '那個食物吧';
       }
-      return pickFood(group)
+      return pickFood(group);
 
     case 'drink':
       if (testMode === 1) {
-        return '喝什麼自己想啦'
+        return '喝什麼自己想啦';
       }
       if (testMode === 2) {
-        return '不要喝'
+        return '不要喝';
       }
       if (testMode === 3) {
-        return '那個飲料吧'
+        return '那個飲料吧';
       }
-      return pickDrinks(group)
+      return pickDrinks(group);
   }
 }
 
 // #region : 菜單機率
 function outputMenuStat() {
-  console.log(getMenuStat())
+  console.log(getMenuStat());
 }
 function getMenuStat() {
-  const foodTotalCount = dinner.good.length + dinner.strange.length
-  const foodGoodProbi = (dinner.good.length * 100 / foodTotalCount).toFixed(2)
-  const foodUmmmProbi = (dinner.ummm.length * 100 / foodTotalCount).toFixed(2)
-  const foodStrangeProbi = (dinner.strange.length * 100 / foodTotalCount).toFixed(2)
+  const foodTotalCount = dinner.good.length + dinner.strange.length;
+  const foodGoodProbi = (dinner.good.length * 100 / foodTotalCount).toFixed(2);
+  const foodUmmmProbi = (dinner.ummm.length * 100 / foodTotalCount).toFixed(2);
+  const foodStrangeProbi = (dinner.strange.length * 100 / foodTotalCount).toFixed(2);
 
-  const drinksTotalCount = drinks.good.length + drinks.strange.length
-  const drinksGoodProbi = (drinks.good.length * 100 / drinksTotalCount).toFixed(2)
-  const drinksUmmmProbi = (drinks.ummm.length * 100 / drinksTotalCount).toFixed(2)
-  const drinksStrangeProbi = (drinks.strange.length * 100 / drinksTotalCount).toFixed(2)
+  const drinksTotalCount = drinks.good.length + drinks.strange.length;
+  const drinksGoodProbi = (drinks.good.length * 100 / drinksTotalCount).toFixed(2);
+  const drinksUmmmProbi = (drinks.ummm.length * 100 / drinksTotalCount).toFixed(2);
+  const drinksStrangeProbi = (drinks.strange.length * 100 / drinksTotalCount).toFixed(2);
 
   return [
     `:cooking:食物菜單裡有 **${foodTotalCount}** 項東西，其中：`,
@@ -87,7 +87,7 @@ function getMenuStat() {
     `- 正常的東西：有 **${drinks.good.length}** 項，抽到的機率約為 **${drinksGoodProbi}%**`,
     `- 難說的東西：有 **${drinks.ummm.length}** 項，抽到的機率約為 **${drinksUmmmProbi}%**`,
     `- 奇怪的東西：有 **${drinks.strange.length}** 項，抽到的機率約為 **${drinksStrangeProbi}%**`,
-  ].join('\n')
+  ].join('\n');
 }
 //  #endregion
 
@@ -196,8 +196,8 @@ const mealMatch = [
   '網絡星期一',
   'Cyber Monday',
   '感恩節',
-]
-mealMatch.sort((a, b) => b.length - a.length)
+];
+mealMatch.sort((a, b) => b.length - a.length);
 
 // 觸發的文字
 function isAskingMeal(msg) {
@@ -226,8 +226,8 @@ function isAskingMeal(msg) {
     '來份難說欸套餐',
     '要個難說欸套餐',
     '要份難說欸套餐',
-  ]
-  return matchPatterns.some(item => msg.includes(item))
+  ];
+  return matchPatterns.some(item => msg.includes(item));
 }
 
 // 抽
@@ -280,7 +280,7 @@ function eatDrinkWhat(msg, testMode) {
     { key: `來份套餐`, type: 'setMeal', lang: 'cn' },
     { key: `要個套餐`, type: 'setMeal', lang: 'canto' },
     { key: `要份套餐`, type: 'setMeal', lang: 'canto' },
-  ]
+  ];
 
   const replyTemplate = new Map([
     ['drink', { cn: `就喝{drink}`, canto: `就飲{drink}` }],
@@ -288,9 +288,9 @@ function eatDrinkWhat(msg, testMode) {
       food: { cn: `那就吃{food}`, canto: `咁就食{food}` },
       drink: { cn: `飲料的話就要{drink}`, canto: `野飲就要{drink}` },
     }],
-  ])
+  ]);
 
-  const meal = mealMatch.find(term => msg.includes(term))
+  const meal = mealMatch.find(term => msg.includes(term));
 
   if (meal) {
     matchPatterns.push(
@@ -313,41 +313,41 @@ function eatDrinkWhat(msg, testMode) {
       { key: `${meal}吃甚麼`, type: 'food', lang: 'cn' },
       { key: `${meal}食咩`, type: 'food', lang: 'canto' },
       { key: `${meal}食乜`, type: 'food', lang: 'canto' },
-    )
-    replyTemplate.set('food', { cn: `${meal}就吃{food}`, canto: `${meal}就食{food}` })
+    );
+    replyTemplate.set('food', { cn: `${meal}就吃{food}`, canto: `${meal}就食{food}` });
   }
 
-  const match = matchPatterns.find(({ key }) => msg.includes(key))
+  const match = matchPatterns.find(({ key }) => msg.includes(key));
 
   if (!match) {
-    return null
+    return null;
   }
 
   try {
-    let choice, reply
+    let choice, reply;
     switch (match.type) {
       case 'food':
       case 'drink':
-        choice = pickFoodDrink(match.type, testMode, match.group)
-        reply = dict[match.type].get(choice)?.[match.lang] ?? replyTemplate.get(match.type)[match.lang]
+        choice = pickFoodDrink(match.type, testMode, match.group);
+        reply = dict[match.type].get(choice)?.[match.lang] ?? replyTemplate.get(match.type)[match.lang];
         return reply
           .replace(`{meal}`, meal)
-          .replace(`{${match.type}}`, choice)
+          .replace(`{${match.type}}`, choice);
 
       case 'setMeal':
         choice = {
           food: pickFoodDrink('food', testMode, match.group),
           drink: pickFoodDrink('drink', testMode, match.group),
-        }
+        };
         reply = {
           food: dict.setMeal.get(choice.food)?.[match.lang] ?? replyTemplate.get('setMeal').food[match.lang],
           drink: dict.setMeal.get(choice.drink)?.[match.lang] ?? replyTemplate.get('setMeal').drink[match.lang],
-        }
-        return Object.values(reply).join('\n').replace(`{food}`, choice.food).replace(`{drink}`, choice.drink)
+        };
+        return Object.values(reply).join('\n').replace(`{food}`, choice.food).replace(`{drink}`, choice.drink);
     }
   } catch (error) {
-    console.error(error)
-    return false
+    console.error(error);
+    return false;
   }
 }
 
@@ -355,7 +355,7 @@ function eatDrinkWhat(msg, testMode) {
 
 // #region : 辨別菜單
 function isCheckingMenu(msg) {
-  return msg.startsWith('菜單有沒有')
+  return msg.startsWith('菜單有沒有');
 }
 
 function identifyItem(item) {
@@ -372,107 +372,107 @@ function identifyItem(item) {
       matchType: 'exact',
       matchedKey: item,
       menuType: 'ummm',
-    }
+    };
   } else if (dinner.good.includes(item)) {
     return {
       type: 'food',
       matchType: 'exact',
       matchedKey: item,
       menuType: 'good',
-    }
+    };
   } else if (dinner.strange.includes(item)) {
     return {
       type: 'food',
       matchType: 'exact',
       matchedKey: item,
       menuType: 'strange',
-    }
+    };
   } else if (drinks.ummm.includes(item)) {
     return {
       type: 'drink',
       matchType: 'exact',
       matchedKey: item,
       menuType: 'ummm',
-    }
+    };
   } else if (drinks.good.includes(item)) {
     return {
       type: 'drink',
       matchType: 'exact',
       matchedKey: item,
       menuType: 'good',
-    }
+    };
   } else if (drinks.strange.includes(item)) {
     return {
       type: 'drink',
       matchType: 'exact',
       matchedKey: item,
       menuType: 'strange',
-    }
+    };
   }
 
   // find for similar match
-  let matchedItem = dinner.ummm.find(menuItem => menuItem.includes(item))
+  let matchedItem = dinner.ummm.find(menuItem => menuItem.includes(item));
   if (matchedItem) {
     return {
       type: 'food',
       matchType: 'similar',
       matchedKey: matchedItem,
       menuType: 'ummm',
-    }
+    };
   }
-  matchedItem = dinner.good.find(menuItem => menuItem.includes(item))
+  matchedItem = dinner.good.find(menuItem => menuItem.includes(item));
   if (matchedItem) {
     return {
       type: 'food',
       matchType: 'similar',
       matchedKey: matchedItem,
       menuType: 'good',
-    }
+    };
   }
-  matchedItem = dinner.strange.find(menuItem => menuItem.includes(item))
+  matchedItem = dinner.strange.find(menuItem => menuItem.includes(item));
   if (matchedItem) {
     return {
       type: 'food',
       matchType: 'similar',
       matchedKey: matchedItem,
       menuType: 'strange',
-    }
+    };
   }
-  matchedItem = drinks.ummm.find(menuItem => menuItem.includes(item))
+  matchedItem = drinks.ummm.find(menuItem => menuItem.includes(item));
   if (matchedItem) {
     return {
       type: 'drink',
       matchType: 'similar',
       matchedKey: matchedItem,
       menuType: 'ummm',
-    }
+    };
   }
-  matchedItem = drinks.good.find(menuItem => menuItem.includes(item))
+  matchedItem = drinks.good.find(menuItem => menuItem.includes(item));
   if (matchedItem) {
     return {
       type: 'drink',
       matchType: 'similar',
       matchedKey: matchedItem,
       menuType: 'good',
-    }
+    };
   }
-  matchedItem = drinks.strange.find(menuItem => menuItem.includes(item))
+  matchedItem = drinks.strange.find(menuItem => menuItem.includes(item));
   if (matchedItem) {
     return {
       type: 'drink',
       matchType: 'similar',
       matchedKey: matchedItem,
       menuType: 'strange',
-    }
+    };
   }
 
-  return null
+  return null;
 }
 
 function checkItem(item) {
-  const res = identifyItem(item)
+  const res = identifyItem(item);
   if (res === null) {
-    return '沒有'
+    return '沒有';
   }
 
   const trans = new Map([
@@ -481,12 +481,12 @@ function checkItem(item) {
     ['good', '正常'],
     ['ummm', '難說欸'],
     ['strange', '奇怪'],
-  ])
+  ]);
 
   if (res.matchType === 'exact') {
-    return `**「${item}」**有在 **${trans.get(res.type)}** 菜單裡，屬於 **${trans.get(res.menuType)}** 類別`
+    return `**「${item}」**有在 **${trans.get(res.type)}** 菜單裡，屬於 **${trans.get(res.menuType)}** 類別`;
   } else {
-    return `**「${item}」**沒有在菜單裡。最相似的項目是 **${trans.get(res.type)}** 菜單裡的 **「${res.matchedKey}」**，屬於 **${trans.get(res.menuType)}** 類別`
+    return `**「${item}」**沒有在菜單裡。最相似的項目是 **${trans.get(res.type)}** 菜單裡的 **「${res.matchedKey}」**，屬於 **${trans.get(res.menuType)}** 類別`;
   }
 }
 //  #endregion
@@ -502,4 +502,4 @@ module.exports = {
   isCheckingMenu,
   identifyItem,
   checkItem,
-}
+};

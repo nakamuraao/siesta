@@ -1,4 +1,4 @@
-import eslintConfig from '@oliver139/eslint-config'
+import eslintConfig from '@oliver139/eslint-config';
 
 export default eslintConfig({
   javascript: {
@@ -6,4 +6,7 @@ export default eslintConfig({
       'new-cap': 'off',
     },
   },
-})
+  stylistic: {
+    semi: ['error', 'always'],
+  },
+});

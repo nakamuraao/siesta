@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js')
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,8 +15,8 @@ module.exports = {
         { name: `伺服器建立時間 :`, value: `<t:${Number.parseInt(await (interaction.guild).createdTimestamp / 1000)}>` },
         { name: `伺服器擁有者 :`, value: `<@${await (interaction.guild).ownerId}>` },
       )
-      .setFooter({ text: `伺服器ID : ${await (interaction.guild).id}` })
+      .setFooter({ text: `伺服器ID : ${await (interaction.guild).id}` });
 
-    await interaction.reply({ embeds: [serverinfoembed] })
+    await interaction.reply({ embeds: [serverinfoembed] });
   },
-}
+};
