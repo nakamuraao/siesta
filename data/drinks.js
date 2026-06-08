@@ -116,6 +116,7 @@ const good = [
   '黑啤',
   '黑松沙士',
   '龍蝦湯',
+  '余市high ball',
 ];
 
 const strange = [

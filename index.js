@@ -1,7 +1,8 @@
 const fs = require('node:fs');
 const { Client, Collection, GatewayIntentBits, ActivityType, MessageFlags } = require('discord.js');
+const cron = require('node-cron');
 const sql = require('sequelize');
-const { token, oid } = require('./config.json');
+const { token, oid, miaomi, miaomiCh } = require('./config.json');
 
 const client = new Client({
   partials: ['CHANNEL', 'MESSAGE', 'USER'],
@@ -34,9 +35,11 @@ const sequelize = new sql('database', 'user', 'password', {
 const servers = require('./modules/dbStructure/servers')(sequelize, sql.DataTypes);
 const botzone = require('./modules/dbStructure/botChannel')(sequelize, sql.DataTypes);
 const log = require('./modules/dbStructure/log')(sequelize, sql.DataTypes);
+const birthdayDB = require('./modules/dbStructure/birthday')(sequelize, sql.DataTypes);
 // const twitterDB = require('./modules/dbStructure/twitter')(sequelize, sql.DataTypes);
 // const twitterNotifDB = require('./modules/dbStructure/twitterNotif')(sequelize, sql.DataTypes);
 // const messageReaction = require('./modules/dbStructure/messageReaction')(sequelize, sql.DataTypes);
+const birthday = require('./modules/dbFunction/birthday');
 const database = require('./modules/dbFunction/database');
 // const twitterFunction = require('./modules/dbFunction/twitter');
 // const twitterNotifFunction = require('./modules/dbFunction/twitterNotif');
@@ -53,21 +56,32 @@ client.once('ready', () => {
   servers.sync();
   botzone.sync();
   log.sync();
+  birthdayDB.sync();
   // twitterDB.sync();
   // twitterNotifDB.sync();
   // messageReaction.sync();
   client.user.setActivity('蒼アオ', { type: ActivityType.Watching });
   console.log(`以 ${client.user.displayName} 登入`);
 
-  // serverstats db update
   setInterval(async () => {
+    // serverstats db update
     let i;
     const array = Obj.allServerId();
     for (i = 0; i < (await array).length; i++) {
       const serverName = client.guilds.cache.get((await array)[i]).name;
       await Obj.updateServer((await array)[i], serverName);
-    }
+    };
   }, 24 * 60 * 60 * 1000);
+});
+
+cron.schedule('0 0 * * *', () => {
+  const channel = client.channels.cache.get(miaomiCh);
+  const BDObj = new birthday.birthday();
+  if (BDObj.birthdayToday() === '今天沒有人生日～') {
+    // no BD
+  } else {
+    channel.send(BDObj.birthdayToday());
+  }
 });
 
 client.on('interactionCreate', async (interaction) => {
