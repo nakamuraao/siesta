@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const { Client, Collection, GatewayIntentBits, ActivityType, MessageFlags } = require('discord.js');
 const cron = require('node-cron');
 const sql = require('sequelize');
-const { token, oid, miaomi, miaomiCh } = require('./config.json');
+const { token, oid, miaomi, miaomiCh, BDrole } = require('./config.json');
 
 const client = new Client({
   partials: ['CHANNEL', 'MESSAGE', 'USER'],
@@ -75,11 +75,29 @@ client.once('ready', () => {
 });
 
 cron.schedule('0 0 * * *', () => {
+  const miaomiGuild = client.guilds.cache.get(miaomi);
+  const miaomiMember = miaomiGuild.members.fetch();
+  miaomiMember.forEach((member) => {
+    if (member.roles.cache.some(role => role.id === BDrole)) {
+      member.roles.remove(BDrole).catch(() => {
+        client.users.fetch(oid).then(owner =>
+          owner.send('生日身份出問題'),
+        );
+      });
+    }
+  });
   const channel = client.channels.cache.get(miaomiCh);
   const BDObj = new birthday.birthday();
   if (BDObj.birthdayToday() === '今天沒有人生日～') {
-    // no BD
+    // return nothing
   } else {
+    miaomiGuild.roles.fetch();
+    const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
+    const BD = BDObj.birthdayTodayRaw();
+    for (let i = 0; i < BD.length; i++) {
+      const member = miaomiGuild.members.cache.get(BD[i].user_id);
+      member.roles.add(role);
+    }
     channel.send(BDObj.birthdayToday());
   }
 });

@@ -38,6 +38,14 @@ class birthday {
     }
   }
 
+  async birthdayTodayRaw() {
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const date = now.getDate();
+    const BD = await this.userBd.findAll({ where: { bdMonth: month, bdDay: date }, raw: true });
+    return BD;
+  }
+
   async birthdayRecent() {
     const now = new Date();
     const month = now.getMonth() + 1;
