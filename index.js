@@ -48,15 +48,18 @@ const Obj = new database.ServerDB();
 // const twitterObj = new twitterFunction.twitter();
 // const twitterNotifObj = new twitterNotifFunction.twitterNotif();
 
-client.once('ready', () => {
+client.once('clientReady', () => {
   const now = new Date();
   const time = now.toTimeString();
   console.log(`${time}`);
 
+  const discordjsVersion = require('discord.js').version;
+  console.log(`discord.js version: ${discordjsVersion}`);
+
   servers.sync();
   botzone.sync();
   log.sync();
-  birthdayDB.sync();
+  birthdayDB.sync({ alter: true });
   // twitterDB.sync();
   // twitterNotifDB.sync();
   // messageReaction.sync();
@@ -86,18 +89,19 @@ cron.schedule('0 0 * * *', () => {
       });
     }
   });
+
   const channel = client.channels.cache.get(miaomiCh);
   const BDObj = new birthday.birthday();
-  if (BDObj.birthdayToday() === '今天沒有人生日～') {
-    // return nothing
-  } else {
+  if (BDObj.isSomeoneBirthdayToday()) {
     miaomiGuild.roles.fetch();
     const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
     const BD = BDObj.birthdayTodayRaw();
-    for (let i = 0; i < BD.length; i++) {
-      const member = miaomiGuild.members.cache.get(BD[i].user_id);
+
+    BD.forEach((d) => {
+      const member = miaomiGuild.members.cache.get(d.user_id);
       member.roles.add(role);
-    }
+    });
+
     channel.send(BDObj.birthdayToday());
   }
 });

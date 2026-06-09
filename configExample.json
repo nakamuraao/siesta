@@ -1,8 +1,0 @@
-{
-  "cid": "Your application's client ID",
-  "oid": "The Owner ID",
-  "token": "The bot token",
-
-  "webhooks": "Webhooks",
-  "ignore": ""
-}
