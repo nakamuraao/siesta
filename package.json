@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@oliver139/eslint-config": "^4.2.0",
+    "ansis": "^4.3.1",
     "eslint": "^9.39.2",
     "lint-staged": "^16.2.7",
     "nodemon": "^3.1.11",
