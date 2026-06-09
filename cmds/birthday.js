@@ -69,18 +69,27 @@ subCommands.forEach((subCmd) => {
 
 // #region : Create interaction (All return a reply object)
 async function todayInteraction(bdObj) {
-  const embed = new EmbedBuilder().setColor('#FFFFFF').setTitle('今日壽星').setDescription(await bdObj.birthdayToday());
-  return { embeds: [embed] };
+  return {
+    embeds: [{
+      color: 0xFFFFFF,
+      title: '今日壽星',
+      description: await bdObj.birthdayToday(),
+    }],
+  };
 }
 
 async function recentInteraction(bdObj) {
-  const embed = new EmbedBuilder().setColor('#FFFFFF').setTitle('最近生日').setDescription(await bdObj.birthdayRecent());
-  return { embeds: [embed] };
+  return {
+    embeds: [{
+      color: 0xFFFFFF,
+      title: '最近生日',
+      description: await bdObj.birthdayRecent(),
+    }],
+  };
 }
 
 async function listInteraction(bdObj) {
   const bds = await bdObj.showAllBirthday();
-  console.log(`🚀 ~ birthday.js:83 ~ listInteraction ~ bds:`, bds);
 
   return {
     embeds: [{
