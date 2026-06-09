@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const { miaomi } = require('../config.json');
 const birthday = require('../modules/dbFunction/birthday');
 const { isOwner } = require('../modules/utility');
@@ -27,15 +27,18 @@ function addBirthday(sub) {
     .setName('add')
     .setDescription('加入生日')
     .addUserOption(option =>
-      option.setName('user')
+      option
+        .setName('user')
         .setDescription('誰的生日？')
         .setRequired(true))
     .addIntegerOption(option =>
-      option.setName('month')
+      option
+        .setName('month')
         .setDescription('月')
         .setRequired(true))
     .addIntegerOption(option =>
-      option.setName('day')
+      option
+        .setName('day')
         .setDescription('日')
         .setRequired(true));
 }
@@ -45,7 +48,8 @@ function delBirthday(sub) {
     .setName('delete')
     .setDescription('刪除生日紀錄')
     .addUserOption(option =>
-      option.setName('user')
+      option
+        .setName('user')
         .setDescription('要刪除的人')
         .setRequired(true),
     );
@@ -62,9 +66,7 @@ const subCommands = [
 
 // #region : Build Command
 const command = new SlashCommandBuilder().setName('birthday').setDescription('今天是我生日');
-subCommands.forEach((subCmd) => {
-  command.addSubcommand(subCmd);
-});
+subCommands.forEach(subCmd => command.addSubcommand(subCmd));
 // #endregion
 
 // #region : Create interaction (All return a reply object)
