@@ -18,6 +18,7 @@
     "prepare": "simple-git-hooks",
     "run": "node .",
     "dev": "nodemon .",
+    "cmdreg": "node ./cmdreg.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint:inspect": "eslint --inspect-config",
