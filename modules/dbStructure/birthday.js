@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     bdMonth: {
-      type: DataTypes.STRING,
+      type: DataTypes.TINYINT,
       allowNull: false,
     },
     bdDay: {
-      type: DataTypes.STRING,
+      type: DataTypes.TINYINT,
       allowNull: false,
     },
   }, {

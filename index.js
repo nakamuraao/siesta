@@ -59,7 +59,7 @@ client.once('clientReady', () => {
   servers.sync();
   botzone.sync();
   log.sync();
-  birthdayDB.sync();
+  birthdayDB.sync({ alter: true });
   // twitterDB.sync();
   // twitterNotifDB.sync();
   // messageReaction.sync();
