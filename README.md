@@ -5,7 +5,7 @@ Run `npm install` to install necessary packages
 A bot for moderating and monitoring discord guilds.
 
 ## Prerequisites
-- NodeJS v19.0.0
+- NodeJS v22.22.3
 
 ## Contact Us
 Contact the developers with the following ways:

@@ -6,6 +6,14 @@
   "license": "ISC",
   "keywords": [],
   "main": "index.js",
+  "engines": {
+    "node": "^22.22.3",
+    "runtime": {
+      "name": "node",
+      "version": "^22.22.3",
+      "onFail": "download"
+    }
+  },
   "scripts": {
     "prepare": "simple-git-hooks",
     "run": "node .",
