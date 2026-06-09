@@ -48,10 +48,13 @@ const Obj = new database.ServerDB();
 // const twitterObj = new twitterFunction.twitter();
 // const twitterNotifObj = new twitterNotifFunction.twitterNotif();
 
-client.once('ready', () => {
+client.once('clientReady', () => {
   const now = new Date();
   const time = now.toTimeString();
   console.log(`${time}`);
+
+  const discordjsVersion = require('discord.js').version;
+  console.log(`discord.js version: ${discordjsVersion}`);
 
   servers.sync();
   botzone.sync();
