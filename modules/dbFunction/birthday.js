@@ -62,6 +62,11 @@ class birthday {
     }
   }
 
+  async showAllBirthday() {
+    const bds = await this.userBd.findAll({ order: [['bdMonth', 'ASC'], ['bdDay', 'ASC']], raw: true });
+    return bds;
+  }
+
   async deleteBirthday(userid) {
     await this.userBd.destroy({ where: { user_id: userid } });
   }

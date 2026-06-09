@@ -16,6 +16,12 @@ function recentWhoBirthday(sub) {
     .setDescription('最近誰生日？');
 }
 
+function listBirthday(sub) {
+  return sub
+    .setName('list')
+    .setDescription('列出所有生日');
+}
+
 function addBirthday(sub) {
   return sub
     .setName('add')
@@ -48,6 +54,7 @@ function delBirthday(sub) {
 const subCommands = [
   todayWhoBirthday,
   recentWhoBirthday,
+  listBirthday,
   addBirthday,
   delBirthday,
 ];
@@ -69,6 +76,22 @@ async function todayInteraction(bdObj) {
 async function recentInteraction(bdObj) {
   const embed = new EmbedBuilder().setColor('#FFFFFF').setTitle('最近生日').setDescription(await bdObj.birthdayRecent());
   return { embeds: [embed] };
+}
+
+async function listInteraction(bdObj) {
+  const bds = await bdObj.showAllBirthday();
+  console.log(`🚀 ~ birthday.js:83 ~ listInteraction ~ bds:`, bds);
+
+  return {
+    embeds: [{
+      color: 0xFFFFFF,
+      title: '我有記着大家的生日啊！',
+      fields: [{
+        name: `大家的生日：`,
+        value: bds.map(bd => `<@${bd.user_id}> - ${bd.bdMonth}月${bd.bdDay}日`).join('\n'),
+      }],
+    }],
+  };
 }
 
 async function addInteraction(bdObj, options) {
@@ -102,6 +125,7 @@ async function deleteInteraction(bdObj, options) {
 const actionDict = new Map([
   ['today', todayInteraction],
   ['recent', recentInteraction],
+  ['list', listInteraction],
   ['add', addInteraction],
   ['delete', deleteInteraction],
 ]);
