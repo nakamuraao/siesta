@@ -3,40 +3,60 @@ const { miaomi } = require('../config.json');
 const birthday = require('../modules/dbFunction/birthday');
 const { isOwner } = require('../modules/utility');
 
+// #region : Sub commands
+function todayWhoBirthday(sub) {
+  return sub
+    .setName('today')
+    .setDescription('今天誰生日？');
+}
+function recentWhoBirthday(sub) {
+  return sub
+    .setName('recent')
+    .setDescription('最近誰生日？');
+}
+function addBirthday(sub) {
+  return sub
+    .setName('add')
+    .setDescription('加入生日')
+    .addUserOption(option =>
+      option.setName('user')
+        .setDescription('誰的生日？')
+        .setRequired(true))
+    .addIntegerOption(option =>
+      option.setName('month')
+        .setDescription('月')
+        .setRequired(true))
+    .addIntegerOption(option =>
+      option.setName('day')
+        .setDescription('日')
+        .setRequired(true));
+}
+function delBirthday(sub) {
+  return sub
+    .setName('delete')
+    .setDescription('刪除生日紀錄')
+    .addUserOption(option =>
+      option.setName('user')
+        .setDescription('要刪除的人')
+        .setRequired(true),
+    );
+}
+
+const subCommands = [
+  todayWhoBirthday,
+  recentWhoBirthday,
+  addBirthday,
+  delBirthday,
+];
+// #endregion
+
+const command = new SlashCommandBuilder().setName('birthday').setDescription('今天是我生日');
+subCommands.forEach((subCmd) => {
+  command.addSubcommand(subCmd);
+});
+
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('birthday')
-    .setDescription('今天是我生日')
-    .addSubcommand(sub =>
-      sub.setName('today')
-        .setDescription('今天誰生日？'))
-    .addSubcommand(sub =>
-      sub.setName('recent')
-        .setDescription('最近誰生日？'))
-    .addSubcommand(sub =>
-      sub.setName('add')
-        .setDescription('加入生日')
-        .addUserOption(option =>
-          option.setName('user')
-            .setDescription('誰的生日？')
-            .setRequired(true))
-        .addIntegerOption(option =>
-          option.setName('month')
-            .setDescription('月')
-            .setRequired(true))
-        .addIntegerOption(option =>
-          option.setName('day')
-            .setDescription('日')
-            .setRequired(true)))
-    .addSubcommand(sub =>
-      sub.setName('delete')
-        .setDescription('刪除生日紀錄')
-        .addUserOption(option =>
-          option.setName('user')
-            .setDescription('要刪除的人')
-            .setRequired(true),
-        ),
-    ),
+  data: command,
 
   async execute(interaction) {
     if (isOwner(interaction.user.id) || interaction.guild.id === miaomi) {
