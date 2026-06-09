@@ -37,6 +37,18 @@ class birthday {
     return string;
   }
 
+  async isSomeoneBirthdayToday() {
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const date = now.getDate();
+    const BD = await this.userBd.findOne({
+      where: { bdMonth: month, bdDay: date },
+      raw: true,
+    });
+
+    return BD !== null;
+  }
+
   async birthdayTodayRaw() {
     const now = new Date();
     const month = now.getMonth() + 1;
@@ -82,18 +94,18 @@ class birthday {
   }
 
   async findFullBirthday(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid } });
+    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
     const fullBD = `${date.get('bdMonth')}月${date.get('bdDay')}日`;
     return fullBD;
   }
 
   async findBirthdayDay(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid } });
+    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
     return date.get('bdDay');
   }
 
   async findBirthdayMonth(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid } });
+    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
     return date.get('bdMonth');
   }
 }

@@ -89,18 +89,19 @@ cron.schedule('0 0 * * *', () => {
       });
     }
   });
+
   const channel = client.channels.cache.get(miaomiCh);
   const BDObj = new birthday.birthday();
-  if (BDObj.birthdayToday() === '今天沒有人生日～') {
-    // return nothing
-  } else {
+  if (BDObj.isSomeoneBirthdayToday()) {
     miaomiGuild.roles.fetch();
     const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
     const BD = BDObj.birthdayTodayRaw();
-    for (let i = 0; i < BD.length; i++) {
-      const member = miaomiGuild.members.cache.get(BD[i].user_id);
+
+    BD.forEach((d) => {
+      const member = miaomiGuild.members.cache.get(d.user_id);
       member.roles.add(role);
-    }
+    });
+
     channel.send(BDObj.birthdayToday());
   }
 });
