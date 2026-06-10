@@ -77,35 +77,6 @@ client.once('clientReady', () => {
   }, 24 * 60 * 60 * 1000);
 });
 
-cron.schedule('0 0 * * *', () => {
-  const miaomiGuild = client.guilds.cache.get(miaomi);
-  const miaomiMember = miaomiGuild.members.fetch();
-  miaomiMember.forEach((member) => {
-    if (member.roles.cache.some(role => role.id === BDrole)) {
-      member.roles.remove(BDrole).catch(() => {
-        client.users.fetch(oid).then(owner =>
-          owner.send('生日身份出問題'),
-        );
-      });
-    }
-  });
-
-  const channel = client.channels.cache.get(miaomiCh);
-  const BDObj = new birthday.birthday();
-  if (BDObj.isSomeoneBirthdayToday()) {
-    miaomiGuild.roles.fetch();
-    const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
-    const BD = BDObj.birthdayTodayRaw();
-
-    BD.forEach((d) => {
-      const member = miaomiGuild.members.cache.get(d.user_id);
-      member.roles.add(role);
-    });
-
-    channel.send(BDObj.birthdayToday());
-  }
-});
-
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isCommand()) {
     return;
@@ -157,3 +128,11 @@ client.on('messageCreate', async (msg) => {
 });
 
 client.login(token);
+const guilds = client.guilds;
+const users = client.users;
+const channels = client.channels;
+module.exports = {
+  guilds,
+  users,
+  channels,
+};

@@ -110,4 +110,33 @@ class birthday {
   }
 }
 
+async function dailyCheckBirthday(guilds, users, channels, oid, miaomi, miaomiCh, BDrole) {
+  const miaomiGuild = await guilds.cache.get(miaomi);
+  const miaomiMember = await miaomiGuild.members.fetch();
+  miaomiMember.forEach((member) => {
+    if (member.roles.cache.some(role => role.id === BDrole)) {
+      member.roles.remove(BDrole).catch(() => {
+        users.fetch(oid).then(owner =>
+          owner.send('生日身份出問題'),
+        );
+      });
+    }
+  });
+  const channel = channels.cache.get(miaomiCh);
+  const BDObj = new birthday.birthday();
+  if (BDObj.isSomeoneBirthdayToday()) {
+    miaomiGuild.roles.fetch();
+    const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
+    const BD = BDObj.birthdayTodayRaw();
+    BD.forEach((d) => {
+      const member = miaomiGuild.members.cache.get(d.user_id);
+      member.roles.add(role);
+    });
+    channel.send(BDObj.birthdayToday());
+  }
+}
+
 module.exports.birthday = birthday;
+module.exports = {
+  dailyCheckBirthday,
+};
