@@ -7,7 +7,7 @@ const sequelize = new sql('database', 'user', 'password', {
   storage: 'database.sqlite',
 });
 
-class birthday {
+class Birthday {
   constructor() {
     this.userBd = require('../dbStructure/birthday.js')(sequelize, sql.DataTypes);
   }
@@ -20,7 +20,7 @@ class birthday {
     });
   }
 
-  async birthdayToday() {
+  async birthdayTodayRaw() {
     const now = new Date();
     const month = now.getMonth() + 1;
     const date = now.getDate();
@@ -28,6 +28,11 @@ class birthday {
       where: { bdMonth: month, bdDay: date },
       raw: true,
     });
+    return BD;
+  }
+
+  async birthdayToday() {
+    const BD = await this.birthdayTodayRaw();
 
     let string = '今天沒有人生日～';
     if (BD.length > 0) {
@@ -47,17 +52,6 @@ class birthday {
     });
 
     return BD !== null;
-  }
-
-  async birthdayTodayRaw() {
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    const date = now.getDate();
-    const BD = await this.userBd.findAll({
-      where: { bdMonth: month, bdDay: date },
-      raw: true,
-    });
-    return BD;
   }
 
   async birthdayRecent() {
@@ -94,49 +88,20 @@ class birthday {
   }
 
   async findFullBirthday(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
+    const date = this.findBirthday(userid);
     const fullBD = `${date.get('bdMonth')}月${date.get('bdDay')}日`;
     return fullBD;
   }
 
   async findBirthdayDay(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
+    const date = this.findBirthday(userid);
     return date.get('bdDay');
   }
 
   async findBirthdayMonth(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
+    const date = this.findBirthday(userid);
     return date.get('bdMonth');
   }
 }
 
-async function dailyCheckBirthday(guilds, users, channels, oid, miaomi, miaomiCh, BDrole) {
-  const miaomiGuild = await guilds.cache.get(miaomi);
-  const miaomiMember = await miaomiGuild.members.fetch();
-  miaomiMember.forEach((member) => {
-    if (member.roles.cache.some(role => role.id === BDrole)) {
-      member.roles.remove(BDrole).catch(() => {
-        users.fetch(oid).then(owner =>
-          owner.send('生日身份出問題'),
-        );
-      });
-    }
-  });
-  const channel = channels.cache.get(miaomiCh);
-  const BDObj = new birthday.birthday();
-  if (BDObj.isSomeoneBirthdayToday()) {
-    miaomiGuild.roles.fetch();
-    const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
-    const BD = BDObj.birthdayTodayRaw();
-    BD.forEach((d) => {
-      const member = miaomiGuild.members.cache.get(d.user_id);
-      member.roles.add(role);
-    });
-    channel.send(BDObj.birthdayToday());
-  }
-}
-
-module.exports.birthday = birthday;
-module.exports = {
-  dailyCheckBirthday,
-};
+module.exports = Birthday;

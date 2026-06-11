@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 const { miaomi } = require('../config.json');
-const birthday = require('../modules/dbFunction/birthday');
+const Birthday = require('../modules/dbFunction/birthday');
 const { isOwner } = require('../modules/utility');
 
 // #region : Sub commands
@@ -150,7 +150,7 @@ module.exports = {
       return;
     }
 
-    const bdObj = new birthday.birthday();
+    const bdObj = new Birthday();
     const action = actionDict.get(interaction.options.getSubcommand());
 
     if (action) {

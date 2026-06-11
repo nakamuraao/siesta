@@ -1,6 +1,5 @@
 const fs = require('node:fs');
 const { Client, Collection, GatewayIntentBits, ActivityType, MessageFlags } = require('discord.js');
-const cron = require('node-cron');
 const sql = require('sequelize');
 const { token, oid, miaomi, miaomiCh, BDrole } = require('./config.json');
 
@@ -39,7 +38,7 @@ const birthdayDB = require('./modules/dbStructure/birthday')(sequelize, sql.Data
 // const twitterDB = require('./modules/dbStructure/twitter')(sequelize, sql.DataTypes);
 // const twitterNotifDB = require('./modules/dbStructure/twitterNotif')(sequelize, sql.DataTypes);
 // const messageReaction = require('./modules/dbStructure/messageReaction')(sequelize, sql.DataTypes);
-const birthday = require('./modules/dbFunction/birthday');
+// const birthday = require('./modules/dbFunction/birthday');
 const database = require('./modules/dbFunction/database');
 // const twitterFunction = require('./modules/dbFunction/twitter');
 // const twitterNotifFunction = require('./modules/dbFunction/twitterNotif');
@@ -75,6 +74,25 @@ client.once('clientReady', () => {
       await Obj.updateServer((await array)[i], serverName);
     };
   }, 24 * 60 * 60 * 1000);
+
+  // #region : Cron Job
+  const cronJobHelper = require('./modules/cronjob/helper');
+  const { minuteJobs, hourJobs, dailyJobs, monthJobs } = require('./modules/cronjob/jobs/index');
+
+  const cronHelper = new cronJobHelper.object(client, miaomiCh);
+  cronHelper.setRepeatAction(cronJobHelper.MINUTE, () => {
+    minuteJobs(client, client.guilds, client.users, client.channels);
+  });
+  cronHelper.setRepeatAction(cronJobHelper.HOUR, () => {
+    hourJobs(client, client.guilds, client.users, client.channels);
+  });
+  cronHelper.setRepeatAction(cronJobHelper.DAILY, () => {
+    dailyJobs(client, client.guilds, client.users, client.channels);
+  });
+  cronHelper.setRepeatAction(cronJobHelper.MONTH, () => {
+    monthJobs(client, client.guilds, client.users, client.channels);
+  });
+  // #endregion
 });
 
 client.on('interactionCreate', async (interaction) => {
@@ -128,11 +146,3 @@ client.on('messageCreate', async (msg) => {
 });
 
 client.login(token);
-const guilds = client.guilds;
-const users = client.users;
-const channels = client.channels;
-module.exports = {
-  guilds,
-  users,
-  channels,
-};
