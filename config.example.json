@@ -9,5 +9,6 @@
 
   "miaomi": "Server ID",
   "miaomiCh": "Channel ID",
+  "bdDebugCh": "Birthday Debug Channel ID（暫未有用）",
   "BDrole": "Birthday role ID"
 }

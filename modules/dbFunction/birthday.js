@@ -7,7 +7,7 @@ const sequelize = new sql('database', 'user', 'password', {
   storage: 'database.sqlite',
 });
 
-class birthday {
+class Birthday {
   constructor() {
     this.userBd = require('../dbStructure/birthday.js')(sequelize, sql.DataTypes);
   }
@@ -20,7 +20,7 @@ class birthday {
     });
   }
 
-  async birthdayToday() {
+  async birthdayTodayRaw() {
     const now = new Date();
     const month = now.getMonth() + 1;
     const date = now.getDate();
@@ -28,6 +28,11 @@ class birthday {
       where: { bdMonth: month, bdDay: date },
       raw: true,
     });
+    return BD;
+  }
+
+  async birthdayToday() {
+    const BD = await this.birthdayTodayRaw();
 
     let string = '今天沒有人生日～';
     if (BD.length > 0) {
@@ -49,22 +54,14 @@ class birthday {
     return BD !== null;
   }
 
-  async birthdayTodayRaw() {
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    const date = now.getDate();
-    const BD = await this.userBd.findAll({
-      where: { bdMonth: month, bdDay: date },
-      raw: true,
-    });
-    return BD;
-  }
-
   async birthdayRecent() {
     const now = new Date();
     const month = now.getMonth() + 1;
+    now.setMonth(month + 1); // Mutate original
+    const endMonth = now.getMonth() + 1;
+
     const BD = await this.userBd.findAll({
-      where: { bdMonth: { [sql.Op.between]: [month, month + 2] } },
+      where: { bdMonth: { [sql.Op.between]: [month, endMonth] } },
       order: [['bdMonth', 'ASC'], ['bdDay', 'ASC']],
       raw: true,
     });
@@ -94,20 +91,20 @@ class birthday {
   }
 
   async findFullBirthday(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
+    const date = this.findBirthday(userid);
     const fullBD = `${date.get('bdMonth')}月${date.get('bdDay')}日`;
     return fullBD;
   }
 
   async findBirthdayDay(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
+    const date = this.findBirthday(userid);
     return date.get('bdDay');
   }
 
   async findBirthdayMonth(userid) {
-    const date = await this.userBd.findOne({ where: { user_id: userid }, raw: true });
+    const date = this.findBirthday(userid);
     return date.get('bdMonth');
   }
 }
 
-module.exports.birthday = birthday;
+module.exports = Birthday;
