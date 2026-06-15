@@ -57,8 +57,11 @@ class Birthday {
   async birthdayRecent() {
     const now = new Date();
     const month = now.getMonth() + 1;
+    now.setMonth(month + 1); // Mutate original
+    const endMonth = now.getMonth() + 1;
+
     const BD = await this.userBd.findAll({
-      where: { bdMonth: { [sql.Op.between]: [month, month + 2] } },
+      where: { bdMonth: { [sql.Op.between]: [month, endMonth] } },
       order: [['bdMonth', 'ASC'], ['bdDay', 'ASC']],
       raw: true,
     });

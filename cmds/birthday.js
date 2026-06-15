@@ -73,7 +73,7 @@ subCommands.forEach(subCmd => command.addSubcommand(subCmd));
 async function todayInteraction(bdObj) {
   return {
     embeds: [{
-      color: 0xFFFFFF,
+      color: 0xFAD241,
       title: '今日壽星',
       description: await bdObj.birthdayToday(),
     }],
@@ -84,7 +84,7 @@ async function recentInteraction(bdObj) {
   return {
     embeds: [{
       color: 0xFFFFFF,
-      title: '最近生日',
+      title: '這3個月內生日的人：',
       description: await bdObj.birthdayRecent(),
     }],
   };
