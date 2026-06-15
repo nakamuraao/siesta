@@ -43,7 +43,7 @@ async function handleMiaomiBdTasks(client) {
   }
 }
 
-taskScheduler.addTask('minute', {
+taskScheduler.addTask('daily', {
   name: 'Miaomi180 birdthday tasks',
   task: handleMiaomiBdTasks,
 });
