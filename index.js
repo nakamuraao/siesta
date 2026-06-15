@@ -1,7 +1,8 @@
 const fs = require('node:fs');
+const c = require('ansis');
 const { Client, Collection, GatewayIntentBits, ActivityType, MessageFlags } = require('discord.js');
 const sql = require('sequelize');
-const { token, oid, miaomi, miaomiCh, BDrole } = require('./config.json');
+const { token, oid, miaomiCh } = require('./config.json');
 
 const client = new Client({
   partials: ['CHANNEL', 'MESSAGE', 'USER'],
@@ -50,10 +51,10 @@ const Obj = new database.ServerDB();
 client.once('clientReady', () => {
   const now = new Date();
   const time = now.toTimeString();
-  console.log(`${time}`);
+  console.log(c.magenta`${time}`);
 
   const discordjsVersion = require('discord.js').version;
-  console.log(`discord.js version: ${discordjsVersion}`);
+  console.log(`${c.green.bold`discord.js version:`} ${discordjsVersion}`);
 
   servers.sync();
   botzone.sync();
@@ -62,8 +63,9 @@ client.once('clientReady', () => {
   // twitterDB.sync();
   // twitterNotifDB.sync();
   // messageReaction.sync();
+
   client.user.setActivity('蒼アオ', { type: ActivityType.Watching });
-  console.log(`以 ${client.user.displayName} 登入`);
+  console.log(`以 ${c.green.bold(client.user.displayName)} 登入`);
 
   setInterval(async () => {
     // serverstats db update
@@ -77,21 +79,33 @@ client.once('clientReady', () => {
 
   // #region : Cron Job
   const cronJobHelper = require('./modules/cronjob/helper');
-  const { minuteJobs, hourJobs, dailyJobs, monthJobs } = require('./modules/cronjob/jobs/index');
+  const taskScheduler = require('./modules/cronjob/task-scheduler');
+  require('./modules/cronjob/jobs/index');
+
+  console.log(c.yellow.bold`\nScheduled Tasks:`);
+  console.log(taskScheduler.jobList);
 
   const cronHelper = new cronJobHelper.object(client, miaomiCh);
-  cronHelper.setRepeatAction(cronJobHelper.MINUTE, () => {
-    minuteJobs(client, client.guilds, client.users, client.channels);
-  });
-  cronHelper.setRepeatAction(cronJobHelper.HOUR, () => {
-    hourJobs(client, client.guilds, client.users, client.channels);
-  });
-  cronHelper.setRepeatAction(cronJobHelper.DAILY, () => {
-    dailyJobs(client, client.guilds, client.users, client.channels);
-  });
-  cronHelper.setRepeatAction(cronJobHelper.MONTH, () => {
-    monthJobs(client, client.guilds, client.users, client.channels);
-  });
+  if (taskScheduler.taskList.get('minute').size) {
+    cronHelper.setRepeatAction(cronJobHelper.MINUTE, () => {
+      taskScheduler.taskList.get('minute').forEach(t => t.task(client));
+    });
+  }
+  if (taskScheduler.taskList.get('hour').size) {
+    cronHelper.setRepeatAction(cronJobHelper.HOUR, () => {
+      taskScheduler.taskList.get('hour').forEach(t => t.task(client));
+    });
+  }
+  if (taskScheduler.taskList.get('daily').size) {
+    cronHelper.setRepeatAction(cronJobHelper.DAILY, () => {
+      taskScheduler.taskList.get('daily').forEach(t => t.task(client));
+    });
+  }
+  if (taskScheduler.taskList.get('month').size) {
+    cronHelper.setRepeatAction(cronJobHelper.MONTH, () => {
+      taskScheduler.taskList.get('month').forEach(t => t.task(client));
+    });
+  }
   // #endregion
 });
 

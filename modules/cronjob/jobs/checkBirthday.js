@@ -1,13 +1,15 @@
+const taskScheduler = require('../task-scheduler.js');
+
 /**
- * Sets up daily jobs for the Discord bot
+ * The birthday tasks for miaomi180 group
  * @param {object} client - The Discord.js client instance
- * @param {object} guilds - Guild data/cache object
- * @param {object} users - User data/cache object
- * @param {object} channels - Channel data/cache object
  * @returns {void}
  */
-async function dailyJobs(client, guilds, users, channels) {
+async function handleMiaomiBdTasks(client) {
   const { oid, miaomi, miaomiCh, BDrole } = require('../../../config.json');
+  const guilds = client.guilds;
+  const users = client.users;
+  const channels = client.channels;
 
   // #region : Miaomi 生日身份組
   const Birthday = require('../../../modules/dbFunction/birthday.js');
@@ -29,23 +31,19 @@ async function dailyJobs(client, guilds, users, channels) {
   });
 
   // 加入身份組
-  if (BDObj.isSomeoneBirthdayToday()) {
+  const bd = await BDObj.birthdayTodayRaw();
+  if (bd.length > 1) {
     await miaomiGuild.roles.fetch();
     const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
-    const BD = await BDObj.birthdayTodayRaw();
-    BD.forEach((d) => {
+    bd.forEach((d) => {
       const member = miaomiGuild.members.cache.get(d.user_id);
       member.roles.add(role);
     });
     channel180.send(await BDObj.birthdayToday());
   }
-  // #endregion
 }
 
-module.exports = {
-  /**
-   * Sets up daily jobs for the Discord bot
-   * @type {Function}
-   */
-  dailyJobs,
-};
+taskScheduler.addTask('minute', {
+  name: 'Miaomi180 birdthday tasks',
+  task: handleMiaomiBdTasks,
+});
