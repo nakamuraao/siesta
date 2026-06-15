@@ -85,7 +85,7 @@ client.once('clientReady', () => {
   console.log(c.yellow.bold`\nScheduled Tasks:`);
   console.log(taskScheduler.jobList);
 
-  const cronHelper = new cronJobHelper.object(client, miaomiCh);
+  const cronHelper = new cronJobHelper(client, miaomiCh);
   if (taskScheduler.taskList.get('minute').size) {
     cronHelper.setRepeatAction(cronJobHelper.MINUTE, () => {
       taskScheduler.taskList.get('minute').forEach(t => t.task(client));

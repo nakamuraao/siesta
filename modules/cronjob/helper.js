@@ -14,6 +14,27 @@ const { schedule } = require('node-cron');
  */
 class cronJobHelper {
   /**
+   * Cron expression: Every minute
+   * @type {'* * * * *'}
+   */
+  static MINUTE = '* * * * *';
+  /**
+   * Cron expression: Every hour
+   * @type {'0 * * * *'}
+   */
+  static HOUR = '0 * * * *';
+  /**
+   * Cron expression: Daily at 00:00 (midnight)
+   * @type {'0 *\/24 * * *'}
+   */
+  static DAILY = '0 */24 * * *';
+  /**
+   * Cron expression: First day of every month at 00:00
+   * @type {'0 0 1 * *'}
+   */
+  static MONTH = '0 0 1 * *';
+
+  /**
    * Creates a new cronJob instance
    * @constructor
    * @param {object} client - The Discord.js client instance
@@ -92,30 +113,4 @@ class cronJobHelper {
   }
 }
 
-module.exports = {
-  /**
-   * The cronJob class for managing scheduled Discord bot actions
-   * @type {cronJobHelper}
-   */
-  object: cronJobHelper,
-  /**
-   * Cron expression: Every minute
-   * @type {string}
-   */
-  MINUTE: '* * * * *',
-  /**
-   * Cron expression: Every hour at the top of the hour
-   * @type {string}
-   */
-  HOUR: '0 * * * *',
-  /**
-   * Cron expression: Daily at 00:00 (midnight)
-   * @type {string}
-   */
-  DAILY: '0 */24 * * *',
-  /**
-   * Cron expression: First day of every month at 00:00
-   * @type {string}
-   */
-  MONTH: '0 0 1 * *',
-};
+module.exports = cronJobHelper;
