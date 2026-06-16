@@ -106,6 +106,13 @@ client.once('clientReady', () => {
       taskScheduler.taskList.get('month').forEach(t => t.task(client));
     });
   }
+  if (taskScheduler.taskList.get('other').size) {
+    taskScheduler.taskList.get('other').forEach((t) => {
+      if (t.period) {
+        cronHelper.setRepeatAction(t.period, () => t.task(client));
+      }
+    });
+  }
   // #endregion
 });
 

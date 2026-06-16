@@ -1,3 +1,5 @@
+const fs = require('node:fs');
+const path = require('node:path');
 const { oid, miaomi, miaomiCh, BDrole } = require('../../../config.json');
 const taskScheduler = require('../task-scheduler.js');
 
@@ -64,6 +66,20 @@ async function showRecentBd(client) {
   });
 }
 
+async function announceMiaomiBd(client) {
+  const channels = client.channels;
+  const channel180 = channels.cache.get(miaomiCh);
+  channel180.send({
+    content: [
+      '# 大家請注意！今天是我們的IQ180群主<@730621367333945354>的生日！',
+      '# 請大家祝她生日大快樂😁',
+    ].join('\n'),
+    files: [{
+      attachment: path.join(__dirname, '../../../assets/images/miaomi_bd.jpg'),
+    }],
+  });
+}
+
 taskScheduler.addTask('daily', {
   name: 'Miaomi180 birdthday tasks',
   task: handleMiaomiBdTasks,
@@ -72,4 +88,10 @@ taskScheduler.addTask('daily', {
 taskScheduler.addTask('month', {
   name: 'Miaomi180 monthly announce birthday',
   task: showRecentBd,
+});
+
+taskScheduler.addTask('other', {
+  name: 'Announce 5/5 Miaomi birthday',
+  period: '0 0 5 5 *',
+  task: announceMiaomiBd,
 });
