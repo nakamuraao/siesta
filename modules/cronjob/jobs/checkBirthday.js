@@ -1,5 +1,6 @@
-const fs = require('node:fs');
 const path = require('node:path');
+const Canvas = require('@napi-rs/canvas');
+const { AttachmentBuilder } = require('discord.js');
 const { oid, miaomi, miaomiCh, BDrole } = require('../../../config.json');
 const taskScheduler = require('../task-scheduler.js');
 
@@ -37,16 +38,26 @@ async function handleMiaomiBdTasks(client) {
   if (bd.length > 1) {
     await miaomiGuild.roles.fetch();
     const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
-    bd.forEach((d) => {
+
+    const msg = [];
+    const pics = await Promise.all(bd.map(async (d) => {
       const member = miaomiGuild.members.cache.get(d.user_id);
-      member.roles.add(role);
-    });
+      member.roles.add(role).catch(console.error);
+
+      msg.push(`:tada: ${member.toString()} :tada:`);
+
+      return await getBdNotice(member);
+    }));
+
     channel180.send({
       embeds: [{
         color: 0xFAD241,
         title: '今日壽星',
-        description: await BDObj.birthdayToday(),
+        description: `${msg.join('\n')}\n生日快樂:partying_face:`,
       }],
+    });
+    channel180.send({
+      files: pics,
     });
   }
 }
@@ -95,3 +106,32 @@ taskScheduler.addTask('other', {
   period: '0 0 5 5 *',
   task: announceMiaomiBd,
 });
+
+async function getBdNotice(member) {
+  const canvas = Canvas.createCanvas(960, 592);
+  const context = canvas.getContext('2d');
+
+  const background = await Canvas.loadImage(path.join(__dirname, '../../../assets/images/bd_notice.jpg'));
+  const avatar = await Canvas.loadImage(member.displayAvatarURL());
+  const hat = await Canvas.loadImage(path.join(__dirname, '../../../assets/images/party_hat.png'));
+
+  context.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+  context.save();
+  context.beginPath();
+  context.arc(290 + 190, 67 + 190, 190, 0, Math.PI * 2, true);
+  context.closePath();
+  context.clip();
+  context.drawImage(avatar, 290, 67, 380, 380);
+  context.restore();
+
+  context.drawImage(hat, 223, 31, 160, 152);
+
+  const attachment = new AttachmentBuilder(await canvas.encode('jpeg'), { name: `bd-card-${member.id}.jpg` });
+  return attachment;
+}
+
+module.exports = {
+  getBdNotice,
+  handleMiaomiBdTasks,
+};
