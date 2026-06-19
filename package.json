@@ -25,6 +25,7 @@
     "probi": "run-func modules/foodDrink.js outputMenuStat"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.0",
     "axios": "^1.8.4",
     "discord.js": "^14.18.0",
     "node-cron": "^3.0.3",

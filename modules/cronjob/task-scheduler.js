@@ -2,12 +2,13 @@
  * Task list item structure
  * @typedef {object} ListItem
  * @property {string} name - Name of the task
+ * @property {string} [period] - Cron expression for "other" type
  * @property {Function} task - Task function to execute
  */
 
 /**
  * Period type for task scheduling
- * @typedef {'minute' | 'hour' | 'daily' | 'month'} Period
+ * @typedef {'minute' | 'hour' | 'daily' | 'month' | 'other'} Period
  */
 
 /**
@@ -29,6 +30,7 @@ class TaskScheduler {
       ['hour', new Set()],
       ['daily', new Set()],
       ['month', new Set()],
+      ['other', new Set()],
     ]);
   }
 
@@ -86,7 +88,7 @@ class TaskScheduler {
     Array.from(this.taskList.entries()).forEach(([period, list], index) => {
       if (list.size > 0) {
         output.push(c.cyan.bold`${capitalize(period)}:`);
-        list.forEach(item => output.push(`${c.cyan('-')} ${item.name}`));
+        list.forEach(item => output.push(`${c.cyan('-')} ${item.period ? c.green`[${item.period}]` : ''} ${item.name}`));
       } else {
         output.push(`${c.cyan.bold`${capitalize(period)}:`} None`);
       }

@@ -40,6 +40,7 @@ const birthdayDB = require('./modules/dbStructure/birthday')(sequelize, sql.Data
 // const twitterNotifDB = require('./modules/dbStructure/twitterNotif')(sequelize, sql.DataTypes);
 // const messageReaction = require('./modules/dbStructure/messageReaction')(sequelize, sql.DataTypes);
 // const birthday = require('./modules/dbFunction/birthday');
+const { getBdNotice, handleMiaomiBdTasks } = require('./modules/cronjob/jobs/checkBirthday');
 const database = require('./modules/dbFunction/database');
 // const twitterFunction = require('./modules/dbFunction/twitter');
 // const twitterNotifFunction = require('./modules/dbFunction/twitterNotif');
@@ -104,6 +105,13 @@ client.once('clientReady', () => {
   if (taskScheduler.taskList.get('month').size) {
     cronHelper.setRepeatAction(cronJobHelper.MONTH, () => {
       taskScheduler.taskList.get('month').forEach(t => t.task(client));
+    });
+  }
+  if (taskScheduler.taskList.get('other').size) {
+    taskScheduler.taskList.get('other').forEach((t) => {
+      if (t.period) {
+        cronHelper.setRepeatAction(t.period, () => t.task(client));
+      }
     });
   }
   // #endregion
