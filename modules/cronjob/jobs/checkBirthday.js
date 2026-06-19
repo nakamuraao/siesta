@@ -35,31 +35,31 @@ async function handleMiaomiBdTasks(client) {
 
   // 加入身份組
   const bd = await BDObj.birthdayTodayRaw();
-  if (bd.length > 1) {
-    await miaomiGuild.roles.fetch();
-    const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
+  if (bd.length === 0) return;
 
-    const msg = [];
-    const pics = await Promise.all(bd.map(async (d) => {
-      const member = miaomiGuild.members.cache.get(d.user_id);
-      member.roles.add(role).catch(console.error);
+  await miaomiGuild.roles.fetch();
+  const role = miaomiGuild.roles.cache.find(role => role.id === BDrole);
 
-      msg.push(`:tada: ${member.toString()} :tada:`);
+  const msg = [];
+  const pics = await Promise.all(bd.map(async (d) => {
+    const member = miaomiGuild.members.cache.get(d.user_id);
+    member.roles.add(role).catch(console.error);
 
-      return await getBdNotice(member);
-    }));
+    msg.push(`:tada: ${member.toString()} :tada:`);
 
-    channel180.send({
-      embeds: [{
-        color: 0xFAD241,
-        title: '今日壽星',
-        description: `${msg.join('\n')}\n生日快樂:partying_face:`,
-      }],
-    });
-    channel180.send({
-      files: pics,
-    });
-  }
+    return await getBdNotice(member);
+  }));
+
+  channel180.send({
+    embeds: [{
+      color: 0xFAD241,
+      title: '今日壽星',
+      description: `${msg.join('\n')}\n生日快樂:partying_face:`,
+    }],
+  });
+  channel180.send({
+    files: pics,
+  });
 }
 
 async function showRecentBd(client) {

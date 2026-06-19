@@ -78,7 +78,6 @@ client.once('clientReady', () => {
     };
   }, 24 * 60 * 60 * 1000);
 
-  handleMiaomiBdTasks(client);
   // #region : Cron Job
   const cronJobHelper = require('./modules/cronjob/helper');
   const taskScheduler = require('./modules/cronjob/task-scheduler');

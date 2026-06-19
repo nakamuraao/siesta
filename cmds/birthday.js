@@ -1,4 +1,6 @@
-const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+const path = require('node:path');
+const Canvas = require('@napi-rs/canvas');
+const { SlashCommandBuilder, MessageFlags, AttachmentBuilder } = require('discord.js');
 const { miaomi } = require('../config.json');
 const Birthday = require('../modules/dbFunction/birthday');
 const { isOwner } = require('../modules/utility');
@@ -55,12 +57,27 @@ function delBirthday(sub) {
     );
 }
 
+function sendBdCard(sub) {
+  return sub
+    .setName('card')
+    .setDescription('發送生日卡')
+    .addStringOption(option =>
+      option
+        .setName('message')
+        .setDescription('文字訊息'))
+    .addBooleanOption(option =>
+      option
+        .setName('tag')
+        .setDescription('要tag他/她嗎？'));
+}
+
 const subCommands = [
   todayWhoBirthday,
   recentWhoBirthday,
   listBirthday,
   addBirthday,
   delBirthday,
+  sendBdCard,
 ];
 // #endregion
 
@@ -133,12 +150,75 @@ async function deleteInteraction(bdObj, options) {
   }
 }
 
+async function cardInteraction(bdObj, options, member) {
+  const bds = await bdObj.showAllBirthday();
+  if (bds.length === 0) {
+    return { content: '今天沒人生日啦～', flags: MessageFlags.Ephemeral };
+  }
+
+  const tag = options.getBoolean('tag') || true;
+
+  const message = options.getString('message') || '生日大快樂！Happy Birthday！お誕生日おめでとう！';
+  const files = [];
+  const avatar = await Canvas.loadImage(member.displayAvatarURL());
+
+  if (bds.filter(d => d.user_id !== member.id).length > 0) {
+    const canvas = Canvas.createCanvas(500, 598);
+    const context = canvas.getContext('2d');
+
+    const background = await Canvas.loadImage(path.join(__dirname, '../assets/images/bd_card.jpg'));
+    const hat = await Canvas.loadImage(path.join(__dirname, '../assets/images/party_hat2.png'));
+
+    context.drawImage(background, 0, 0, 500, 599);
+
+    context.save();
+    context.beginPath();
+    context.arc(97 + 130, 125 + 130, 130, 0, Math.PI * 2, true);
+    context.closePath();
+    context.clip();
+    context.drawImage(avatar, 97, 125, 259, 259);
+    context.restore();
+
+    context.drawImage(hat, 71, 25, 138, 165);
+
+    files.push(new AttachmentBuilder(await canvas.encode('jpeg'), { name: `bd-card-${member.id}.jpg` }));
+  }
+
+  if (bds.some(d => d.user_id === member.id)) {
+    const canvas = Canvas.createCanvas(1040, 720);
+    const context = canvas.getContext('2d');
+
+    const background = await Canvas.loadImage(path.join(__dirname, '../assets/images/hbd_me.jpg'));
+    const hat = await Canvas.loadImage(path.join(__dirname, '../assets/images/party_hat3.png'));
+
+    context.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+    context.save();
+    context.beginPath();
+    context.arc(314 + 160, 104 + 160, 160, 0, Math.PI * 2, true);
+    context.closePath();
+    context.clip();
+    context.drawImage(avatar, 314, 104, 320, 320);
+    context.restore();
+
+    context.drawImage(hat, 71, 25, 138, 165);
+
+    files.push(new AttachmentBuilder(await canvas.encode('jpeg'), { name: `bd-card-me-${member.id}.jpg` }));
+  }
+
+  return {
+    content: tag ? `${bds.map(u => `<@${u.user_id}>`).join(' ')} ${message}` : message,
+    files,
+  };
+}
+
 const actionDict = new Map([
   ['today', todayInteraction],
   ['recent', recentInteraction],
   ['list', listInteraction],
   ['add', addInteraction],
   ['delete', deleteInteraction],
+  ['card', cardInteraction],
 ]);
 // #endregion
 
@@ -154,7 +234,7 @@ module.exports = {
     const action = actionDict.get(interaction.options.getSubcommand());
 
     if (action) {
-      const reply = await action(bdObj, interaction.options);
+      const reply = await action(bdObj, interaction.options, interaction.member);
       await interaction.reply(reply);
     }
   },
