@@ -7,10 +7,10 @@
   "keywords": [],
   "main": "index.js",
   "engines": {
-    "node": "^22.22.3",
+    "node": "^24.17.0",
     "runtime": {
       "name": "node",
-      "version": "^22.22.3",
+      "version": "^24.17.0",
       "onFail": "download"
     }
   },
