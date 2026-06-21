@@ -28,7 +28,11 @@ class log {
 
   async logChannelId(serverId) {
     const server = await this.server.findOne({ where: { server_id: serverId } });
-    return server.get('channel_id');
+    if (server == null) {
+      return false;
+    } else {
+      return server.get('channel_id');
+    };
   }
 
   async deleteLogChannel(serverId) {

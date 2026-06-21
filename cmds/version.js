@@ -11,10 +11,9 @@ module.exports = {
       .setTitle('版本更新紀錄')
       .setDescription('詳見 https://github.com/nakamuraao/siesta')
       .addFields(
-        { name: 'v 4.3.0 (2025/7/22)', value: '新增隨機挑選(Oliver Mak)' },
-        { name: 'v 4.4.0 (2025/12/3)', value: '更新反應' },
-        { name: 'v 4.5.0 (2026/6/9)', value: '新增生日模組(私人)' },
         { name: 'v 4.5.1 (2026/6/10)', value: '修正錯誤與資料庫重整' },
+        { name: 'v 4.5.2 (2026/6/20)', value: '更新生日模組(Oliver Mak)' },
+        { name: 'v 4.5.3 (2026/6/21)', value: '修正錯誤與更新discord.js v.14' },
       );
 
     await interaction.reply({ embeds: [botstatsembed] });

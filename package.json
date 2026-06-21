@@ -1,6 +1,6 @@
 {
   "name": "siesta",
-  "version": "v 4.5.1 (2026/6/10)",
+  "version": "v 4.5.3 (2026/6/21)",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -27,12 +27,12 @@
   "dependencies": {
     "@napi-rs/canvas": "^1.0.0",
     "axios": "^1.8.4",
-    "discord.js": "^14.18.0",
-    "node-cron": "^3.0.3",
+    "discord.js": "^14.26.4",
+    "node-cron": "^4.4.1",
     "random": "^5.4.1",
     "selenium-webdriver": "^4.29.0",
     "sequelize": "^6.37.7",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^6.0.1"
   },
   "devDependencies": {
     "@oliver139/eslint-config": "^4.2.0",
