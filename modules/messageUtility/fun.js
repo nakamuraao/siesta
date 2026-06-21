@@ -31,7 +31,7 @@ module.exports = {
     } else if (msg.content === `<@${config.cid}>我婆` || msg.content === `<@${config.cid}> 我婆`) {
       msg.reply(isOwner(msg.author.id) ? '沒錯♥' : '婆你個大頭 醒');
     } else if (msg.content === `<@${config.cid}>老婆` || msg.content === `<@${config.cid}> 老婆`) {
-      msg.reply(isOwner(msg.author.id) ? '怎麼了♥' : '<:miaomi_yue:1335451705613090826>');
+      msg.reply(isOwner(msg.author.id) ? '怎麼了♥' : '<:miaomi_yue:1513049019671121920>');
     } else if (msg.content.includes('擲幣') && isRightChannel) {
       msg.reply(flipCoin(msg.author));
     } else if (msg.content === '撒幣' && isRightChannel) {
