@@ -40,7 +40,6 @@ const birthdayDB = require('./modules/dbStructure/birthday')(sequelize, sql.Data
 // const twitterNotifDB = require('./modules/dbStructure/twitterNotif')(sequelize, sql.DataTypes);
 // const messageReaction = require('./modules/dbStructure/messageReaction')(sequelize, sql.DataTypes);
 // const birthday = require('./modules/dbFunction/birthday');
-const { getBdNotice, handleMiaomiBdTasks } = require('./modules/cronjob/jobs/checkBirthday');
 const database = require('./modules/dbFunction/database');
 // const twitterFunction = require('./modules/dbFunction/twitter');
 // const twitterNotifFunction = require('./modules/dbFunction/twitterNotif');

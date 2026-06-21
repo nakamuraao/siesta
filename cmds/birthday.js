@@ -151,7 +151,7 @@ async function deleteInteraction(bdObj, options) {
 }
 
 async function cardInteraction(bdObj, options, member) {
-  const bds = await bdObj.showAllBirthday();
+  const bds = await bdObj.birthdayTodayRaw();
   if (bds.length === 0) {
     return { content: '今天沒人生日啦～', flags: MessageFlags.Ephemeral };
   }
